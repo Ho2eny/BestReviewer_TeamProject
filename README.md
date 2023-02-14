@@ -11,6 +11,11 @@
  - 기본적인 json parsing, writing 기능
  - 테스트 케이스
 
+## Chat server ip
+  - A/B/C 팀 : **10.241.114.135**
+  - D/E/F 팀 : **10.241.114.152**
+  - 공용 : **10.241.14.74**
+
 ## Build Environment
 
 #### Windows 10 with Cygwin
