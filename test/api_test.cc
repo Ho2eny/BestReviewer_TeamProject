@@ -3,13 +3,11 @@
 #include <string>
 #include <sstream>
 #include <gtest/gtest.h>
-#include "../src/util/util.h"
 #include "../src/command/invoker.h"
 #include "../src/command/receiver.h"
 #include "../src/command/login.h"
 
 using namespace std;
-
 
 string GetHashCode(const string &password)
 {
@@ -48,13 +46,13 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
     return size * nmemb;
 }
 
-static size_t header_callback(char* buffer, size_t size,
-    size_t nitems, void* userdata)
+static size_t header_callback(char *buffer, size_t size,
+                              size_t nitems, void *userdata)
 {
     cout << "Header Callback " << endl;
-    strcpy((char*)userdata, buffer);
-    
-    std::cout << (char*)userdata; // This prints the headers correctly
+    strcpy((char *)userdata, buffer);
+
+    std::cout << (char *)userdata; // This prints the headers correctly
 
     return nitems * size;
 }
@@ -152,7 +150,6 @@ TEST(ApiTest, login)
         res = curl_easy_perform(curl);
         curl_slist_free_all(list);
         curl_easy_cleanup(curl);
-        
 
         if (res != CURLE_OK)
         {
