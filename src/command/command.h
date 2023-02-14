@@ -9,11 +9,6 @@
 std::string response = "";
 class Command
 {
-protected:
-  std::string command_key;
-  std::string description;
-  Receiver *receiver_;
-
 public:
   Command(std::string command_key, std::string description) : command_key(command_key), description(description), receiver_(0) {}
   virtual ~Command() {}
@@ -31,6 +26,11 @@ public:
       receiver_->SetData(data);
     }
   }
+
+protected:
+  std::string command_key;
+  std::string description;
+  Receiver *receiver_;  
 };
 
 static size_t curl_callback_(void *contents, size_t size, size_t nmemb, void *userp)
@@ -44,7 +44,6 @@ static size_t curl_callback_(void *contents, size_t size, size_t nmemb, void *us
 
 class SimpleWelcomeCommand : public Command
 {
-private:
 public:
   explicit SimpleWelcomeCommand(std::string command_key, std::string description) : Command(command_key, description) {}
   void Execute() const override
@@ -82,7 +81,6 @@ public:
 
 class ChatParseSimpleJsonCommand : public Command
 {
-private:
 public:
   explicit ChatParseSimpleJsonCommand(std::string command_key, std::string description) : Command(command_key, description) {}
   void Execute() const override
@@ -102,7 +100,6 @@ public:
 
 class JsonComposeCommand : public Command
 {
-
 public:
   explicit JsonComposeCommand(std::string command_key, std::string description, Receiver *receiver) : Command(command_key, description)
   {

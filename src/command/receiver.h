@@ -5,9 +5,6 @@
 
 class Receiver
 {
-private:
-  Json::Value data;
-
 public:
   Receiver() : data(Json::objectValue) {}
   Receiver(Json::Value data) : data(data) {}
@@ -21,6 +18,9 @@ public:
   {
     return data;
   }
+
+private:
+  Json::Value data;  
 };
 
 #endif

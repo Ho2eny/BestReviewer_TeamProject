@@ -10,9 +10,6 @@
 
 class Invoker
 {
-private:
-  std::vector<Command *> on_invoke_;
-
 public:
   ~Invoker() {}
 
@@ -45,6 +42,9 @@ public:
       std::cout << it->GetDescription() << std::endl;
     }
   }
+
+private:
+  std::vector<Command *> on_invoke_;  
 };
 
 #endif
