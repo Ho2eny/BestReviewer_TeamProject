@@ -5,7 +5,7 @@ set(PROJECT ChatClient)
 add_compile_options(-fprofile-arcs -ftest-coverage)
 
 set(SOURCES
-    hardtoname.cc hardtoname.h
+    hardtoname.cc hardtoname.h utils.h
 )
 
 add_library(${PROJECT} STATIC ${SOURCES})
