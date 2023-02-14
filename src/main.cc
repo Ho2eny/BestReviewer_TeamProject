@@ -4,6 +4,7 @@
 #include "hardtoname.h"
 #include "command/invoker.h"
 #include "command/command.h"
+#include "command/receiver.h"
 
 #define CHAT_WELCOME_SIMPLE_JSON "11"
 #define CHAT_PARSE_SIMPLE_JSON "12"
@@ -25,9 +26,9 @@ int main(int argc, char *argv[])
 {
     // Command Pattern Test Code
     Invoker *invoker = new Invoker;
-    invoker->SetOnInvoke(CHAT_WELCOME_SIMPLE_JSON, new SimpleWelcomCommand());
-    invoker->SetOnInvoke(CHAT_PARSE_SIMPLE_JSON, new ChatParseSimpleJsonCommand());
-    invoker->SetOnInvoke("13", new JsonComposeCommand(new MessageReceiver("")));
+    invoker->SetOnInvoke(new SimpleWelcomCommand(CHAT_WELCOME_SIMPLE_JSON, "welcome_simpleJson"));
+    invoker->SetOnInvoke(new ChatParseSimpleJsonCommand(CHAT_PARSE_SIMPLE_JSON, "parse json"));
+    invoker->SetOnInvoke(new JsonComposeCommand("13", "assemble json", new Receiver(Json::objectValue)));
 
     /*
     if (argc != 3) {
@@ -40,6 +41,10 @@ int main(int argc, char *argv[])
 
     do
     {
+        invoker->PrintCommands();
+
+
+
         cout << "11.welcome_simpleJson, 12.parse json, 13.assemble json" << endl;
         cout << "21.welcome_arrayJson, 22.parse json, 33.assemble json" << endl;
         cout << "Enter command(q for quit) : ";
@@ -133,7 +138,9 @@ int main(int argc, char *argv[])
         }
         else
         {
-            invoker->Invoke(userSelection, "Easy to compose JSON string");
+            Json::Value data;
+            data["message"] = "Easy to compose JSON string";
+            invoker->Invoke(userSelection, data);
             // cout << "Wrong command" << endl;
         }
     } while (true);

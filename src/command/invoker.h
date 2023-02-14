@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <json/json.h>
 #include <stdexcept>
 #include <algorithm>
 #include "./command.h"
@@ -12,32 +13,43 @@
 class Invoker
 {
 private:
-  std::vector<std::pair<std::string, Command *>> on_invoke_;
+  std::vector<Command *> on_invoke_;
 
 public:
   ~Invoker() {}
 
-  void SetOnInvoke(std::string command_key, Command *command)
+  void SetOnInvoke(Command *command)
   {
-    on_invoke_.push_back(make_pair(command_key, command));
+    on_invoke_.push_back(command);
   }
 
-  void Invoke(std::string command_key, std::string message)
+  void Invoke(std::string command_key, Json::Value data)
   {
     std::cout << command_key << std::endl;
-    auto it = std::find_if(on_invoke_.begin(), on_invoke_.end(), [&command_key](const std::pair<std::string, Command *> &command)
-                           { return command.first == command_key; });
-    if (it == on_invoke_.end())
+    for (auto it : on_invoke_)
     {
-      throw std::invalid_argument("Command not found");
+      if ((*it).GetCommandKey() == command_key)
+      {
+        if (!data.empty())
+        {
+          it->SetData(data);
+        }
+
+        it->Execute();
+        return;
+      }
     }
 
-    if (message.length() > 0 && it->second->RequireMessage())
-    {
-      it->second->SetReceiverString(message);
-    }
+    throw std::invalid_argument("Command not found");
+  }
 
-    it->second->Execute();
+  void PrintCommands()
+  {
+    for (auto it : on_invoke_)
+    {
+      std::cout << it->GetCommandKey() << ". ";
+      std::cout << it->GetDescription() << std::endl;
+    }
   }
 };
 

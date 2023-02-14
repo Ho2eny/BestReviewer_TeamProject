@@ -2,29 +2,33 @@
 #define COMMAND_H_
 
 #include <curl/curl.h>
+#include <json/json.h>
 #include <string>
-#include "./message_receiver.h"
+#include "./receiver.h"
 
 std::string response = "";
 class Command
 {
 protected:
-  bool require_message;
-  MessageReceiver *receiver_;
+  std::string command_key;
+  std::string description;
+  Receiver *receiver_;
 
 public:
-  Command() : require_message(false), receiver_(0) {}
+  Command(std::string command_key, std::string description) : command_key(command_key), description(description), receiver_(0) {}
   virtual ~Command() {}
   virtual void Execute() const = 0;
-  bool RequireMessage()
+  bool HasData()
   {
-    return require_message;
+    return receiver_ && receiver_->HasData();
   }
-  void SetReceiverString(std::string message)
+  std::string GetDescription() { return description; }
+  std::string GetCommandKey() { return command_key; }
+  void SetData(Json::Value& data)
   {
     if (receiver_)
     {
-      receiver_->SetMessage(message);
+      receiver_->SetData(data);
     }
   }
 };
@@ -42,7 +46,7 @@ class SimpleWelcomCommand : public Command
 {
 private:
 public:
-  explicit SimpleWelcomCommand() {}
+  explicit SimpleWelcomCommand(std::string command_key, std::string description) : Command(command_key, description) {}
   void Execute() const override
   {
     CURL *curl;
@@ -85,7 +89,7 @@ class ChatParseSimpleJsonCommand : public Command
 {
 private:
 public:
-  explicit ChatParseSimpleJsonCommand() {}
+  explicit ChatParseSimpleJsonCommand(std::string command_key, std::string description) : Command(command_key, description) {}
   void Execute() const override
   {
     Json::CharReaderBuilder builder;
@@ -105,16 +109,15 @@ class JsonComposeCommand : public Command
 {
 
 public:
-  explicit JsonComposeCommand(MessageReceiver *receiver)
+  explicit JsonComposeCommand(std::string command_key, std::string description, Receiver *receiver) : Command(command_key, description)
   {
     receiver_ = receiver;
-    require_message = true;
   }
   void Execute() const override
   {
     Json::Value root;
 
-    root["message"] = receiver_->GetMessage().c_str();
+    root["message"] = receiver_->GetData()["message"];
 
     std::cout << root["message"].asString() << std::endl;
 
