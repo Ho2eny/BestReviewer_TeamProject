@@ -3,13 +3,11 @@
 #include <string>
 #include <sstream>
 #include <gtest/gtest.h>
-#include "../src/util/util.h"
 #include "../src/command/invoker.h"
 #include "../src/command/receiver.h"
 #include "../src/command/login.h"
 
 using namespace std;
-
 
 string GetHashCode(const string &password)
 {
@@ -43,20 +41,8 @@ string GetPasswordWithNonce(const string &password, const string &nonce)
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-    cout << "WriteCallback " << endl;
     ((std::string *)userp)->append((char *)contents, size * nmemb);
     return size * nmemb;
-}
-
-static size_t header_callback(char* buffer, size_t size,
-    size_t nitems, void* userdata)
-{
-    cout << "Header Callback " << endl;
-    strcpy((char*)userdata, buffer);
-    
-    std::cout << (char*)userdata; // This prints the headers correctly
-
-    return nitems * size;
 }
 
 TEST(ApiTest, DISABLED_signup)
@@ -152,7 +138,6 @@ TEST(ApiTest, login)
         res = curl_easy_perform(curl);
         curl_slist_free_all(list);
         curl_easy_cleanup(curl);
-        
 
         if (res != CURLE_OK)
         {
