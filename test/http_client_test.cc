@@ -1,5 +1,5 @@
 #include <random>
-#include <json/json.h> // for test
+#include <json/json.h>
 #include <gtest/gtest.h>
 
 #include "../src/http_client.h"
