@@ -41,20 +41,8 @@ string GetPasswordWithNonce(const string &password, const string &nonce)
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-    cout << "WriteCallback " << endl;
     ((std::string *)userp)->append((char *)contents, size * nmemb);
     return size * nmemb;
-}
-
-static size_t header_callback(char *buffer, size_t size,
-                              size_t nitems, void *userdata)
-{
-    cout << "Header Callback " << endl;
-    strcpy((char *)userdata, buffer);
-
-    std::cout << (char *)userdata; // This prints the headers correctly
-
-    return nitems * size;
 }
 
 TEST(ApiTest, DISABLED_signup)
