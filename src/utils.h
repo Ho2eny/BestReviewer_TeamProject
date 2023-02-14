@@ -9,6 +9,8 @@ using namespace std;
 
 class AuthorizationKey {
 public:
+    AuthorizationKey();
+    ~AuthorizationKey();
     void setId(const string& param) { id.assign(param); };
     void setPassword(const string& param) { password.assign(param); }
     ll queryPassword();
@@ -17,8 +19,8 @@ private:
     ll generateHash(const string& str);
 };
 
-long long AuthorizationKey::generateHash(const string& str) {
-    long long hash = 5381;
+ll AuthorizationKey::generateHash(const string& str) {
+    ll hash = 5381;
     int c;
     const char *c_str = str.c_str();
     while(c = *c_str++) {
