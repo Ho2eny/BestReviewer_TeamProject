@@ -16,8 +16,8 @@ public:
   string GetBody() const { return ""; }
 
 private:
-  int status_code;
-  string body;
+  int status_code_;
+  string body_;
 };
 
 #endif
