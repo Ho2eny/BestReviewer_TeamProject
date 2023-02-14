@@ -1,10 +1,12 @@
 #include <iostream>
 #include <curl/curl.h>
 #include <json/json.h>
+#include <bits/stdc++.h>
 #include "hardtoname.h"
 #include "command/invoker.h"
-#include "command/command.h"
 #include "command/receiver.h"
+#include "command/login.h"
+#include "command/signup.h"
 
 #include "http_client.h"
 
@@ -15,22 +17,31 @@
 
 using namespace std;
 
-static size_t curl_callback(void *contents, size_t size, size_t nmemb, void *userp)
-{
-    char *str = static_cast<char *>(contents);
-    size_t realsize = size * nmemb;
-    string &res = *(static_cast<std::string *>(userp));
-    res.append(str, realsize);
-    return realsize;
-}
+// 참고: 공용 Server : http://10.241.14.74
+std::string server = "http://10.241.114.152";
+std::string port = "34568";
+
+// void paramter_handler(int argc, char *argv[])
+// {
+//     if (argc > 1)
+//     {
+//         server = argv[1];
+//     }
+
+//     regex ipv4("(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])");
+
+//     if (regex_match(server, ipv4))
+//         std::cout << "Valid IPv4" << std::endl;
+// }
 
 int main(int argc, char *argv[])
 {
+
+    // paramter_handler(argc, argv);
     // Command Pattern Test Code
     Invoker *invoker = new Invoker;
-    invoker->SetOnInvoke(new SimpleWelcomeCommand(CHAT_WELCOME_SIMPLE_JSON, "welcome_simpleJson"));
-    invoker->SetOnInvoke(new ChatParseSimpleJsonCommand(CHAT_PARSE_SIMPLE_JSON, "parse json"));
-    invoker->SetOnInvoke(new JsonComposeCommand("13", "assemble json", new Receiver(Json::objectValue)));
+    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new Receiver()));
+    invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
     /*
     if (argc != 3) {
@@ -44,34 +55,11 @@ int main(int argc, char *argv[])
     do
     {
         invoker->PrintCommands();
-
-        cout << "21.welcome_arrayJson, 22.parse json, 33.assemble json" << endl;
-        cout << "Enter command(q for quit) : ";
         cin >> userSelection;
 
-        // 아래 부분은 그냥 원본의 나머지입니다. 모두 삭제되고 요구사항의 커맨드로 대체되어야 합니다.
-        if (userSelection == CHAT_WELCOME_ARRAY_JSON)
-        {
+        Json::Value data;
+        data["message"] = "Easy to compose JSON string";
+        invoker->Invoke(userSelection, data);
 
-            cout << getHttpRequestforArrayJson() << endl;
-        }
-        else if (userSelection == "22")
-        {
-
-            printArrayJson(getHttpRequestforArrayJson());
-        }
-        else if (userSelection == "23")
-        {
-        }
-        else if (userSelection == CHAT_QUIT || userSelection == "quit" || userSelection == "Q")
-        {
-            break;
-        }
-        else
-        {
-            Json::Value data;
-            data["message"] = "Easy to compose JSON string";
-            invoker->Invoke(userSelection, data);
-        }
     } while (true);
 }
