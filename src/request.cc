@@ -1,6 +1,6 @@
 #include "request.h"
 
-Request::Request(const string &url) : url_(url), path_("")
+Request::Request(const string &url) : url_(url), path_(""), body_("")
 {
 }
 
@@ -16,4 +16,14 @@ void Request::SetPath(const string &path)
 string Request::GetFullUrl() const
 {
   return url_ + path_;
+}
+
+void Request::SetBody(const string &body)
+{
+  body_ = body;
+}
+
+string Request::GetBody() const
+{
+  return body_;
 }

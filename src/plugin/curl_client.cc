@@ -1,4 +1,5 @@
 #include <curl/curl.h>
+#include <sstream>
 
 #include "curl_client.h"
 #include "../http_plugin.h"
@@ -7,7 +8,7 @@
 
 using namespace std;
 
-CurlClient::CurlClient() : curl_(nullptr), body_("")
+CurlClient::CurlClient() : curl_(nullptr), header_(nullptr), body_("")
 {
   Initialize();
 }
@@ -54,7 +55,10 @@ void CurlClient::SetUp(const Request &request)
 void CurlClient::CleanUp()
 {
   curl_easy_cleanup(curl_);
+  curl_slist_free_all(header_);
+
   curl_ = nullptr;
+  header_ = nullptr;
   body_ = "";
 }
 
@@ -66,9 +70,33 @@ string CurlClient::GetErrorMessage(int result)
   return string("error response : ").append(to_string(result));
 }
 
+void CurlClient::AppendHeader(const string &key, const string &value)
+{
+  stringstream ss;
+
+  ss << key << ": " << value;
+  header_ = curl_slist_append(header_, ss.str().c_str());
+  curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, header_);
+}
+
 Response CurlClient::Post(Request request)
 {
-  return Response();
+  SetUp(request);
+
+  AppendHeader("Content-Type", "application/json");
+
+  curl_easy_setopt(curl_, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody());
+  
+  CURLcode res = curl_easy_perform(curl_);
+  
+  int status_code = 0;
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
+  auto response = Response(status_code, GetErrorMessage(res), body_);
+
+  CleanUp();
+
+  return response;
 }
 
 Response CurlClient::Put(Request request)
