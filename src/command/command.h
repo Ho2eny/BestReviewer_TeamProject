@@ -5,20 +5,23 @@
 #include <json/json.h>
 #include <string>
 #include "./receiver.h"
+#include "./command_type.h"
 
-std::string response = "";
 class Command
 {
 public:
-  Command(std::string command_key, std::string description) : command_key(command_key), description(description), receiver_(0) {}
+  Command(CommandType command_key, std::string description, Receiver* receiver = nullptr) 
+    : command_key(std::to_string(static_cast<int>(command_key))), description(description), receiver_(receiver) {}
   virtual ~Command() {}
   virtual void Execute() const = 0;
   bool HasData()
   {
     return receiver_ && receiver_->HasData();
   }
-  std::string GetDescription() { return description; }
-  std::string GetCommandKey() { return command_key; }
+  std::string GetDescription() {
+    return description; }
+  std::string GetCommandKey() {
+    return command_key; }
   void SetData(Json::Value &data)
   {
     if (receiver_)
@@ -30,7 +33,7 @@ public:
 protected:
   std::string command_key;
   std::string description;
-  Receiver *receiver_;  
+  Receiver *receiver_;
 };
 
 #endif

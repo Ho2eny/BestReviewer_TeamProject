@@ -1,13 +1,13 @@
-#ifndef _LOGIN_H_
-#define _LOGIN_H_
+#ifndef SIGNUP_H_
+#define SIGNUP_H_
 
 #include "./command.h"
 
-class Login : public Command
+class Signup : public Command
 {
 public:
-    Login(std::string command_key, std::string description)
-        : Command(command_key, description) {}
+    Signup(CommandType command_key, std::string description, Receiver *receiver)
+        : Command(command_key, description, receiver) {}
     void Execute() const override;
 };
 
