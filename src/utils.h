@@ -13,20 +13,20 @@ using namespace std;
 class AuthorizationKey {
 public:
     AuthorizationKey();
-    void setId(const string& param) { id.assign(param); };
-    void setPassword(const string& param) { password.assign(param); }
+    void setId(const string& param) { id_.assign(param); };
+    void setPassword(const string& param) { password_.assign(param); }
     string queryPassword();
     string queryPasswordWithNonce();
-    string queryNonce() { return nonce; };
+    string queryNonce() { return nonce_; };
 private:
-    string id, password, nonce;
+    string id_, password_, nonce_;
     ll generateHash(const string& str);
 };
 
 AuthorizationKey::AuthorizationKey() {
     srand((unsigned int)time(0));
     //  temp  0~9 사이의 임의의 한자리 수   
-    nonce.assign(to_string(rand() % 9));
+    nonce_.assign(to_string(rand() % 9));
 }
 
 ll AuthorizationKey::generateHash(const string& str) {
@@ -39,11 +39,11 @@ ll AuthorizationKey::generateHash(const string& str) {
 }
 
 string AuthorizationKey::queryPassword() {
-    return to_string(generateHash(password));
+    return to_string(generateHash(password_));
 }
 
 string AuthorizationKey::queryPasswordWithNonce() {
-    return to_string(generateHash( std::to_string(generateHash(password)) + nonce));
+    return to_string(generateHash( std::to_string(generateHash(password_)) + nonce_));
 }
 
 #endif
