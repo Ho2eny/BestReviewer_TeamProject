@@ -2,6 +2,7 @@ set(PROJECT ChatClientTest)
 
 set(SOURCES
     hardtonametest.cc
+    json_serializer_test.cc
 )
 
 add_executable(${PROJECT} ${SOURCES})
