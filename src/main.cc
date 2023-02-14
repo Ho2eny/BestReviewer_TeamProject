@@ -8,6 +8,11 @@
 #include "command/login.h"
 #include "command/signup.h"
 
+#include "http_client.h"
+
+#define CHAT_WELCOME_SIMPLE_JSON "11"
+#define CHAT_PARSE_SIMPLE_JSON "12"
+#define CHAT_WELCOME_ARRAY_JSON "21"
 #define CHAT_QUIT "q"
 
 using namespace std;

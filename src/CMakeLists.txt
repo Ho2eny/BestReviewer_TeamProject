@@ -8,7 +8,7 @@ set(SOURCES
     hardtoname.cc hardtoname.h
     command/login.cc
     command/signup.cc
-    util/util.cc
+    hardtoname.cc hardtoname.h http_client.h http_plugin.h plugin/curl_client.h
 )
 
 add_library(${PROJECT} STATIC ${SOURCES})
