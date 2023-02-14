@@ -11,6 +11,7 @@ set(SOURCES
     plugin/curl_client.cc plugin/curl_client.h
     request.cc request.h
     response.h
+    utils.h
 )
 
 add_library(${PROJECT} STATIC ${SOURCES})
