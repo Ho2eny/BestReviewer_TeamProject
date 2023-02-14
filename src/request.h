@@ -15,8 +15,8 @@ public:
   string GetFullUrl() const;
 
 private:
-  string url;
-  string path;
+  string url_;
+  string path_;
 };
 
 #endif
