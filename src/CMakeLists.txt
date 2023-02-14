@@ -6,6 +6,12 @@ add_compile_options(-fprofile-arcs -ftest-coverage)
 
 set(SOURCES
     hardtoname.cc hardtoname.h
+    http_client.cc http_client.h
+    http_plugin.h
+    plugin/curl_client.cc plugin/curl_client.h
+    request.cc request.h
+    response.h
+    utils.h
 )
 
 add_library(${PROJECT} STATIC ${SOURCES})
