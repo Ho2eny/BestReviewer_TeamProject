@@ -8,8 +8,6 @@
 #include <algorithm>
 #include "./command.h"
 
-#define Comman
-
 class Invoker
 {
 private:
