@@ -29,7 +29,7 @@ public:
     return true;
   }
 
-  std::string GetDescription()
+  std::string GetDescription() const
   {
     return description_;
   }
