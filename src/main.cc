@@ -6,6 +6,8 @@
 #include "command/command.h"
 #include "command/receiver.h"
 
+#include "http_client.h"
+
 #define CHAT_WELCOME_SIMPLE_JSON "11"
 #define CHAT_PARSE_SIMPLE_JSON "12"
 #define CHAT_WELCOME_ARRAY_JSON "21"
