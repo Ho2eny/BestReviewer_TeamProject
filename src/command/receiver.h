@@ -1,5 +1,5 @@
-#ifndef JSON_COMPOSER_H_
-#define JSON_COMPOSER_H_
+#ifndef RECEIVER_H_
+#define RECEIVER_H_
 #include <string>
 #include <json/json.h>
 

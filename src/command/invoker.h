@@ -30,11 +30,7 @@ public:
     {
       if ((*it).GetCommandKey() == command_key)
       {
-        if (!data.empty())
-        {
-          it->SetData(data);
-        }
-
+        if (!data.empty()) it->SetData(data);
         it->Execute();
         return;
       }

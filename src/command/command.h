@@ -24,7 +24,7 @@ public:
   }
   std::string GetDescription() { return description; }
   std::string GetCommandKey() { return command_key; }
-  void SetData(Json::Value& data)
+  void SetData(Json::Value &data)
   {
     if (receiver_)
     {
@@ -42,23 +42,18 @@ static size_t curl_callback_(void *contents, size_t size, size_t nmemb, void *us
   return realsize;
 }
 
-class SimpleWelcomCommand : public Command
+class SimpleWelcomeCommand : public Command
 {
 private:
 public:
-  explicit SimpleWelcomCommand(std::string command_key, std::string description) : Command(command_key, description) {}
+  explicit SimpleWelcomeCommand(std::string command_key, std::string description) : Command(command_key, description) {}
   void Execute() const override
   {
     CURL *curl;
 
     long responseCode;
-
     response.clear();
 
-    /*TODO
-      - curl 을 사용하는 과정이 계속 반복되는데 좋은 코드 품질을 가지도록 구현해보세요.
-      - 서버의 동작여부와 상관 없이 Client 의 기능이 잘 동작한다는 것을 보장하는 테스트를 만들어 보세요.
-    */
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:34568/chat/welcome_simpleJson");

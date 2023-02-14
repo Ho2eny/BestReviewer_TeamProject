@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 {
     // Command Pattern Test Code
     Invoker *invoker = new Invoker;
-    invoker->SetOnInvoke(new SimpleWelcomCommand(CHAT_WELCOME_SIMPLE_JSON, "welcome_simpleJson"));
+    invoker->SetOnInvoke(new SimpleWelcomeCommand(CHAT_WELCOME_SIMPLE_JSON, "welcome_simpleJson"));
     invoker->SetOnInvoke(new ChatParseSimpleJsonCommand(CHAT_PARSE_SIMPLE_JSON, "parse json"));
     invoker->SetOnInvoke(new JsonComposeCommand("13", "assemble json", new Receiver(Json::objectValue)));
 
