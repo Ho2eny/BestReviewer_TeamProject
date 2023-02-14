@@ -19,7 +19,7 @@ public:
     kv_[key] = value;
   }
 
-  std::string GetValue(std::string key)
+  std::string GetValue(const std::string& key) const
   {
     return kv_[key];
   }
