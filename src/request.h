@@ -5,7 +5,6 @@
 
 using std::string;
 
-// TODO
 class Request {
 public:
   Request(const string &url);
