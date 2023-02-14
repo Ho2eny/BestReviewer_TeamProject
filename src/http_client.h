@@ -6,10 +6,6 @@
 #include "http_plugin.h"
 #include "request.h"
 #include "response.h"
-
-#include "plugin/curl_client.h"
-
-// TODO
 class HttpClient {
 public:
   HttpClient();
@@ -24,9 +20,5 @@ private:
   std::shared_ptr<HttpPlugin> plugin;
 };
 
-HttpClient::HttpClient()
-{
-  plugin = std::make_shared<CurlClient>();
-}
 
 #endif
