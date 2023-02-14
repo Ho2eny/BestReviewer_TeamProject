@@ -1,3 +1,6 @@
+#ifndef UTILS_H_
+#define UTILS_H_
+
 #include <iostream>
 #include <string>
 #include <time.h>
@@ -9,8 +12,6 @@ using namespace std;
 
 class AuthorizationKey {
 public:
-    AuthorizationKey();
-    ~AuthorizationKey();
     void setId(const string& param) { id.assign(param); };
     void setPassword(const string& param) { password.assign(param); }
     ll queryPassword();
@@ -40,3 +41,4 @@ ll AuthorizationKey::queryPassword() {
     return ret;
 }
 
+#endif
