@@ -8,6 +8,7 @@
 #include "command/login.h"
 #include "command/signup.h"
 #include "command/createchatroom.h"
+#include "command/joinchatroom.h"
 
 #include "http_client.h"
 
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new Receiver()));
     invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
     invoker->SetOnInvoke(new CreateChatRoom(CommandType::kCreateRoom, "Create Chat Room", new Receiver()));
+    invoker->SetOnInvoke(new JoinChatRoom(CommandType::kJoinRoom, "Join Chat Room", new Receiver()));
 
     /*
     if (argc != 3) {
