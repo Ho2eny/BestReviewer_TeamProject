@@ -4,8 +4,11 @@
 #include <bits/stdc++.h>
 #include "hardtoname.h"
 #include "command/invoker.h"
-#include "command/command.h"
 #include "command/receiver.h"
+#include "command/login.h"
+#include "command/signup.h"
+
+#include "http_client.h"
 
 #define CHAT_WELCOME_SIMPLE_JSON "11"
 #define CHAT_PARSE_SIMPLE_JSON "12"
@@ -34,12 +37,11 @@ std::string port = "34568";
 int main(int argc, char *argv[])
 {
 
-    paramter_handler(argc, argv);
+    // paramter_handler(argc, argv);
     // Command Pattern Test Code
     Invoker *invoker = new Invoker;
-    // invoker->SetOnInvoke(new SimpleWelcomeCommand(CHAT_WELCOME_SIMPLE_JSON, "welcome_simpleJson"));
-    // invoker->SetOnInvoke(new ChatParseSimpleJsonCommand(CHAT_PARSE_SIMPLE_JSON, "parse json"));
-    // invoker->SetOnInvoke(new JsonComposeCommand("13", "assemble json", new Receiver(Json::objectValue)));
+    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new Receiver()));
+    invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
     /*
     if (argc != 3) {
@@ -53,6 +55,8 @@ int main(int argc, char *argv[])
     do
     {
         invoker->PrintCommands();
+        cin >> userSelection;
+
         Json::Value data;
         data["message"] = "Easy to compose JSON string";
         invoker->Invoke(userSelection, data);

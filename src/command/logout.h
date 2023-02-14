@@ -1,12 +1,12 @@
-#ifndef _LOGIN_H_
-#define _LOGIN_H_
+#ifndef LOGOUT_H_
+#define LOGOUT_H_
 
 #include "./command.h"
 
-class Login : public Command
+class Logout : public Command
 {
 public:
-    Login(std::string command_key, std::string description)
+    Logout(CommandType command_key, std::string description)
         : Command(command_key, description) {}
     void Execute() const override;
 };
