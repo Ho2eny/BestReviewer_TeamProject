@@ -24,6 +24,8 @@ private:
 
   void SetUp(const Request &request);
   void CleanUp();
+
+  string GetErrorMessage(int result);
   
   static size_t WriteBodyCallback(void *contents,
       size_t size, size_t nmemb, void *userp);

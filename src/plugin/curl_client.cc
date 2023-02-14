@@ -33,12 +33,10 @@ Response CurlClient::Get(Request request)
 
   curl_easy_setopt(curl_, CURLOPT_HTTPGET, 1L);
   CURLcode res = curl_easy_perform(curl_);
-  if (res != CURLE_OK)
-    body_.append("error response : ").append(to_string(res));
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, body_);
+  auto response = Response(status_code, GetErrorMessage(res), body_);
 
   CleanUp();
 
@@ -58,6 +56,14 @@ void CurlClient::CleanUp()
   curl_easy_cleanup(curl_);
   curl_ = nullptr;
   body_ = "";
+}
+
+string CurlClient::GetErrorMessage(int result)
+{
+  if (result == CURLE_OK)
+    return "";
+
+  return string("error response : ").append(to_string(result));
 }
 
 Response CurlClient::Post(Request request)
