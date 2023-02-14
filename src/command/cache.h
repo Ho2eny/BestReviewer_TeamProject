@@ -14,7 +14,7 @@ public:
   static const std::string BASE_URL;
   static const std::string SESSION_ID;
 
-  void SetKV(std::string key, std::string value)
+  void SetKV(const std::string& key, const std::string& value)
   {
     kv_[key] = value;
   }
