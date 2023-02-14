@@ -9,6 +9,7 @@
 #include "command/signup.h"
 #include "command/createchatroom.h"
 #include "command/joinchatroom.h"
+#include "command/listchatrooms.h"
 
 #include "http_client.h"
 
@@ -42,8 +43,9 @@ int main(int argc, char *argv[])
     // paramter_handler(argc, argv);
     // Command Pattern Test Code
     Invoker *invoker = new Invoker;
-    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new Receiver()));
     invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
+    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new Receiver()));
+    invoker->SetOnInvoke(new ListChatRooms(CommandType::kListRooms, "List Chat Rooms", new Receiver()));
     invoker->SetOnInvoke(new CreateChatRoom(CommandType::kCreateRoom, "Create Chat Room", new Receiver()));
     invoker->SetOnInvoke(new JoinChatRoom(CommandType::kJoinRoom, "Join Chat Room", new Receiver()));
 
