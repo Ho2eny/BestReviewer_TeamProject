@@ -14,6 +14,10 @@ public:
 
   virtual LoginResponse Login(const LoginRequest& request) override;
 
+  virtual SignupResponse Signup(const SignupRequest& request) override;
+
+  virtual LogoutResponse Logout(const LogoutRequest& request) override;
+
   void SetHttpClient(const std::shared_ptr<HttpPlugin>& client);
 
 private:
