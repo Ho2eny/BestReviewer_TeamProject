@@ -25,12 +25,14 @@ private:
   void SetUp(const Request &request);
   void CleanUp();
 
+  void AppendHeader(const string &key, const string &value);
   string GetErrorMessage(int result);
   
   static size_t WriteBodyCallback(void *contents,
       size_t size, size_t nmemb, void *userp);
 
   CURL *curl_;
+  struct curl_slist *header_;
   string body_;
 };
 
