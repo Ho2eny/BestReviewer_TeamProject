@@ -20,8 +20,8 @@ public:
     writer_builder_.reset();
   }
 
-  static Json::Value ParseJson(const std::string& json) const;
-  static std::string ToString(const Json::Value& json) const;
+  Json::Value ParseJson(const std::string& json) const;
+  std::string ToString(const Json::Value& json) const;
 
 protected:
   std::shared_ptr<Json::CharReaderBuilder> reader_builder_;
