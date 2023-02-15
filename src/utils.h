@@ -13,23 +13,32 @@ using namespace std;
 class AuthorizationKey {
 public:
     AuthorizationKey();
-    void setId(const string& param) { id_.assign(param); };
-    void setPassword(const string& param) { password_.assign(param); }
-    string queryPassword();
-    string queryPasswordWithNonce();
-    string queryNonce() { return nonce_; };
+    void SetId(const string& param) { id_.assign(param); };
+    void SetPassword(const string& param);
+    string QueryPassword();
+    string QueryPasswordWithNonce();
+    string QueryNonce() { return nonce_; };
 private:
     string id_, password_, nonce_;
-    ll generateHash(const string& str);
+    ll GenerateHash(const string& str);
+    void UpdateNonceKey();
 };
 
 AuthorizationKey::AuthorizationKey() {
     srand((unsigned int)time(0));
-    //  temp  0~9 사이의 임의의 한자리 수   
+    UpdateNonceKey();
+}
+
+void AuthorizationKey::SetPassword(const string& param) {
+    password_.assign(param);
+    UpdateNonceKey();
+}
+
+void AuthorizationKey::UpdateNonceKey() {
     nonce_.assign(to_string(rand() % 9));
 }
 
-ll AuthorizationKey::generateHash(const string& str) {
+ll AuthorizationKey::GenerateHash(const string& str) {
     ll hash = 5381;
     int c;
     const char *c_str = str.c_str();
@@ -38,12 +47,12 @@ ll AuthorizationKey::generateHash(const string& str) {
     return hash % 1000000007;
 }
 
-string AuthorizationKey::queryPassword() {
-    return to_string(generateHash(password_));
+string AuthorizationKey::QueryPassword() {
+    return to_string(GenerateHash(password_));
 }
 
-string AuthorizationKey::queryPasswordWithNonce() {
-    return to_string(generateHash( std::to_string(generateHash(password_)) + nonce_));
+string AuthorizationKey::QueryPasswordWithNonce() {
+    return to_string(GenerateHash( std::to_string(GenerateHash(password_)) + nonce_));
 }
 
 #endif

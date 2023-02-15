@@ -5,8 +5,8 @@
 #include <memory>
 #include <string>
 
-#include "../common/exception/json/invalid_json_serializer_exception.h"
-#include "../common/exception/json/Invalid_json_string_exception.h"
+#include "./exception/json/invalid_json_serializer_exception.h"
+#include "./exception/json/Invalid_json_string_exception.h"
 
 class JsonSerializer {
 public:

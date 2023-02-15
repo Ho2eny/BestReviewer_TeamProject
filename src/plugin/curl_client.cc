@@ -1,10 +1,14 @@
 #include <curl/curl.h>
 #include <sstream>
-
 #include "curl_client.h"
 #include "../http_plugin.h"
 #include "../request.h"
 #include "../response.h"
+
+#include "../common/exception/network/authentication_failure_exception.h"
+#include "../common/exception/network/connection_failure_exception.h"
+#include "../common/exception/network/dns_resolving_failure_exception.h"
+#include "../common/exception/network/internal_exception.h"
 
 using namespace std;
 
@@ -34,6 +38,7 @@ Response CurlClient::Get(Request request)
 
   curl_easy_setopt(curl_, CURLOPT_HTTPGET, 1L);
   CURLcode res = curl_easy_perform(curl_);
+  HandleResultCode(res);
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
@@ -62,27 +67,6 @@ void CurlClient::CleanUp()
   body_ = "";
 }
 
-string CurlClient::GetErrorMessage(int result)
-{
-  if (result == CURLE_OK)
-    return "";
-
-  return string("error response : ").append(to_string(result));
-}
-
-void CurlClient::AppendHeader(const string &key, const string &value)
-{
-  stringstream ss;
-
-  ss << key << ": " << value;
-  
-  header_ = curl_slist_append(header_, ss.str().c_str());
-  if (!header_)
-    throw std::invalid_argument("header list cannot be NULL.");
-
-  curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, header_);
-}
-
 Response CurlClient::Post(Request request)
 {
   SetUp(request);
@@ -93,6 +77,7 @@ Response CurlClient::Post(Request request)
   curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody());
   
   CURLcode res = curl_easy_perform(curl_);
+  HandleResultCode(res);
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
@@ -111,6 +96,44 @@ Response CurlClient::Put(Request request)
 Response CurlClient::Delete(Request request)
 {
   return Response();
+}
+
+string CurlClient::GetErrorMessage(int result)
+{
+  if (result == CURLE_OK)
+    return "";
+
+  return string("error response : ").append(to_string(result));
+}
+
+void CurlClient::AppendHeader(const string &key, const string &value)
+{
+  stringstream ss;
+
+  ss << key << ": " << value;
+  
+  header_ = curl_slist_append(header_, ss.str().c_str());
+  if (!header_)
+    throw InternalException("header list cannot be NULL.");
+
+  curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, header_);
+}
+
+void CurlClient::HandleResultCode(int code)
+{
+  switch (code) {
+    case CURLE_OK:
+      return;
+    case CURLE_COULDNT_RESOLVE_PROXY:
+    case CURLE_COULDNT_RESOLVE_HOST:
+      throw DnsResolvingFailureException("DNS resolving failed.");
+    case CURLE_COULDNT_CONNECT:
+      throw ConnectionFailureException("TCP connection failed.");
+    case CURLE_AUTH_ERROR:
+      throw AuthenticationFailureException("Authentication Failed.");
+    default:
+      throw InternalException("Error occured in libcurl internally.");
+  }
 }
 
 size_t CurlClient::WriteBodyCallback(void *contents,
