@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
     invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new LoginReceiver(cache)));
     // invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
-    string userSelection;
-    string response;
+    invoker->PrintCommands();
     bool receive_commands = true;
 
     do
     {
         string baseUrl = validator.GetBaseUrl();
         string userSelection;
+        cin >> userSelection;
 
         try
         {
