@@ -4,7 +4,8 @@
 using namespace std;
 
 const std::string vNullColor = "\033[0m";
-const std::string vYellowBold = "\033[31;1m";
+const std::string vRed = "\033[31m";
+const std::string vYellowBold = "\033[33;1m";
 const std::string vGreen = "\033[32m";
 const std::string vCyan = "\033[36m";
 const std::string vNewLine = "\n";
@@ -37,4 +38,6 @@ TEST(ColorTest, Colors)
     result = color.ImportantWithLineFeed(test_message);
     EXPECT_EQ(result, vMagent + test_message + vNullColor + vNewLine);
 
+    result = color.ErrorWithLineFeed(test_message);
+    EXPECT_EQ(result, vRed + "[Warning] " + test_message + vNullColor + vNewLine);
 }

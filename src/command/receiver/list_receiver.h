@@ -10,16 +10,16 @@
 class ListReceiver : public RoomReceiver
 {
 public:
-  // ListReceiver(Cache &cache, std::shared_ptr<RoomRepository> repository) : RoomReceiver(cache, repository) {}
+  ListReceiver(Cache &cache, std::shared_ptr<RoomRepository> repository) : RoomReceiver(cache, repository) {}
 
   void Action() override
   {
     try
     {
       std::string session_id = GetSessionID();
-      // ListRequest request(sessionID);
-      // Waiting for the implementatino from in.heo
-      // GetRoomList response = repository.getRoomList(request);
+      RetrieveRoomRequest request(session_id);
+      RetrieveRoomResponse response = repository_->RetrieveRoom(request);
+      cache_.SetRooms(response.GetRoomNames());
     }
     catch (const InvalidCommandException &ex)
     {

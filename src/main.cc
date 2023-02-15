@@ -9,7 +9,7 @@
 #include "command/receiver/logout_receiver.h"
 
 #include "http/repository/user_http_repository.h"
-// #include "http/repository/chat_http_repository.h"
+#include "http/repository/room_http_repository.h"
 
 #include "command/receiver/create_receiver.h"
 #include "command/receiver/join_receiver.h"
@@ -42,9 +42,9 @@ void MakeCommands(const unique_ptr<Invoker> &invoker, Cache &cache)
     invoker->SetOnInvoke(move(make_unique<Login>(CommandType::kLogin, "Log in to the program", move(make_unique<LoginReceiver>(cache, user_repo)))));
     invoker->SetOnInvoke(move(make_unique<Login>(CommandType::kLogout, "Log out of the program", move(make_unique<LogoutReceiver>(cache, user_repo)))));
 
-    // shared_ptr<RoomHttpRepository> room_repo = make_shared<RoomHttpRepository>(base_url);
-    // invoker->SetOnInvoke(move(make_unique<CreateChatRoom>(CommandType::kCreateRoom, "Create a room", move(make_unique<CreateReceiver>(cache, room_repo)))));
-    // invoker->SetOnInvoke(move(make_unique<ListChatRooms>(CommandType::kListRooms, "List all rooms", move(make_unique<ListReceiver>(cache, room_repo)))));
+    shared_ptr<RoomHttpRepository> room_repo = make_shared<RoomHttpRepository>(base_url);
+    invoker->SetOnInvoke(move(make_unique<ListChatRooms>(CommandType::kListRooms, "List all rooms", move(make_unique<ListReceiver>(cache, room_repo)))));
+    invoker->SetOnInvoke(move(make_unique<CreateChatRoom>(CommandType::kCreateRoom, "Create a room", move(make_unique<CreateReceiver>(cache, room_repo)))));
     // invoker->SetOnInvoke(move(make_unique<JoinChatRoom>(CommandType::kJoinRoom, "Join a room", move(make_unique<JoinReceiver>(cache, room_repo)))));
 }
 
@@ -60,7 +60,9 @@ int main(int argc, char *argv[])
     MakeCommands(invoker, cache);
 
     AnsiColor color;
-    color.Title("===== FIFO Chat Client =====");
+    color.Title("======================================");
+    color.Title("========== FIFO Chat Client ==========");
+    color.Title("======================================");
     invoker->PrintCommands();
     bool receive_commands = true;
 
@@ -77,12 +79,14 @@ int main(int argc, char *argv[])
         }
         catch (const InvalidCommandException &ex)
         {
-            color.ImportantWithLineFeed(ex.what());
+            color.ErrorWithLineFeed(ex.what());
         }
         catch (const GeneralNetworkException &ex)
         {
-            color.ImportantWithLineFeed(ex.what());
+            color.ErrorWithLineFeed(ex.what());
         }
 
     } while (receive_commands);
+
+    color.Title("======================================");
 }

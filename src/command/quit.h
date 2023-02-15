@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <string>
-#include "./command.h"
+#include "command.h"
+#include "../ui_helper/ansi_color.h"
 
 class Quit : public Command
 {
@@ -13,6 +14,8 @@ public:
 
   bool Execute() const override
   {
+    AnsiColor color;
+    color.TextWithLineFeed("Bye.");
     return false;
   }
 };

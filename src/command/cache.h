@@ -2,6 +2,7 @@
 #define CACHE_H_
 
 #include <map>
+#include <vector>
 #include <string>
 
 class Cache
@@ -23,13 +24,17 @@ public:
   void SetTestPassword(const std::string &password) { SetKV(Cache::vTestPassword, password); }
   void SetBaseUrl(const std::string &base_url) { SetKV(Cache::vBaseUrl, base_url); }
   void SetSessionID(const std::string &session_id) { SetKV(Cache::vSessionID, session_id); }
+  void SetRoomName(const std::string &room_name) { SetKV(Cache::vChatRoomName, room_name); }
   void RemoveSessionID() { SetKV(Cache::vSessionID, ""); }
   std::string GetValue(const std::string &key) { return kv_[key]; }
+  void SetRooms(const std::vector<std::string> &rooms) { rooms_ = rooms; }
+  std::vector<std::string> GetRooms() { return rooms_; }
 
 private:
   void SetKV(const std::string &key, const std::string &value) { kv_[key] = value; }
 
   std::map<const std::string, std::string> kv_;
+  std::vector<std::string> rooms_;
 };
 
 const std::string Cache::vID = "id";
