@@ -7,6 +7,7 @@
 
 class LoginRequest : public BaseRequest {
 public:
+  LoginRequest() {}
   LoginRequest(std::string id, std::string nonce, std::string password) : id_(id), nonce_(nonce), password_(password) {}
 
 private:

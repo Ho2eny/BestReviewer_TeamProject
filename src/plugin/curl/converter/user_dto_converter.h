@@ -21,7 +21,7 @@ inline UserDtoConverter::UserDtoConverter() {
   json_serializer_ = std::make_shared<JsonSerializer>();
 }
 
-inline LoginResponse ConvertToLoginResponseFrom(const Response& http_response) const {
+inline LoginResponse UserDtoConverter::ConvertToLoginResponseFrom(const Response& http_response) const {
   Json::Value json_object;
   try {
     json_object = JsonSerializer::ParseJson(http_response.GetBody());
@@ -31,7 +31,9 @@ inline LoginResponse ConvertToLoginResponseFrom(const Response& http_response) c
   }
 
   // TODO(in.heo): json_object["session_id"]가 없을 경우 Exception 추가
-  return LoginResponse(json_object["session_id"]);
+  const std::string session_id = json_object["session_id"];
+
+  return LoginResponse(session_id);
 }
 
 #endif

@@ -9,9 +9,10 @@
 
 class LoginResponse : public BaseResponse {
 public:
+  LoginResponse() {}
   LoginResponse(std::string session_id) : session_id_(session_id) {}
 
-  virtual void ParseJson(const std::string& json) override;
+  std::string GetSessionId() const;
 
 private:
   std::string session_id_;
