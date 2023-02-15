@@ -2,8 +2,8 @@
 #include <curl/curl.h>
 #include <json/json.h>
 #include <bits/stdc++.h>
-#include "common/exception/base_exception.h"
-#include "hardtoname.h"
+
+#include "command/command.h"
 #include "command/invoker.h"
 #include "command/cache.h"
 #include "command/receiver/login_receiver.h"
@@ -11,6 +11,7 @@
 #include "command/signup.h"
 #include "command/parameter_validator.h"
 #include "command/quit.h"
+
 #include "http_client.h"
 
 #define CHAT_QUIT "q"
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
         {
             receive_commands = invoker->Invoke(userSelection);
         }
-        catch (invalid_argument)
+        catch (InvalidCommandException)
         {
             cout << "Command Not Found" << endl;
         }
