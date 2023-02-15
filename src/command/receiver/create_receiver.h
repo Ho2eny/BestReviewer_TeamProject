@@ -18,13 +18,12 @@ public:
     // CreateRequest request(sessionID, roomName);
     // Waiting for the implementatino from in.heo
     // CreateRoomResponse response = repository.CreateRoom(request);
-    cache_.SetKV(Cache::SESSION_ID, "test_session_id");
   }
 
   std::string GetSessionID()
   {
-    if (cache_.GetValue(Cache::SESSION_ID).length() > 0)
-      return cache_.GetValue(Cache::SESSION_ID);
+    if (cache_.GetValue(Cache::vSessionID).length() > 0)
+      return cache_.GetValue(Cache::vSessionID);
 
     std::string sessionID;
     std::cout << "Enter Session ID: ";
@@ -34,8 +33,8 @@ public:
 
   std::string GetRoomName()
   {
-    if (cache_.GetValue(Cache::CHAT_ROOM_NAME).length() > 0)
-      return cache_.GetValue(Cache::CHAT_ROOM_NAME);
+    if (cache_.GetValue(Cache::vChatRoomName).length() > 0)
+      return cache_.GetValue(Cache::vChatRoomName);
 
     std::string chatRoomName;
     std::cout << "Enter Chat Room Name: ";

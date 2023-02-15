@@ -18,13 +18,12 @@ public:
     // ListRequest request(sessionID);
     // Waiting for the implementatino from in.heo
     // GetRoomList response = repository.getRoomList(request);
-    cache_.SetKV(Cache::SESSION_ID, "test_session_id");
   }
 
   std::string GetSessionID()
   {
-    if (cache_.GetValue(Cache::SESSION_ID).length() > 0)
-      return cache_.GetValue(Cache::SESSION_ID);
+    if (cache_.GetValue(Cache::vSessionID).length() > 0)
+      return cache_.GetValue(Cache::vSessionID);
 
     std::string sessionID;
     std::cout << "Enter Session ID: ";

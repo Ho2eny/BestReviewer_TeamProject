@@ -7,34 +7,35 @@
 class Cache
 {
 public:
-  static const std::string ID;
-  static const std::string TEST_ID;
-  static const std::string TEST_NONCE;
-  static const std::string TEST_PASSWORD;
-  static const std::string BASE_URL;
-  static const std::string SESSION_ID;
-  static const std::string CHAT_ROOM_NAME;
+  static const std::string vID;
+  static const std::string vTestID;
+  static const std::string vTestNonce;
+  static const std::string vTestPassword;
+  static const std::string vBaseUrl;
+  static const std::string vSessionID;
+  static const std::string vChatRoomName;
 
-  void SetKV(const std::string& key, const std::string& value)
-  {
-    kv_[key] = value;
-  }
+  void SetID(const std::string &ID) { SetKV(Cache::vID, ID); }
+  void SetTestID(const std::string &ID) { SetKV(Cache::vTestID, ID); }
+  void SetTestNonce(const std::string &nonce) { SetKV(Cache::vTestNonce, nonce); }
+  void SetTestPassword(const std::string &password) { SetKV(Cache::vTestPassword, password); }
+  void SetBaseUrl(const std::string &base_url) { SetKV(Cache::vBaseUrl, base_url); }
+  void SetSessionID(const std::string &session_id) { SetKV(Cache::vSessionID, session_id); }
 
-  std::string GetValue(const std::string& key)
-  {
-    return kv_[key];
-  }
+  std::string GetValue(const std::string &key) { return kv_[key]; }
 
 private:
+  void SetKV(const std::string &key, const std::string &value) { kv_[key] = value; }
+
   std::map<const std::string, std::string> kv_;
 };
 
-const std::string Cache::ID = "id";
-const std::string Cache::TEST_ID = "test_id";
-const std::string Cache::TEST_NONCE = "test_nonce";
-const std::string Cache::TEST_PASSWORD = "test_password";
-const std::string Cache::BASE_URL = "base_url";
-const std::string Cache::SESSION_ID = "session_id";
-const std::string Cache::CHAT_ROOM_NAME = "chat_room_name";
+const std::string Cache::vID = "id";
+const std::string Cache::vTestID = "test_id";
+const std::string Cache::vTestNonce = "test_nonce";
+const std::string Cache::vTestPassword = "test_password";
+const std::string Cache::vBaseUrl = "base_url";
+const std::string Cache::vSessionID = "session_id";
+const std::string Cache::vChatRoomName = "chat_room_name";
 
 #endif
