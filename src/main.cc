@@ -2,12 +2,14 @@
 #include <curl/curl.h>
 #include <json/json.h>
 #include <bits/stdc++.h>
+#include "common/exception/base_exception.h"
 #include "hardtoname.h"
 #include "command/invoker.h"
 #include "command/cache.h"
 #include "command/receiver/login_receiver.h"
 #include "command/login.h"
 #include "command/signup.h"
+#include "command/parameter_validator.h"
 #include "command/quit.h"
 #include "http_client.h"
 
@@ -16,9 +18,13 @@
 
 using namespace std;
 
+static Invoker *invoker = new Invoker;
+
 int main(int argc, char *argv[])
 {
-    Cache cache;
+    ParameterValidator validator(argc, argv);
+  
+    Cache cache;  
     Invoker *invoker = new Invoker(cache);
     invoker->SetOnInvoke(new Quit(CHAT_QUIT, "Quit Application"));
     invoker->SetOnInvoke(new Quit(CHAT_LONG_QUIT, "Quit Application"));
@@ -31,8 +37,8 @@ int main(int argc, char *argv[])
 
     do
     {
-        invoker->PrintCommands();
-        cin >> userSelection;
+        string baseUrl = validator.GetBaseUrl();
+        string userSelection;
 
         try
         {
