@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
     invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new LoginReceiver(cache)));
     // invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
+    AnsiColor color;
+    color.Title("===== Mini Chat Client =====");
     invoker->PrintCommands();
     bool receive_commands = true;
 
@@ -37,6 +39,7 @@ int main(int argc, char *argv[])
     {
         string baseUrl = validator.GetBaseUrl();
         string userSelection;
+        color.Text("\n> Waiting for a command... : ");
         cin >> userSelection;
 
         try
@@ -45,7 +48,7 @@ int main(int argc, char *argv[])
         }
         catch (InvalidCommandException)
         {
-            cout << "Command Not Found" << endl;
+            color.ImportantWithLineFeed("Command Not Found");
         }
 
     } while (receive_commands);
