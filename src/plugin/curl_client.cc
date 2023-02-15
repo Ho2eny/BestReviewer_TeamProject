@@ -95,7 +95,18 @@ Response CurlClient::Put(Request request)
 
 Response CurlClient::Delete(Request request)
 {
-  return Response();
+  SetUp(request);
+ 
+  CURLcode result = curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "DELETE");
+  HandleResultCode(result);
+  
+  int status_code = 0;
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
+  auto response = Response(status_code, GetErrorMessage(result), body_);
+
+  CleanUp();
+
+  return response;
 }
 
 string CurlClient::GetErrorMessage(int result)

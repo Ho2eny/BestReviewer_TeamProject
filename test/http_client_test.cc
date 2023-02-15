@@ -113,3 +113,14 @@ TEST_F(HttpClientTest, HttpAuthenticationFailure)
     EXPECT_THROW(client.Get(invalid_request), AuthenticationFailureException);
 } 
 #endif
+
+TEST_F(HttpClientTest, HttpDelete)
+{
+    HttpClient client;
+
+    request->SetPath("/chat/session?session_id=invalidsessionid");
+   
+    auto response = client.Delete(*request);
+    EXPECT_EQ(403, response.GetStatusCode());
+    EXPECT_EQ("Not a valid session ID", response.GetBody());
+} 
