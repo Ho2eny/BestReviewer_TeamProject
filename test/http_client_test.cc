@@ -8,7 +8,7 @@
 
 using namespace std;
 
-string GetHashCode(const string &password)
+static string GetHashCode(const string &password)
 {
     long long hash = 5381;
     int c;
