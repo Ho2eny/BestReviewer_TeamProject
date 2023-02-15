@@ -21,13 +21,13 @@ public:
     AuthorizationKey key;
     key.SetId(id);
     key.SetPassword(password);
+    
     LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
-    // Waiting for the implementatino from in.heo
     // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
     // LoginResponse response = repository.Login(request);
-    // cache_.SetKV(Cache::vSessionID, response.Get...);
+
     cache_.SetID(id);
-    cache_.SetSessionID("test_session_id");
+    // cache_.SetSessionID(response.GetSessionId());
   }
 
   std::string GetID()
