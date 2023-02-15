@@ -4,8 +4,6 @@
 #include <memory>
 #include <string>
 
-#include "../src/interface/dto/user/login_request.h"
-#include "../src/interface/dto/user/login_response.h"
 #include "../src/http/repository/user_http_repository.h"
 
 #include "../src/common/exception/user/fail_login_exception.h"
