@@ -24,6 +24,7 @@ public:
   Request ConvertToSignupHttpRequestFrom(const SignupRequest& signup_request, const std::string& base_url) const;
 
 private:
+  // TODO(in.heo): Refactor: Endpoint 관리를 어떻게 할지 고민
   static const std::string kLoginEndpoint;
   static const std::string kLogoutEndpoint;
   static const std::string kSignupEndpoint;
