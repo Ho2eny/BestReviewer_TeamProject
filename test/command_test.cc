@@ -11,9 +11,9 @@ class CommandTestFixture : public ::testing::Test
 protected:
   void SetUp() override
   {
-    cache_.SetTestID("fifo_274");
-    cache_.SetTestNonce("5");
-    cache_.SetTestPassword("password");
+    cache_.SetKV(Cache::TEST_ID, "fifo_274");
+    cache_.SetKV(Cache::TEST_NONCE, "5");
+    cache_.SetKV(Cache::TEST_PASSWORD, "password");
 
     invoker_ = std::make_unique<Invoker>(cache_);
     invoker_->SetOnInvoke(new Login(CommandType::kLogin, "Login", new LoginReceiver(cache_)));
@@ -29,7 +29,7 @@ protected:
 
 TEST_F(CommandTestFixture, LoginTest)
 {
-  cache_.SetSessionID("");
+  cache_.SetKV(Cache::SESSION_ID, "");
   invoker_->Invoke("51");
 
   if(cache_.GetValue(Cache::vSessionID).length())
@@ -39,4 +39,5 @@ TEST_F(CommandTestFixture, LoginTest)
   }
 
   ASSERT_GT(cache_.GetValue(Cache::vSessionID).length(), 0);
+
 }

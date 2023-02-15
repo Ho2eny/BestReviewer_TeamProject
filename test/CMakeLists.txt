@@ -5,6 +5,7 @@ set(SOURCES
     parameter_test.cc    
     command_test.cc
     json_serializer_test.cc
+    hardtonametest.cc 
     http_client_test.cc
 )
 

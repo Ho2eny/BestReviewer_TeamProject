@@ -3,9 +3,8 @@
 
 #include <algorithm>
 #include <string>
-#include "receiver/receiver.h"
-#include "command_type.h"
-#include "../common/exception/command/invalid_command_exception.h"
+#include "./receiver/receiver.h"
+#include "./command_type.h"
 
 class Command
 {

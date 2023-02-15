@@ -24,17 +24,18 @@ public:
     key.SetPassword(password);
 
     LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
-    // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
+    // Waiting for the implementatino from in.heo
+    // UserHttpRepository repository(cache.GetValue(Cache::BASE_URL));
     // LoginResponse response = repository.Login(request);
-
-    cache_.SetID(id);
-    // cache_.SetSessionID(response.GetSessionId());
+    // cache_.SetKV(Cache::SESSION_ID, response.Get...);
+    cache_.SetKV(Cache::ID, id);
+    cache_.SetKV(Cache::SESSION_ID, "test_session_id");
   }
 
   std::string GetID()
   {
-    if (cache_.GetValue(Cache::vTestID).length() > 0)
-      return cache_.GetValue(Cache::vTestID);
+    if (cache_.GetValue(Cache::TEST_ID).length() > 0)
+      return cache_.GetValue(Cache::TEST_ID);
 
     AnsiColor color;
     std::string id;
@@ -45,8 +46,8 @@ public:
 
   std::string GetPassword()
   {
-    if (cache_.GetValue(Cache::vTestPassword).length() > 0)
-      return cache_.GetValue(Cache::vTestPassword);
+    if (cache_.GetValue(Cache::TEST_PASSWORD).length() > 0)
+      return cache_.GetValue(Cache::TEST_PASSWORD);
 
     AnsiColor color;
     std::string password;
