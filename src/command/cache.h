@@ -13,6 +13,7 @@ public:
   static const std::string TEST_PASSWORD;
   static const std::string BASE_URL;
   static const std::string SESSION_ID;
+  static const std::string CHAT_ROOM_NAME;
 
   void SetKV(const std::string& key, const std::string& value)
   {
@@ -34,5 +35,6 @@ const std::string Cache::TEST_NONCE = "test_nonce";
 const std::string Cache::TEST_PASSWORD = "test_password";
 const std::string Cache::BASE_URL = "base_url";
 const std::string Cache::SESSION_ID = "session_id";
+const std::string Cache::CHAT_ROOM_NAME = "chat_room_name";
 
 #endif
