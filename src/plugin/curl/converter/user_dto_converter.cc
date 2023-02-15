@@ -1,7 +1,5 @@
 #include "user_dto_converter.h"
 
-#include <iostream>
-
 const std::string UserDtoConverter::kLoginEndpoint = "/chat/login";
 
 UserDtoConverter::UserDtoConverter() {
@@ -14,7 +12,7 @@ LoginResponse UserDtoConverter::ConvertToLoginResponseFrom(const Response& http_
     json_object = json_serializer_->ParseJson(http_response.GetBody());
   }
   catch (const BaseException& e) {
-    std::cerr << "Failed to parse LoginResponse: " << e.what() << std::endl;
+    throw e;
   }
 
   // TODO(in.heo): json_object["session_id"]가 없을 경우 Exception 추가

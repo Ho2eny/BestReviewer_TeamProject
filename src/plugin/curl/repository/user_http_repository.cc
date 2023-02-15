@@ -1,6 +1,7 @@
 #include "user_http_repository.h"
 
 #include "../../../common/exception/user/fail_login_exception.h"
+#include "../../../common/exception/user/fail_parse_session_id_exception.h"
 #include "../../curl_client.h"
 
 UserHttpRepository::UserHttpRepository(std::string base_url) : base_url_(base_url) {
@@ -17,7 +18,7 @@ LoginResponse UserHttpRepository::Login(const LoginRequest& request) {
       login_response = user_dto_converter_->ConvertToLoginResponseFrom(http_response);
     }
     catch (const BaseException& e) {
-      throw e;
+      throw FailParseSessionIdException(e.what());
     }
 
     return login_response;
