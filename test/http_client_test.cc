@@ -5,6 +5,9 @@
 #include "../src/http_client.h"
 #include "../src/request.h"
 #include "../src/response.h"
+#include "../src/common/exception/network/authentication_failure_exception.h"
+#include "../src/common/exception/network/connection_failure_exception.h"
+#include "../src/common/exception/network/dns_resolving_failure_exception.h"
 
 using namespace std;
 
@@ -58,18 +61,6 @@ TEST_F(HttpClientTest, HttpGetWithInvalidPath)
     EXPECT_EQ(404, response.GetStatusCode());
 } 
 
-TEST_F(HttpClientTest, HttpGetWithInvalidUrl)
-{
-    HttpClient client;
-
-    Request invalid_request("http://1234");
-    
-    auto response = client.Get(invalid_request);
-    EXPECT_EQ(0, response.GetStatusCode());
-    EXPECT_EQ("error response : 7", response.GetErrorMessage());
-    EXPECT_EQ("", response.GetBody());
-} 
-
 TEST_F(HttpClientTest, HttpPost)
 {
     HttpClient client;
@@ -92,4 +83,31 @@ TEST_F(HttpClientTest, HttpPost)
     auto response = client.Get(*request);
     EXPECT_EQ(200, response.GetStatusCode());
     EXPECT_EQ("", response.GetErrorMessage());
+} 
+
+TEST_F(HttpClientTest, HttpConnectionFailure)
+{
+    HttpClient client;
+
+    Request invalid_request("http://1234");
+
+    EXPECT_THROW(client.Get(invalid_request), ConnectionFailureException);
+} 
+
+TEST_F(HttpClientTest, HttpDnsResolvingFailure)
+{
+    HttpClient client;
+
+    Request invalid_request("http://efef.efef.eff.com");
+
+    EXPECT_THROW(client.Get(invalid_request), DnsResolvingFailureException);
+} 
+
+TEST_F(HttpClientTest, HttpAuthenticationFailure)
+{
+    HttpClient client;
+
+    Request invalid_request("https://jigsaw.w3.org/HTTP/Basic/");
+
+    EXPECT_THROW(client.Get(invalid_request), AuthenticationFailureException);
 } 

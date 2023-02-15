@@ -1,10 +1,14 @@
 #include <curl/curl.h>
 #include <sstream>
-
 #include "curl_client.h"
 #include "../http_plugin.h"
 #include "../request.h"
 #include "../response.h"
+
+#include "../common/exception/network/authentication_failure_exception.h"
+#include "../common/exception/network/connection_failure_exception.h"
+#include "../common/exception/network/dns_resolving_failure_exception.h"
+#include "../common/exception/network/internal_exception.h"
 
 using namespace std;
 
@@ -34,6 +38,7 @@ Response CurlClient::Get(Request request)
 
   curl_easy_setopt(curl_, CURLOPT_HTTPGET, 1L);
   CURLcode res = curl_easy_perform(curl_);
+  HandleResultCode(res);
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
@@ -62,6 +67,37 @@ void CurlClient::CleanUp()
   body_ = "";
 }
 
+Response CurlClient::Post(Request request)
+{
+  SetUp(request);
+
+  AppendHeader("Content-Type", "application/json");
+
+  curl_easy_setopt(curl_, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody());
+  
+  CURLcode res = curl_easy_perform(curl_);
+  HandleResultCode(res);
+  
+  int status_code = 0;
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
+  auto response = Response(status_code, GetErrorMessage(res), body_);
+
+  CleanUp();
+
+  return response;
+}
+
+Response CurlClient::Put(Request request)
+{
+  return Response();
+}
+
+Response CurlClient::Delete(Request request)
+{
+  return Response();
+}
+
 string CurlClient::GetErrorMessage(int result)
 {
   if (result == CURLE_OK)
@@ -83,34 +119,21 @@ void CurlClient::AppendHeader(const string &key, const string &value)
   curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, header_);
 }
 
-Response CurlClient::Post(Request request)
+void CurlClient::HandleResultCode(int code)
 {
-  SetUp(request);
-
-  AppendHeader("Content-Type", "application/json");
-
-  curl_easy_setopt(curl_, CURLOPT_POST, 1L);
-  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody());
-  
-  CURLcode res = curl_easy_perform(curl_);
-  
-  int status_code = 0;
-  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, GetErrorMessage(res), body_);
-
-  CleanUp();
-
-  return response;
-}
-
-Response CurlClient::Put(Request request)
-{
-  return Response();
-}
-
-Response CurlClient::Delete(Request request)
-{
-  return Response();
+  switch (code) {
+    case CURLE_OK:
+      return;
+    case CURLE_COULDNT_RESOLVE_PROXY:
+    case CURLE_COULDNT_RESOLVE_HOST:
+      throw DnsResolvingFailureException("DNS resolving failed.");
+    case CURLE_COULDNT_CONNECT:
+      throw ConnectionFailureException("TCP connection failed.");
+    case CURLE_AUTH_ERROR:
+      throw AuthenticationFailureException("Authentication Failed.");
+    default:
+      throw InternalException("Error occured in libcurl internally.");
+  }
 }
 
 size_t CurlClient::WriteBodyCallback(void *contents,
