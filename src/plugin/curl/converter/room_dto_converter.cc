@@ -36,7 +36,7 @@ RetrieveRoomResponse RoomDtoConverter::ConvertToRetrieveRoomResponseFrom(const R
 
   std::vector<std::string> room_names;
   for (Json::ArrayIndex i = 0; i < json_object.size(); ++i) {
-    room_names.emplace_back(json_object[i].asString());
+    room_names.emplace_back(json_object[i]["room"].asString());
   }
   return RetrieveRoomResponse(room_names);
 }

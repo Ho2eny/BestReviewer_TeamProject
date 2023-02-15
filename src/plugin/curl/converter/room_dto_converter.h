@@ -1,5 +1,5 @@
-#ifndef ROOM_CONVERTER_H_
-#define ROOM_CONVERTER_H_
+#ifndef ROOM_DTO_CONVERTER_H_
+#define ROOM_DTO_CONVERTER_H_
 
 #include "../json_serializer.h"
 
@@ -29,3 +29,5 @@ private:
 
   std::shared_ptr<JsonSerializer> json_serializer_;
 };
+
+#endif

@@ -1,5 +1,5 @@
-#ifndef USER_CONVERTER_H_
-#define USER_CONVERTER_H_
+#ifndef USER_DTO_CONVERTER_H_
+#define USER_DTO_CONVERTER_H_
 
 #include "./json_serializer.h"
 
@@ -34,6 +34,5 @@ private:
 
   std::shared_ptr<JsonSerializer> json_serializer_;
 };
-
 
 #endif
