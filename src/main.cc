@@ -1,9 +1,6 @@
-#include <iostream>
-#include <curl/curl.h>
-#include <json/json.h>
-#include <bits/stdc++.h>
-#include "common/exception/base_exception.h"
-#include "hardtoname.h"
+#include <memory>
+
+#include "command/command.h"
 #include "command/invoker.h"
 #include "command/cache.h"
 #include "command/receiver/login_receiver.h"
@@ -11,6 +8,7 @@
 #include "command/signup.h"
 #include "command/parameter_validator.h"
 #include "command/quit.h"
+
 #include "http_client.h"
 
 #define CHAT_QUIT "q"
@@ -21,14 +19,16 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     ParameterValidator validator(argc, argv);
-  
-    Cache cache;  
-    Invoker *invoker = new Invoker(cache);
-    invoker->SetOnInvoke(new Quit(CHAT_QUIT, "Quit Application"));
-    invoker->SetOnInvoke(new Quit(CHAT_LONG_QUIT, "Quit Application"));
-    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new LoginReceiver(cache)));
+
+    Cache cache;
+    unique_ptr<Invoker> invoker = make_unique<Invoker>(cache);
+    invoker->SetOnInvoke(make_unique<Quit>(CHAT_QUIT, "Quit Application").get());
+    invoker->SetOnInvoke(make_unique<Quit>(CHAT_LONG_QUIT, "Quit Application").get());
+    invoker->SetOnInvoke(make_unique<Login>(CommandType::kLogin, "Login", make_unique<LoginReceiver>(cache).get()).get());
     // invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
+    AnsiColor color;
+    color.Title("===== Mini Chat Client =====");
     invoker->PrintCommands();
     bool receive_commands = true;
 
@@ -36,15 +36,16 @@ int main(int argc, char *argv[])
     {
         string baseUrl = validator.GetBaseUrl();
         string userSelection;
+        color.Text("\n> Waiting for a command... : ");
         cin >> userSelection;
 
         try
         {
             receive_commands = invoker->Invoke(userSelection);
         }
-        catch (invalid_argument)
+        catch (InvalidCommandException)
         {
-            cout << "Command Not Found" << endl;
+            color.ImportantWithLineFeed("Command Not Found");
         }
 
     } while (receive_commands);

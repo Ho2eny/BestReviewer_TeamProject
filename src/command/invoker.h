@@ -5,8 +5,9 @@
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
-#include "./command.h"
-#include "./cache.h"
+#include "command.h"
+#include "cache.h"
+#include "../ui_helper/ansi_color.h"
 
 class Invoker
 {
@@ -23,27 +24,29 @@ public:
   {
     std::string lower_command_key = command_key;
     std::transform(lower_command_key.begin(), lower_command_key.end(), lower_command_key.begin(), ::tolower);
-    for (const auto& it : on_invoke_)
+    for (const auto &it : on_invoke_)
     {
       if ((*it).GetCommandKey() == lower_command_key)
         return it->Execute();
     }
 
-    throw std::invalid_argument("Command not found");
+    throw InvalidCommandException("Command not found");
   }
 
   void PrintCommands()
   {
+    AnsiColor color;
+    color.TextWithLineFeed("\nMENU");
     for (auto it : on_invoke_)
     {
-      std::cout << it->GetCommandKey() << ". ";
-      std::cout << it->GetDescription() << std::endl;
+      color.Important("> " + it->GetCommandKey() + ". ");
+      color.TextWithLineFeed(it->GetDescription());
     }
   }
 
   void SetBaseUrl(std::string base_url)
   {
-    cache_.SetKV(Cache::BASE_URL, base_url);
+    cache_.SetBaseUrl(base_url);
   }
 
 private:

@@ -1,10 +1,10 @@
 set(PROJECT ChatClientTest)
 
 set(SOURCES
+    color_test.cc  
     parameter_test.cc    
     command_test.cc
     json_serializer_test.cc
-    hardtonametest.cc 
     http_client_test.cc
     user_repository_test.cc
 )
