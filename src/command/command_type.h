@@ -4,6 +4,6 @@ enum class CommandType
   kLogin = 51,
   kLogout = 52,
   kListRooms = 60,
-  kCreateRoom = 51,
+  kCreateRoom = 61,
   kJoinRoom = 62
 };
