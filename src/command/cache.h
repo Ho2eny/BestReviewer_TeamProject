@@ -20,7 +20,7 @@ public:
   void SetTestPassword(const std::string &password) { SetKV(Cache::vTestPassword, password); }
   void SetBaseUrl(const std::string &base_url) { SetKV(Cache::vBaseUrl, base_url); }
   void SetSessionID(const std::string &session_id) { SetKV(Cache::vSessionID, session_id); }
-
+  void RemoveSessionID() { SetKV(Cache::vSessionID, ""); }
   std::string GetValue(const std::string &key) { return kv_[key]; }
 
 private:

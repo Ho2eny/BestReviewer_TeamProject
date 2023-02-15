@@ -8,6 +8,7 @@
 #include "command.h"
 #include "cache.h"
 #include "../ui_helper/ansi_color.h"
+#include "../common/exception/network/general_network_exception.h"
 
 class Invoker
 {
@@ -15,9 +16,9 @@ public:
   Invoker(Cache &cache) : cache_(cache) {}
   ~Invoker() {}
 
-  void SetOnInvoke(Command *command)
+  void SetOnInvoke(std::unique_ptr<Command> command)
   {
-    on_invoke_.push_back(command);
+    on_invoke_.push_back(move(command));
   }
 
   bool Invoke(std::string command_key)
@@ -27,7 +28,16 @@ public:
     for (const auto &it : on_invoke_)
     {
       if ((*it).GetCommandKey() == lower_command_key)
-        return it->Execute();
+      {
+        try
+        {
+          return it->Execute();
+        }
+        catch (const GeneralNetworkException &ex)
+        {
+          throw GeneralNetworkException(ex.what());
+        }
+      }
     }
 
     throw InvalidCommandException("Command not found");
@@ -37,7 +47,7 @@ public:
   {
     AnsiColor color;
     color.TextWithLineFeed("\nMENU");
-    for (auto it : on_invoke_)
+    for (const auto &it : on_invoke_)
     {
       color.Important("> " + it->GetCommandKey() + ". ");
       color.TextWithLineFeed(it->GetDescription());
@@ -50,7 +60,7 @@ public:
   }
 
 private:
-  std::vector<Command *> on_invoke_;
+  std::vector<std::unique_ptr<Command>> on_invoke_;
   Cache &cache_;
 };
 
