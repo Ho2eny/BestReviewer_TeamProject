@@ -74,7 +74,7 @@ Response CurlClient::Post(Request request)
   AppendHeader("Content-Type", "application/json");
 
   curl_easy_setopt(curl_, CURLOPT_POST, 1L);
-  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody());
+  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody().c_str());
   
   CURLcode res = curl_easy_perform(curl_);
   HandleResultCode(res);
@@ -112,7 +112,7 @@ void CurlClient::AppendHeader(const string &key, const string &value)
 
   ss << key << ": " << value;
   
-  header_ = curl_slist_append(header_, ss.str().c_str());
+  header_ = curl_slist_append(header_, ss.str().c_str());  
   if (!header_)
     throw InternalException("header list cannot be NULL.");
 
