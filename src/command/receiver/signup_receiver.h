@@ -22,6 +22,9 @@ public:
     try
     {
       SignupResponse response = repository_->Signup(request);
+
+      AnsiColor color;
+      color.TextWithLineFeed("Signed up to FIFO Chat with " + id);
     }
     catch (const InternalException &ex)
     {

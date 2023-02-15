@@ -24,6 +24,9 @@ public:
       LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
       LoginResponse response = repository_->Login(request);
       cache_.SetSessionID(response.GetSessionId());
+
+      AnsiColor color;
+      color.TextWithLineFeed("Logged in with " + id);
     }
     catch (const InternalException &ex)
     {

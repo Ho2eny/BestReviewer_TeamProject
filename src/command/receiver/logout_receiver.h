@@ -22,6 +22,9 @@ public:
     {
       LogoutResponse response = repository_->Logout(request);
       cache_.RemoveSessionID();
+
+      AnsiColor color;
+      color.TextWithLineFeed("Logged out");
     }
     catch (const InternalException &ex)
     {
