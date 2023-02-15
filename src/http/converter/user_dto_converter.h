@@ -1,5 +1,5 @@
-#ifndef USER_CONVERTER_H_
-#define USER_CONVERTER_H_
+#ifndef USER_DTO_CONVERTER_H_
+#define USER_DTO_CONVERTER_H_
 
 #include "./json_serializer.h"
 
@@ -24,6 +24,7 @@ public:
   Request ConvertToSignupHttpRequestFrom(const SignupRequest& signup_request, const std::string& base_url) const;
 
 private:
+  // TODO(in.heo): Refactor: Endpoint 관리를 어떻게 할지 고민
   static const std::string kLoginEndpoint;
   static const std::string kLogoutEndpoint;
   static const std::string kSignupEndpoint;
@@ -33,6 +34,5 @@ private:
 
   std::shared_ptr<JsonSerializer> json_serializer_;
 };
-
 
 #endif

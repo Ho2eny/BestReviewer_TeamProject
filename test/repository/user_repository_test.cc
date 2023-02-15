@@ -4,15 +4,13 @@
 #include <memory>
 #include <string>
 
-#include "../src/interface/dto/user/login_request.h"
-#include "../src/interface/dto/user/login_response.h"
-#include "../src/http/repository/user_http_repository.h"
+#include "../../src/http/repository/user_http_repository.h"
 
-#include "../src/common/exception/user/fail_login_exception.h"
-#include "../src/common/exception/user/fail_logout_exception.h"
-#include "../src/common/exception/user/fail_signup_exception.h"
-#include "../src/common/exception/user/fail_parse_session_id_exception.h"
-#include "../src/http/http_plugin.h"
+#include "../../src/common/exception/user/fail_login_exception.h"
+#include "../../src/common/exception/user/fail_logout_exception.h"
+#include "../../src/common/exception/user/fail_signup_exception.h"
+#include "../../src/common/exception/user/fail_parse_session_id_exception.h"
+#include "../../src/http/http_plugin.h"
 
 class MockHttpClient : public HttpPlugin {
 public:
