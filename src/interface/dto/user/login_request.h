@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "interface/dto/base_request.h"
+#include "../base_request.h"
 
 class LoginRequest : public BaseRequest {
 public:

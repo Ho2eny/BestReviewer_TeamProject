@@ -3,11 +3,11 @@
 
 #include <string>
 
-#include "common/exception/base_exception.h"
+#include "../../../common/exception/base_exception.h"
 
-#include "interface/dto/base_response.h"
-#include "interface/dto/json_serializable.h"
-#include "interface/json_serializer.h"
+#include "../base_response.h"
+#include "../json_serializable.h"
+#include "../../json_serializer.h"
 
 class LoginResponse : public BaseResponse, public JsonSerializable {
 public:
@@ -16,6 +16,8 @@ public:
   virtual void ParseJson(const std::string& json) override;
 
   virtual std::string ToJson() override;
+
+  std::string GetSessionId() const;
 
 private:
   std::string session_id_;
@@ -36,6 +38,10 @@ inline void LoginResponse::ParseJson(const std::string& json) {
 inline std::string LoginResponse::ToJson() {
   // TODO(in.heo): Not high priority
   return "";
+}
+
+inline std::string LoginResponse::GetSessionId() const {
+  return session_id_;
 }
 
 #endif

@@ -5,8 +5,8 @@
 #include <memory>
 #include <string>
 
-#include "../common/exception/json/invalid_json_serializer_exception.h"
-#include "../common/exception/json/Invalid_json_string_exception.h"
+#include "./exception/json/invalid_json_serializer_exception.h"
+#include "./exception/json/Invalid_json_string_exception.h"
 
 class JsonSerializer {
 public:
@@ -20,8 +20,8 @@ public:
     writer_builder_.reset();
   }
 
-  Json::Value ParseJson(const std::string& json) const;
-  std::string ToString(const Json::Value& json) const;
+  static Json::Value ParseJson(const std::string& json) const;
+  static std::string ToString(const Json::Value& json) const;
 
 protected:
   std::shared_ptr<Json::CharReaderBuilder> reader_builder_;
