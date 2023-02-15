@@ -2,57 +2,49 @@
 #define LOGIN_RECEIVER_H_
 
 #include <iostream>
+#include <memory>
 #include "../cache.h"
-#include "receiver.h"
-#include "../../interface/dto/user/login_request.h"
-#include "../../interface/dto/user/login_response.h"
-// #include "../../interface/repository/user_repository.h"
 #include "../../utils.h"
-#include "../../ui_helper/ansi_color.h"
+#include "user_receiver.h"
+#include "../../common/exception/user/fail_login_exception.h"
 
-class LoginReceiver : public Receiver
+class LoginReceiver : public UserReceiver
 {
 public:
-  LoginReceiver(Cache &cache) : Receiver(cache) {}
+  LoginReceiver(Cache &cache, std::shared_ptr<UserRepository> repository) : UserReceiver(cache, repository) {}
 
   void Action() override
   {
-    std::string id = GetID();
+    std::string id = GetId();
     std::string password = GetPassword();
-    AuthorizationKey key;
-    key.SetId(id);
-    key.SetPassword(password);
+    AuthorizationKey key(id, password);
 
-    LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
-    // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
-    // LoginResponse response = repository.Login(request);
-
-    cache_.SetID(id);
-    // cache_.SetSessionID(response.GetSessionId());
-  }
-
-  std::string GetID()
-  {
-    if (cache_.GetValue(Cache::vTestID).length() > 0)
-      return cache_.GetValue(Cache::vTestID);
-
-    AnsiColor color;
-    std::string id;
-    color.Important("> Enter ID : ");
-    std::cin >> id;
-    return id;
-  }
-
-  std::string GetPassword()
-  {
-    if (cache_.GetValue(Cache::vTestPassword).length() > 0)
-      return cache_.GetValue(Cache::vTestPassword);
-
-    AnsiColor color;
-    std::string password;
-    color.Important("> Enter Password: ");
-    std::cin >> password;
-    return password;
+    try
+    {
+      LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
+      LoginResponse response = repository_->Login(request);
+      cache_.SetSessionID(response.GetSessionId());
+    }
+    catch (const InternalException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const AuthenticationFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const ConnectionFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const DnsResolvingFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const FailLoginException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
   }
 };
 
