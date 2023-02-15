@@ -4,17 +4,18 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <random>
 
-#define MAX_COUNT 2
-#define MAX_LENGTH 8
 typedef long long ll;
 using namespace std;
 
 class AuthorizationKey {
 public:
-    AuthorizationKey();
-    void SetId(const string& param) { id_.assign(param); };
-    void SetPassword(const string& param);
+    AuthorizationKey(const string& id_arg, const string& password_arg) : 
+        id_(id_arg), password_(password_arg) {        
+        UpdateNonceKey();
+    }
+
     string QueryPassword();
     string QueryPasswordWithNonce();
     string QueryNonce() { return nonce_; };
@@ -24,18 +25,11 @@ private:
     void UpdateNonceKey();
 };
 
-AuthorizationKey::AuthorizationKey() {
-    srand((unsigned int)time(0));
-    UpdateNonceKey();
-}
-
-void AuthorizationKey::SetPassword(const string& param) {
-    password_.assign(param);
-    UpdateNonceKey();
-}
-
 void AuthorizationKey::UpdateNonceKey() {
-    nonce_.assign(to_string(rand() % 9));
+    std::random_device rd;  
+    std::mt19937 gen(rd()); 
+    std::uniform_int_distribution<> distrib(0, 9);
+    nonce_.assign(to_string(distrib(gen)));
 }
 
 ll AuthorizationKey::GenerateHash(const string& str) {
