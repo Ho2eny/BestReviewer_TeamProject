@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "../../../common/exception/base_exception.h"
-
 #include "../base_response.h"
 
 class LoginResponse : public BaseResponse {
