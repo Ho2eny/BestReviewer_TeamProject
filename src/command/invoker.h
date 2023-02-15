@@ -23,7 +23,7 @@ public:
   {
     std::string lower_command_key = command_key;
     std::transform(lower_command_key.begin(), lower_command_key.end(), lower_command_key.begin(), ::tolower);
-    for (auto it : on_invoke_)
+    for (const auto& it : on_invoke_)
     {
       if ((*it).GetCommandKey() == lower_command_key)
         return it->Execute();
