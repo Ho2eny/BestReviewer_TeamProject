@@ -1,15 +1,15 @@
 #ifndef ROOM_DTO_CONVERTER_H_
 #define ROOM_DTO_CONVERTER_H_
 
-#include "../json_serializer.h"
+#include "./json_serializer.h"
 
-#include "../../../interface/dto/room/create_room_response.h"
-#include "../../../interface/dto/room/create_room_request.h"
-#include "../../../interface/dto/room/retrieve_room_request.h"
-#include "../../../interface/dto/room/retrieve_room_response.h"
+#include "../../interface/dto/room/create_room_response.h"
+#include "../../interface/dto/room/create_room_request.h"
+#include "../../interface/dto/room/retrieve_room_request.h"
+#include "../../interface/dto/room/retrieve_room_response.h"
 
-#include "../../../response.h"
-#include "../../../request.h"
+#include "../dto/response.h"
+#include "../dto/request.h"
 
 class RoomDtoConverter {
 public:
