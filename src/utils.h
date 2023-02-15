@@ -14,18 +14,28 @@ class AuthorizationKey {
 public:
     AuthorizationKey();
     void setId(const string& param) { id_.assign(param); };
-    void setPassword(const string& param) { password_.assign(param); }
+    void setPassword(const string& param);
     string queryPassword();
     string queryPasswordWithNonce();
     string queryNonce() { return nonce_; };
 private:
     string id_, password_, nonce_;
     ll generateHash(const string& str);
+    void updateNonceKey();
 };
 
 AuthorizationKey::AuthorizationKey() {
     srand((unsigned int)time(0));
-    //  temp  0~9 사이의 임의의 한자리 수   
+    updateNonceKey();
+}
+
+void AuthorizationKey::setPassword(const string& param) {
+    password_.assign(param);
+    updateNonceKey();
+}
+
+void AuthorizationKey::updateNonceKey() {
+    //temp 0~9 사이의 임의의 한자리 수   
     nonce_.assign(to_string(rand() % 9));
 }
 
