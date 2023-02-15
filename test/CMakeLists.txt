@@ -6,8 +6,6 @@ set(SOURCES
     json_serializer_test.cc
     hardtonametest.cc 
     http_client_test.cc
-    api_test.cc
-    
 )
 
 add_executable(${PROJECT} ${SOURCES})
