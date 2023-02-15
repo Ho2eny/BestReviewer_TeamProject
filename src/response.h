@@ -15,12 +15,15 @@ public:
   int GetStatusCode() const { return status_code_; } 
   string GetErrorMessage() const { return error_message_; }
   string GetBody() const { return body_; }
-  bool IsSuccess() const { return (status_code_ < 300 && status_code_ >= 200); }
+  bool IsSuccess() const { return (status_code_ < kHttpRedirectionCode && status_code_ >= kHttpSuccessCode); }
 
 private:
   int status_code_;
   string error_message_;
   string body_;
+  
+  const int kHttpSuccessCode = 200;
+  const int kHttpRedirectionCode = 300;
 };
 
 #endif
