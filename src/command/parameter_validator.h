@@ -33,7 +33,10 @@ private:
   {
     std::size_t pos = url.find(vUrlDelimitor);
     if (pos != std::string::npos && url.substr(0, pos) != "http")
-      throw InvalidParameterException(std::string("Supporting only http protocol. " + url.substr(0, pos) + " is not being supported.").c_str());
+      throw InvalidParameterException(
+          std::string("Supporting only http protocol. " + url.substr(0, pos) +
+                      " is not being supported.")
+              .c_str());
   }
 
   void CheckURLFormat(std::string url)
@@ -94,20 +97,20 @@ private:
   {
     std::string port = vDefaultPort;
 
-    if (argc_ > 2)
-    {
-      port = std::string(argv_[2]);
+    if (argc_ <= 2)
+      return port;
 
-      try
-      {
-        CheckPortLength(port);
-        CheckPortIsNumber(port);
-        CheckPortRange(port);
-      }
-      catch (const InvalidParameterException &e)
-      {
-        throw InvalidParameterException(e.what());
-      }
+    port = std::string(argv_[2]);
+
+    try
+    {
+      CheckPortLength(port);
+      CheckPortIsNumber(port);
+      CheckPortRange(port);
+    }
+    catch (const InvalidParameterException &e)
+    {
+      throw InvalidParameterException(e.what());
     }
 
     return port;
