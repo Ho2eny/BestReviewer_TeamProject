@@ -7,7 +7,7 @@
 #include "../src/command/receiver/login_receiver.h"
 #include "../src/command/receiver/logout_receiver.h"
 
-#include "../src/plugin/curl/repository/user_http_repository.h"
+#include "../src/http/repository/user_http_repository.h"
 
 #include "../src/command/login.h"
 #include "../src/command/signup.h"

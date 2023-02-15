@@ -2,33 +2,29 @@
 #define LIST_RECEIVER_H_
 
 #include <iostream>
+#include <memory>
 #include "../cache.h"
-#include "receiver.h"
-//#include "../../interface/dto/room/list_request.h"
-//#include "../../interface/dto/room/list_response.h"
-#include "../../utils.h"
+#include "room_receiver.h"
+// #include "../../common/exception/user/fail_receive_exception.h"
 
-class ListReceiver : public Receiver
+class ListReceiver : public RoomReceiver
 {
 public:
-  ListReceiver(Cache &cache) : Receiver(cache) {}
+  // ListReceiver(Cache &cache, std::shared_ptr<RoomRepository> repository) : RoomReceiver(cache, repository) {}
 
   void Action() override
   {
-    // ListRequest request(sessionID);
-    // Waiting for the implementatino from in.heo
-    // GetRoomList response = repository.getRoomList(request);
-  }
-
-  std::string GetSessionID()
-  {
-    if (cache_.GetValue(Cache::vSessionID).length() > 0)
-      return cache_.GetValue(Cache::vSessionID);
-
-    std::string sessionID;
-    std::cout << "Enter Session ID: ";
-    std::cin >> sessionID;
-    return sessionID;
+    try
+    {
+      std::string session_id = GetSessionID();
+      // ListRequest request(sessionID);
+      // Waiting for the implementatino from in.heo
+      // GetRoomList response = repository.getRoomList(request);
+    }
+    catch (const InvalidCommandException &ex)
+    {
+      throw InvalidCommandException(ex.what());
+    }
   }
 };
 #endif

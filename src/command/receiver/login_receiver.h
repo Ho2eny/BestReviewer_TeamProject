@@ -17,9 +17,7 @@ public:
   {
     std::string id = GetId();
     std::string password = GetPassword();
-    AuthorizationKey key;
-    key.SetId(id);
-    key.SetPassword(password);
+    AuthorizationKey key(id, password);
 
     try
     {
