@@ -1,14 +1,12 @@
+#include "curl_client.h"
+
 #include <curl/curl.h>
 #include <sstream>
-#include "curl_client.h"
-#include "../http_plugin.h"
-#include "../request.h"
-#include "../response.h"
 
-#include "../common/exception/network/authentication_failure_exception.h"
-#include "../common/exception/network/connection_failure_exception.h"
-#include "../common/exception/network/dns_resolving_failure_exception.h"
-#include "../common/exception/network/internal_exception.h"
+#include "../../exception/network/authentication_failure_exception.h"
+#include "../../exception/network/connection_failure_exception.h"
+#include "../../exception/network/dns_resolving_failure_exception.h"
+#include "../../exception/network/internal_exception.h"
 
 using namespace std;
 

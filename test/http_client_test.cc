@@ -3,12 +3,12 @@
 #include <json/json.h>
 #include <gtest/gtest.h>
 
-#include "../src/http_client.h"
-#include "../src/request.h"
-#include "../src/response.h"
-#include "../src/common/exception/network/authentication_failure_exception.h"
-#include "../src/common/exception/network/connection_failure_exception.h"
-#include "../src/common/exception/network/dns_resolving_failure_exception.h"
+#include "../src/http/http_client.h"
+#include "../src/http/dto/request.h"
+#include "../src/http/dto/response.h"
+#include "../src/http/exception/network/authentication_failure_exception.h"
+#include "../src/http/exception/network/connection_failure_exception.h"
+#include "../src/http/exception/network/dns_resolving_failure_exception.h"
 
 using namespace std;
 
