@@ -2,64 +2,50 @@
 #include <curl/curl.h>
 #include <json/json.h>
 #include <bits/stdc++.h>
+#include "common/exception/base_exception.h"
 #include "hardtoname.h"
 #include "command/invoker.h"
-#include "command/receiver.h"
+#include "command/cache.h"
+#include "command/receiver/login_receiver.h"
 #include "command/login.h"
 #include "command/signup.h"
-
+#include "command/parameter_validator.h"
+#include "command/quit.h"
 #include "http_client.h"
 
-#define CHAT_WELCOME_SIMPLE_JSON "11"
-#define CHAT_PARSE_SIMPLE_JSON "12"
-#define CHAT_WELCOME_ARRAY_JSON "21"
 #define CHAT_QUIT "q"
+#define CHAT_LONG_QUIT "quit"
 
 using namespace std;
 
-// 참고: 공용 Server : http://10.241.14.74
-std::string server = "http://10.241.114.152";
-std::string port = "34568";
-
-// void paramter_handler(int argc, char *argv[])
-// {
-//     if (argc > 1)
-//     {
-//         server = argv[1];
-//     }
-
-//     regex ipv4("(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])");
-
-//     if (regex_match(server, ipv4))
-//         std::cout << "Valid IPv4" << std::endl;
-// }
-
 int main(int argc, char *argv[])
 {
+    ParameterValidator validator(argc, argv);
+  
+    Cache cache;  
+    Invoker *invoker = new Invoker(cache);
+    invoker->SetOnInvoke(new Quit(CHAT_QUIT, "Quit Application"));
+    invoker->SetOnInvoke(new Quit(CHAT_LONG_QUIT, "Quit Application"));
+    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new LoginReceiver(cache)));
+    // invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
-    // paramter_handler(argc, argv);
-    // Command Pattern Test Code
-    Invoker *invoker = new Invoker;
-    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new Receiver()));
-    invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
-
-    /*
-    if (argc != 3) {
-        cout << "usage: chat_client.exe localhost 34568" << endl;
-        return 0;
-    }*/
-
-    string userSelection;
-    string response;
+    invoker->PrintCommands();
+    bool receive_commands = true;
 
     do
     {
-        invoker->PrintCommands();
+        string baseUrl = validator.GetBaseUrl();
+        string userSelection;
         cin >> userSelection;
 
-        Json::Value data;
-        data["message"] = "Easy to compose JSON string";
-        invoker->Invoke(userSelection, data);
+        try
+        {
+            receive_commands = invoker->Invoke(userSelection);
+        }
+        catch (invalid_argument)
+        {
+            cout << "Command Not Found" << endl;
+        }
 
-    } while (true);
+    } while (receive_commands);
 }
