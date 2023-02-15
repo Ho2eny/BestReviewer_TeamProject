@@ -3,8 +3,9 @@
 
 #include <algorithm>
 #include <string>
-#include "./receiver/receiver.h"
-#include "./command_type.h"
+#include "receiver/receiver.h"
+#include "command_type.h"
+#include "../common/exception/command/invalid_command_exception.h"
 
 class Command
 {
@@ -16,9 +17,8 @@ public:
   }
 
   Command(CommandType command_key, std::string description, Receiver *receiver = nullptr)
-      : Command(std::to_string(static_cast<int>(command_key)), description, receiver)
-  {
-  }
+      : Command(std::to_string(static_cast<int>(command_key)), description, receiver) {}
+      
   virtual ~Command() {}
 
   virtual bool Execute() const

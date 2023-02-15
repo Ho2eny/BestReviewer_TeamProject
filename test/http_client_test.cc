@@ -50,6 +50,7 @@ TEST_F(HttpClientTest, HttpGet)
     auto response = client.Get(*request);
     EXPECT_EQ(200, response.GetStatusCode());
     EXPECT_EQ("", response.GetErrorMessage());
+    EXPECT_TRUE(response.IsSuccess());
 } 
 
 TEST_F(HttpClientTest, HttpGetWithInvalidPath)
@@ -60,6 +61,7 @@ TEST_F(HttpClientTest, HttpGetWithInvalidPath)
     
     auto response = client.Get(*request);
     EXPECT_EQ(404, response.GetStatusCode());
+    EXPECT_FALSE(response.IsSuccess());
 } 
 
 TEST_F(HttpClientTest, HttpPost)
@@ -114,3 +116,15 @@ TEST_F(HttpClientTest, HttpAuthenticationFailure)
     EXPECT_THROW(client.Get(invalid_request), AuthenticationFailureException);
 } 
 #endif
+
+TEST_F(HttpClientTest, HttpDelete)
+{
+    HttpClient client;
+
+    request->SetPath("/chat/session?session_id=invalidsessionid");
+   
+    auto response = client.Delete(*request);
+    EXPECT_EQ(403, response.GetStatusCode());
+    EXPECT_EQ("Not a valid session ID", response.GetBody());
+}
+
