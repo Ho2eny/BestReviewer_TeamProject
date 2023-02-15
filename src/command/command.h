@@ -10,7 +10,7 @@ class Command
 {
 public:
   Command(std::string command_key, std::string description, Receiver *receiver = nullptr)
-      : command_key_(command_key), description_(description), receiver_(receiver), base_url_("")
+      : command_key_(command_key), description_(description), receiver_(receiver)
   {
     std::transform(command_key_.begin(), command_key_.end(), command_key_.begin(), ::tolower);
   }
@@ -39,16 +39,10 @@ public:
     return command_key_;
   }
 
-  void SetBaseUrl(std::string base_url)
-  {
-    base_url_ = base_url;
-  }
-
 protected:
   std::string command_key_;
   std::string description_;
   Receiver *receiver_;
-  std::string base_url_;
 };
 
 #endif

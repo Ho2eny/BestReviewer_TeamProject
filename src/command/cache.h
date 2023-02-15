@@ -21,11 +21,11 @@ public:
 
   std::string GetValue(const std::string& key) const
   {
-    return kv_[key];
+    return kv_.find(key)->second;
   }
 
 private:
-  std::unordered_map<std::string, std::string> kv_;
+  std::map<const std::string, std::string> kv_;
 };
 
 const std::string Cache::ID = "id";
