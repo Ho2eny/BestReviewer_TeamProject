@@ -3,14 +3,15 @@
 
 #include <memory>
 #include <vector>
-#include <json/json.h>
 #include <stdexcept>
 #include <algorithm>
 #include "./command.h"
+#include "./cache.h"
 
 class Invoker
 {
 public:
+  Invoker(Cache &cache) : cache_(cache) {}
   ~Invoker() {}
 
   void SetOnInvoke(Command *command)
@@ -18,20 +19,17 @@ public:
     on_invoke_.push_back(command);
   }
 
-  void Invoke(std::string command_key, Json::Value data)
+  bool Invoke(std::string command_key)
   {
-    std::cout << command_key << std::endl;
-    for (auto it : on_invoke_)
+    std::string lower_command_key = command_key;
+    std::transform(lower_command_key.begin(), lower_command_key.end(), lower_command_key.begin(), ::tolower);
+    for (const auto &it : on_invoke_)
     {
-      if ((*it).GetCommandKey() == command_key)
-      {
-        if (!data.empty()) it->SetData(data);
-        it->Execute();
-        return;
-      }
+      if ((*it).GetCommandKey() == lower_command_key)
+        return it->Execute();
     }
 
-    throw std::invalid_argument("Command not found");
+    throw InvalidCommandException("Command not found");
   }
 
   void PrintCommands()
@@ -43,8 +41,14 @@ public:
     }
   }
 
+  void SetBaseUrl(std::string base_url)
+  {
+    cache_.SetBaseUrl(base_url);
+  }
+
 private:
-  std::vector<Command *> on_invoke_;  
+  std::vector<Command *> on_invoke_;
+  Cache &cache_;
 };
 
 #endif

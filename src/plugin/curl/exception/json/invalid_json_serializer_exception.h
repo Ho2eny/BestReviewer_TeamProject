@@ -1,7 +1,7 @@
 #ifndef INVALID_JSON_SERIALIZER_EXCEPTION_H_
 #define INVALID_JSON_SERIALIZER_EXCEPTION_H_
 
-#include "../base_exception.h"
+#include "../../../../common/exception/base_exception.h"
 
 class InvalidJsonSerializerException : public BaseException {
 public:

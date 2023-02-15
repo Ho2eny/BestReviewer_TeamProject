@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "../src/interface/json_serializer.h"
+#include "../src/plugin/curl/json_serializer.h"
 
 class MockJsonSerializer : public JsonSerializer {
 public:

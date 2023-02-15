@@ -1,3 +1,4 @@
+#include <iostream>
 #include <random>
 #include <json/json.h>
 #include <gtest/gtest.h>
@@ -65,10 +66,6 @@ TEST_F(HttpClientTest, HttpGetWithInvalidPath)
 
 TEST_F(HttpClientTest, HttpPost)
 {
-    HttpClient client;
-
-    request->SetPath("/chat/welcome_arrayJson");
-
     random_device dev;
     mt19937 rng(dev());
     uniform_int_distribution<mt19937::result_type> dist1000(1, 1000);
@@ -79,10 +76,14 @@ TEST_F(HttpClientTest, HttpPost)
 
     Json::StreamWriterBuilder jsonBuilder;
     string jsonData = Json::writeString(jsonBuilder, data);
-
-    request->SetBody(jsonData.c_str());
     
-    auto response = client.Get(*request);
+    request->SetPath("/chat/account");
+    request->SetBody(jsonData.c_str());
+
+
+    HttpClient client;
+    auto response = client.Post(*request);
+
     EXPECT_EQ(200, response.GetStatusCode());
     EXPECT_EQ("", response.GetErrorMessage());
 } 
@@ -116,3 +117,13 @@ TEST_F(HttpClientTest, HttpAuthenticationFailure)
 } 
 #endif
 
+TEST_F(HttpClientTest, HttpDelete)
+{
+    HttpClient client;
+
+    request->SetPath("/chat/session?session_id=invalidsessionid");
+   
+    auto response = client.Delete(*request);
+    EXPECT_EQ(403, response.GetStatusCode());
+    EXPECT_EQ("Not a valid session ID", response.GetBody());
+}
