@@ -8,7 +8,7 @@
 #include "receiver/receiver.h"
 #include "command_type.h"
 #include "../common/exception/command/invalid_command_exception.h"
-#include "../common/exception/network/general_network_exception.h"
+#include "../http/exception/network/general_network_exception.h"
 
 class Command
 {
