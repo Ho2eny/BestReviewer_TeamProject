@@ -1,8 +1,9 @@
-enum class CommandType {    
+enum class CommandType
+{
     kSignup = 50,
     kLogin = 51,
-    kLogOut = 52,
-    kListRooms = 60,
-    kCreateRoom = 61,
-    kJoinRoom = 62
+    kLogout = 52,
+    kListRooms = 53,
+    kCreateRoom = 54,
+    kJoinRoom = 55
 };
