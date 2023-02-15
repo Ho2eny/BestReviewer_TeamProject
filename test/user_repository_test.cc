@@ -9,6 +9,8 @@
 #include "../src/plugin/curl/repository/user_http_repository.h"
 
 #include "../src/common/exception/user/fail_login_exception.h"
+#include "../src/common/exception/user/fail_logout_exception.h"
+#include "../src/common/exception/user/fail_signup_exception.h"
 #include "../src/common/exception/user/fail_parse_session_id_exception.h"
 #include "../src/http_plugin.h"
 
@@ -70,3 +72,42 @@ TEST_F(UserHttpRepositoryTestFixture, loginFail) {
   LoginRequest temp_request;
   EXPECT_THROW(user_repository_->Login(temp_request), FailLoginException);
 }
+
+TEST_F(UserHttpRepositoryTestFixture, logoutSuccess) {
+  Response kValidResponse(200, "", "");
+
+  EXPECT_CALL(*http_client_, Delete(testing::_)).WillOnce(testing::Return(kValidResponse));
+
+  LogoutRequest temp_request;
+  LogoutResponse response = user_repository_->Logout(temp_request);
+}
+
+TEST_F(UserHttpRepositoryTestFixture, logoutFail) {
+  Response kFobiddenResponse(403, "Invalid Session Id", "");
+
+  EXPECT_CALL(*http_client_, Delete(testing::_)).WillOnce(testing::Return(kFobiddenResponse));
+
+  LogoutRequest temp_request;
+  EXPECT_THROW(user_repository_->Logout(temp_request), FailLogoutException);
+}
+
+TEST_F(UserHttpRepositoryTestFixture, signupSuccess) {
+  Response kValidResponse(200, "", "");
+
+  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kValidResponse));
+
+  SignupRequest temp_request;
+  SignupResponse response = user_repository_->Signup(temp_request);
+}
+
+TEST_F(UserHttpRepositoryTestFixture, signupFail) {
+  Response kInvalidResposne(400, "Account information absence", "");
+
+  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kInvalidResposne));
+
+  SignupRequest temp_request;
+  EXPECT_THROW(user_repository_->Signup(temp_request), FailSignupException);
+}
+
+// TODO(in.heo): Prohibited Character 조건 테스트 추가 필요:
+// id: [",", "|"], password[","]
