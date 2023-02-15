@@ -19,10 +19,7 @@ public:
   {
     std::string id = GetID();
     std::string password = GetPassword();
-    AuthorizationKey key;
-    key.SetId(id);
-    key.SetPassword(password);
-
+    AuthorizationKey key(id, password);
     LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
     // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
     // LoginResponse response = repository.Login(request);
