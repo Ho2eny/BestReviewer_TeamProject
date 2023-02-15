@@ -1,6 +1,7 @@
 #include "user_http_repository.h"
 
 #include "../../../common/exception/user/fail_login_exception.h"
+#include "../../../common/exception/user/fail_logout_exception.h"
 #include "../../../common/exception/user/fail_parse_session_id_exception.h"
 #include "../../../common/exception/user/fail_signup_exception.h"
 #include "../../curl_client.h"
@@ -36,7 +37,7 @@ LogoutResponse UserHttpRepository::Logout(const LogoutRequest& request) {
     return LogoutResponse();
   }
 
-  throw FailSignupException(http_response.GetErrorMessage().c_str());
+  throw FailLogoutException(http_response.GetErrorMessage().c_str());
 }
 
 SignupResponse UserHttpRepository::Signup(const SignupRequest& request) {
