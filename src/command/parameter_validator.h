@@ -48,8 +48,8 @@ private:
 
   std::string GetURL()
   {
-    std::string url = vDefaultUrl;
-    if (argc_ > 1)
+    std::string url = vHttpProtocol + vDefaultUrl;
+    if (argc_ <= 1) return url;
     {
       std::string argv = std::string(argv_[1]);
       std::size_t pos = argv.find(vUrlDelimitor);
@@ -68,7 +68,7 @@ private:
       }
     }
 
-    return "http://" + url;
+    return vHttpProtocol + url;
   }
 
   void CheckPortLength(std::string port)
@@ -119,6 +119,7 @@ private:
   int argc_;
   char **argv_;
   std::string baseurl_;
+  const std::string vHttpProtocol = "http://";
   const std::string vUrlDelimitor = "://";
   const std::string vDefaultUrl = "10.241.114.152";
   const std::string vDefaultPort = "34568";
