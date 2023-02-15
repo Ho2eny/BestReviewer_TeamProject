@@ -6,6 +6,7 @@ set(SOURCES
     command_test.cc
     json_serializer_test.cc
     http_plugin_test.cc
+    user_repository_test.cc
 )
 
 add_executable(${PROJECT} ${SOURCES})
@@ -19,6 +20,7 @@ target_link_libraries(${PROJECT}
         gtest
         gtest_main
         gmock
+        gmock_main
         curl
         jsoncpp
         ChatClient

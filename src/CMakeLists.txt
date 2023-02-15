@@ -8,7 +8,10 @@ set(SOURCES
     http/http_plugin.h
     http/thirdparty/curl/curl_client.cc 
     http/thirdparty/curl/curl_client.h
+    http/repository/user_http_repository.cc
+    http/repository/user_http_repository.h
     http/converter/user_dto_converter.h
+    http/converter/user_dto_converter.cc
     http/dto/request.cc http/dto/request.h
     http/dto/response.h
     utils.h
