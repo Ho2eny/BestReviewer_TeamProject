@@ -49,23 +49,23 @@ private:
   std::string GetURL()
   {
     std::string url = vHttpProtocol + vDefaultUrl;
-    if (argc_ <= 1) return url;
-    {
-      std::string argv = std::string(argv_[1]);
-      std::size_t pos = argv.find(vUrlDelimitor);
-      url = pos != std::string::npos ? argv.substr(pos + vUrlDelimitor.length()) : argv;
+    if (argc_ <= 1)
+      return url;
 
-      try
-      {
-        CheckParameterLength(argv);
-        CheckProtocol(argv);
-        CheckInvalidProtocol(argv);
-        CheckURLFormat(url);
-      }
-      catch (const InvalidParameterException &e)
-      {
-        throw InvalidParameterException(e.what());
-      }
+    std::string argv = std::string(argv_[1]);
+    std::size_t pos = argv.find(vUrlDelimitor);
+    url = pos != std::string::npos ? argv.substr(pos + vUrlDelimitor.length()) : argv;
+
+    try
+    {
+      CheckParameterLength(argv);
+      CheckProtocol(argv);
+      CheckInvalidProtocol(argv);
+      CheckURLFormat(url);
+    }
+    catch (const InvalidParameterException &e)
+    {
+      throw InvalidParameterException(e.what());
     }
 
     return vHttpProtocol + url;
