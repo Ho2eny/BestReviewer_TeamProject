@@ -1,7 +1,7 @@
 #ifndef INTERNAL_EXCEPTION_H_
 #define INTERNAL_EXCEPTION_H_
 
-#include "../base_exception.h"
+#include "../../../common/exception/base_exception.h"
 
 class InternalException : public BaseException {
 public:

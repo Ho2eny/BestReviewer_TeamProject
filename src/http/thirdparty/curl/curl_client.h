@@ -3,9 +3,9 @@
 
 #include <curl/curl.h>
 
-#include "../http_plugin.h"
-#include "../request.h"
-#include "../response.h"
+#include "../../http_plugin.h"
+#include "../../dto/request.h"
+#include "../../dto/response.h"
 
 
 class CurlClient : public HttpPlugin {

@@ -9,13 +9,17 @@
 #include "command/receiver/logout_receiver.h"
 
 #include "plugin/curl/repository/user_http_repository.h"
+#include "command/receiver/create_receiver.h"
+#include "command/receiver/join_receiver.h"
+#include "command/receiver/list_receiver.h"
 
 #include "command/login.h"
 #include "command/signup.h"
+#include "command/createchatroom.h"
+#include "command/joinchatroom.h"
+#include "command/listchatrooms.h"
 #include "command/parameter_validator.h"
 #include "command/quit.h"
-
-#include "http_client.h"
 
 #define CHAT_QUIT "q"
 #define CHAT_LONG_QUIT "quit"
@@ -44,11 +48,6 @@ int main(int argc, char *argv[])
 
     unique_ptr<Invoker> invoker = make_unique<Invoker>(cache);
     MakeCommands(invoker, cache);
-
-    // invoker->SetOnInvoke(make_unique<Quit>(CHAT_QUIT, "Quit Application").get());
-    // invoker->SetOnInvoke(make_unique<Quit>(CHAT_LONG_QUIT, "Quit Application").get());
-    // invoker->SetOnInvoke(make_unique<Login>(CommandType::kLogin, "Login", make_unique<LoginReceiver>(cache).get()).get());
-    // invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
     AnsiColor color;
     color.Title("===== FIFO Chat Client =====");

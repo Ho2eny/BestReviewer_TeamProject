@@ -5,16 +5,15 @@ set(PROJECT ChatClient)
 add_compile_options(-fprofile-arcs -ftest-coverage)
 
 set(SOURCES
-    hardtoname.cc hardtoname.h
-    http_client.cc http_client.h
-    http_plugin.h
-    plugin/curl_client.cc plugin/curl_client.h
-    plugin/curl/repository/user_http_repository.cc
-    plugin/curl/repository/user_http_repository.h
-    plugin/curl/converter/user_dto_converter.h
-    plugin/curl/converter/user_dto_converter.cc
-    request.cc request.h
-    response.h
+    http/http_plugin.h
+    http/thirdparty/curl/curl_client.cc 
+    http/thirdparty/curl/curl_client.h
+    http/repository/user_http_repository.cc
+    http/repository/user_http_repository.h
+    http/converter/user_dto_converter.h
+    http/converter/user_dto_converter.cc
+    http/dto/request.cc http/dto/request.h
+    http/dto/response.h
     utils.h
 )
 
