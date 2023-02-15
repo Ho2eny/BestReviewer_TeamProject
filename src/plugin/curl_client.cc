@@ -96,8 +96,11 @@ Response CurlClient::Put(Request request)
 Response CurlClient::Delete(Request request)
 {
   SetUp(request);
- 
-  CURLcode result = curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "DELETE");
+  
+  curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "DELETE");
+
+  CURLcode result = curl_easy_perform(curl_);
+  HandleResultCode(result);
   HandleResultCode(result);
   
   int status_code = 0;
