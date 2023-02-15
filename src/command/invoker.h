@@ -43,7 +43,7 @@ public:
 
   void SetBaseUrl(std::string base_url)
   {
-    cache_.SetKV(Cache::BASE_URL, base_url);
+    cache_.SetBaseUrl(base_url);
   }
 
 private:
