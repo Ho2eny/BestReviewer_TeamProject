@@ -32,5 +32,11 @@ TEST_F(CommandTestFixture, LoginTest)
   cache_.SetSessionID("");
   invoker_->Invoke("51");
 
+  if(cache_.GetValue(Cache::vSessionID).length())
+  {
+    // TODO: Signup 
+    invoker_->Invoke("50");
+  }
+
   ASSERT_GT(cache_.GetValue(Cache::vSessionID).length(), 0);
 }

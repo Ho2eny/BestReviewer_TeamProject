@@ -1,7 +1,4 @@
-#include <iostream>
-#include <curl/curl.h>
-#include <json/json.h>
-#include <bits/stdc++.h>
+#include <memory>
 
 #include "command/command.h"
 #include "command/invoker.h"
@@ -22,12 +19,12 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     ParameterValidator validator(argc, argv);
-  
-    Cache cache;  
-    Invoker *invoker = new Invoker(cache);
-    invoker->SetOnInvoke(new Quit(CHAT_QUIT, "Quit Application"));
-    invoker->SetOnInvoke(new Quit(CHAT_LONG_QUIT, "Quit Application"));
-    invoker->SetOnInvoke(new Login(CommandType::kLogin, "Login", new LoginReceiver(cache)));
+
+    Cache cache;
+    unique_ptr<Invoker> invoker = make_unique<Invoker>(cache);
+    invoker->SetOnInvoke(make_unique<Quit>(CHAT_QUIT, "Quit Application").get());
+    invoker->SetOnInvoke(make_unique<Quit>(CHAT_LONG_QUIT, "Quit Application").get());
+    invoker->SetOnInvoke(make_unique<Login>(CommandType::kLogin, "Login", make_unique<LoginReceiver>(cache).get()).get());
     // invoker->SetOnInvoke(new Signup(CommandType::kSignup, "Signup", new Receiver()));
 
     AnsiColor color;
