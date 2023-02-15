@@ -31,10 +31,6 @@ Request UserDtoConverter::ConvertToLoginHttpRequestFrom(const LoginRequest& logi
   return http_request;
 }
 
-LogoutResponse UserDtoConverter::ConvertToLogoutResponseFrom(const Response& http_response) const {
-  return LogoutResponse();
-}
-
 Request UserDtoConverter::ConvertToLogoutHttpRequestFrom(const LogoutRequest& logout_request, const std::string& base_url) const {
   Request http_request(base_url);
 
