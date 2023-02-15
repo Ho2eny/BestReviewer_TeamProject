@@ -1,7 +1,7 @@
 #ifndef INVALID_JSON_STRING_EXCEPTION_H_
 #define INVALID_JSON_STRING_EXCEPTION_H_
 
-#include "../../../../common/exception/base_exception.h"
+#include "../../../common/exception/base_exception.h"
 
 class InvalidJsonStringException : public BaseException {
 public:

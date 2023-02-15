@@ -9,8 +9,6 @@
 #include "command/parameter_validator.h"
 #include "command/quit.h"
 
-#include "http_client.h"
-
 #define CHAT_QUIT "q"
 #define CHAT_LONG_QUIT "quit"
 

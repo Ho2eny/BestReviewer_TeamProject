@@ -1,8 +1,8 @@
 #ifndef _HTTP_PLUGIN_H_
 #define _HTTP_PLUGIN_H_
 
-#include "request.h"
-#include "response.h"
+#include "dto/request.h"
+#include "dto/response.h"
 
 class HttpPlugin {
 public:
