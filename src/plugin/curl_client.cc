@@ -114,7 +114,7 @@ void CurlClient::AppendHeader(const string &key, const string &value)
   
   header_ = curl_slist_append(header_, ss.str().c_str());
   if (!header_)
-    throw std::invalid_argument("header list cannot be NULL.");
+    throw InternalException("header list cannot be NULL.");
 
   curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, header_);
 }

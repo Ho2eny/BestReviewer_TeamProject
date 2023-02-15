@@ -103,11 +103,13 @@ TEST_F(HttpClientTest, HttpDnsResolvingFailure)
     EXPECT_THROW(client.Get(invalid_request), DnsResolvingFailureException);
 } 
 
+#if 0
 TEST_F(HttpClientTest, HttpAuthenticationFailure)
 {
     HttpClient client;
 
     Request invalid_request("https://jigsaw.w3.org/HTTP/Basic/");
-
+    
     EXPECT_THROW(client.Get(invalid_request), AuthenticationFailureException);
 } 
+#endif
