@@ -4,12 +4,12 @@
 #include <memory>
 #include <string>
 
-#include "../src/http/repository/user_http_repository.h"
+#include "../../src/http/repository/room_http_repository.h"
 
-#include "../src/common/exception/room/fail_create_room_exception.h"
-#include "../src/common/exception/room/fail_parse_retrieve_room_response_exception.h"
-#include "../src/common/exception/room/fail_retrieve_room_exception.h"
-#include "../src/http/http_plugin.h"
+#include "../../src/common/exception/room/fail_create_room_exception.h"
+#include "../../src/common/exception/room/fail_parse_retrieve_room_response_exception.h"
+#include "../../src/common/exception/room/fail_retrieve_room_exception.h"
+#include "../../src/http/http_plugin.h"
 
 class MockHttpClient : public HttpPlugin {
 public:
