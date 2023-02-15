@@ -33,9 +33,8 @@ LogoutResponse UserHttpRepository::Logout(const LogoutRequest& request) {
   Request http_request = user_dto_converter_->ConvertToLogoutHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Delete(http_request);
 
-  if (http_response.GetStatusCode() >= 200 && http_response.GetStatusCode() < 300) {
+  if (http_response.GetStatusCode() >= 200 && http_response.GetStatusCode() < 300)
     return LogoutResponse();
-  }
 
   throw FailLogoutException(http_response.GetErrorMessage().c_str());
 }
