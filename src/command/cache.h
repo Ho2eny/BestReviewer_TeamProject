@@ -13,6 +13,7 @@ public:
   static const std::string vTestPassword;
   static const std::string vBaseUrl;
   static const std::string vSessionID;
+  static const std::string vChatRoomName;
 
   void SetID(const std::string &ID) { SetKV(Cache::vID, ID); }
   void SetTestID(const std::string &ID) { SetKV(Cache::vTestID, ID); }
@@ -35,5 +36,6 @@ const std::string Cache::vTestNonce = "test_nonce";
 const std::string Cache::vTestPassword = "test_password";
 const std::string Cache::vBaseUrl = "base_url";
 const std::string Cache::vSessionID = "session_id";
+const std::string Cache::vChatRoomName = "chat_room_name";
 
 #endif
