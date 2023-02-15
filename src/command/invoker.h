@@ -23,13 +23,13 @@ public:
   {
     std::string lower_command_key = command_key;
     std::transform(lower_command_key.begin(), lower_command_key.end(), lower_command_key.begin(), ::tolower);
-    for (const auto& it : on_invoke_)
+    for (const auto &it : on_invoke_)
     {
       if ((*it).GetCommandKey() == lower_command_key)
         return it->Execute();
     }
 
-    throw std::invalid_argument("Command not found");
+    throw InvalidCommandException("Command not found");
   }
 
   void PrintCommands()
@@ -43,7 +43,7 @@ public:
 
   void SetBaseUrl(std::string base_url)
   {
-    cache_.SetKV(Cache::BASE_URL, base_url);
+    cache_.SetBaseUrl(base_url);
   }
 
 private:
