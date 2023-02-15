@@ -18,8 +18,6 @@
 
 using namespace std;
 
-static Invoker *invoker = new Invoker;
-
 int main(int argc, char *argv[])
 {
     ParameterValidator validator(argc, argv);

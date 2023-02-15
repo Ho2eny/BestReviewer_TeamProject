@@ -19,9 +19,9 @@ public:
     kv_[key] = value;
   }
 
-  std::string GetValue(const std::string& key) const
+  std::string GetValue(const std::string& key)
   {
-    return kv_.find(key)->second;
+    return kv_[key];
   }
 
 private:
