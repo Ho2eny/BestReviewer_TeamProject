@@ -25,7 +25,7 @@ public:
   }
 
 private:
-  std::map<std::string, std::string> kv_;
+  std::unordered_map<std::string, std::string> kv_;
 };
 
 const std::string Cache::ID = "id";
