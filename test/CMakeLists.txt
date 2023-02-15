@@ -5,7 +5,7 @@ set(SOURCES
     parameter_test.cc    
     command_test.cc
     json_serializer_test.cc
-    http_client_test.cc
+    http_plugin_test.cc
 )
 
 add_executable(${PROJECT} ${SOURCES})
