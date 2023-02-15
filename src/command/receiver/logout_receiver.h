@@ -22,9 +22,10 @@ public:
 
     // LogoutRequest request(id, key.queryNonce(), key.queryPasswordWithNonce());
     // Waiting for the implementatino from in.heo
-    // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
+    // UserHttpRepository repository(cache.GetValue(Cache::BASE_URL));
     // LoginResponse response = repository.Login(request);
-    // cache_.SetKV(Cache::vSessionID, response.Get...);
+    // cache_.SetKV(Cache::SESSION_ID, response.Get...);
+    cache_.SetKV(Cache::SESSION_ID, "test_session_id");
   }
 };
 

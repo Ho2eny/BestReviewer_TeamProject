@@ -127,3 +127,4 @@ TEST_F(HttpClientTest, HttpDelete)
     EXPECT_EQ(403, response.GetStatusCode());
     EXPECT_EQ("Not a valid session ID", response.GetBody());
 }
+

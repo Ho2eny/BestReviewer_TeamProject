@@ -21,19 +21,19 @@ public:
     AuthorizationKey key;
     key.SetId(id);
     key.SetPassword(password);
-    
     LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
-    // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
+    // Waiting for the implementatino from in.heo
+    // UserHttpRepository repository(cache.GetValue(Cache::BASE_URL));
     // LoginResponse response = repository.Login(request);
-
-    cache_.SetID(id);
-    // cache_.SetSessionID(response.GetSessionId());
+    // cache_.SetKV(Cache::SESSION_ID, response.Get...);
+    cache_.SetKV(Cache::ID, id);
+    cache_.SetKV(Cache::SESSION_ID, "test_session_id");
   }
 
   std::string GetID()
   {
-    if (cache_.GetValue(Cache::vTestID).length() > 0)
-      return cache_.GetValue(Cache::vTestID);
+    if (cache_.GetValue(Cache::TEST_ID).length() > 0)
+      return cache_.GetValue(Cache::TEST_ID);
 
     std::string id;
     std::cout << "Enter ID: ";
@@ -43,8 +43,8 @@ public:
 
   std::string GetPassword()
   {
-    if (cache_.GetValue(Cache::vTestPassword).length() > 0)
-      return cache_.GetValue(Cache::vTestPassword);
+    if (cache_.GetValue(Cache::TEST_PASSWORD).length() > 0)
+      return cache_.GetValue(Cache::TEST_PASSWORD);
 
     std::string password;
     std::cout << "Enter Password: ";

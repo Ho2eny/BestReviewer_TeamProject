@@ -6,8 +6,7 @@
 class InvalidParameterException : public BaseException
 {
 public:
-  InvalidParameterException(const char *message = "Parameter is invalid")
-      : BaseException(message) {}
+  InvalidParameterException(const char *message) : BaseException(message) {}
 };
 
 #endif
