@@ -101,7 +101,6 @@ Response CurlClient::Delete(Request request)
 
   CURLcode result = curl_easy_perform(curl_);
   HandleResultCode(result);
-  HandleResultCode(result);
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
