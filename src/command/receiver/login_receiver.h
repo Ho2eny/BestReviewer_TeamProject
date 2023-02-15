@@ -19,9 +19,9 @@ public:
     std::string id = GetID();
     std::string password = GetPassword();
     AuthorizationKey key;
-    key.setId(id);
-    key.setPassword(password);
-    LoginRequest request(id, key.queryNonce(), key.queryPasswordWithNonce());
+    key.SetId(id);
+    key.SetPassword(password);
+    LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
     // Waiting for the implementatino from in.heo
     // UserHttpRepository repository(cache.GetValue(Cache::BASE_URL));
     // LoginResponse response = repository.Login(request);
