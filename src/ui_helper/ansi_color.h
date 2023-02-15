@@ -8,7 +8,7 @@
 class AnsiColor
 {
 public:
-    static std::string TextWithLineFeed(std::string str)
+    std::string TextWithLineFeed(std::string str)
     {
         std::stringstream ss;
         ss << vNullColor << str << std::endl;
@@ -16,7 +16,7 @@ public:
         return ss.str();
     }
 
-    static std::string Text(std::string str)
+    std::string Text(std::string str)
     {
         std::stringstream ss;
         ss << vNullColor << str;
@@ -24,7 +24,7 @@ public:
         return ss.str();
     }
 
-    static std::string ReceivedMessage(std::string str)
+    std::string ReceivedMessage(std::string str)
     {
         std::stringstream ss;
         ss << vCyan << str << vNullColor << std::endl;
@@ -32,7 +32,7 @@ public:
         return ss.str();
     }
 
-    static std::string Message(std::string str)
+    std::string Message(std::string str)
     {
         std::stringstream ss;
         ss << vGreen << str << vNullColor << std::endl;
@@ -40,7 +40,7 @@ public:
         return ss.str();
     }
 
-    static std::string Title(std::string str)
+    std::string Title(std::string str)
     {
         std::stringstream ss;
         ss << vYellowBold << str << vNullColor << std::endl;
@@ -48,16 +48,28 @@ public:
         return ss.str();
     }
 
-private:
-    static const std::string vNullColor;
-    static const std::string vYellowBold;
-    static const std::string vGreen;
-    static const std::string vCyan;
-};
+    std::string Important(std::string str)
+    {
+        std::stringstream ss;
+        ss << vMagent << str << vNullColor;
+        std::cout << ss.str();
+        return ss.str();
+    }
 
-const std::string AnsiColor::vNullColor = "\033[0m";
-const std::string AnsiColor::vYellowBold = "\033[31;1m";
-const std::string AnsiColor::vGreen = "\033[32m";
-const std::string AnsiColor::vCyan = "\033[36m";
+    std::string ImportantWithLineFeed(std::string str)
+    {
+        std::stringstream ss;
+        ss << vMagent << str << vNullColor << std::endl;
+        std::cout << ss.str();
+        return ss.str();
+    }
+
+private:
+    const std::string vNullColor = "\033[0m";
+    const std::string vYellowBold = "\033[31;1m";
+    const std::string vGreen = "\033[32m";
+    const std::string vCyan = "\033[36m";
+    const std::string vMagent = "\033[95m";
+};
 
 #endif

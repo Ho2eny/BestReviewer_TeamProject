@@ -8,6 +8,7 @@
 #include "../../interface/dto/user/login_response.h"
 // #include "../../interface/repository/user_repository.h"
 #include "../../utils.h"
+#include "../../ui_helper/ansi_color.h"
 
 class LoginReceiver : public Receiver
 {
@@ -21,7 +22,7 @@ public:
     AuthorizationKey key;
     key.SetId(id);
     key.SetPassword(password);
-    
+
     LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
     // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
     // LoginResponse response = repository.Login(request);
@@ -35,8 +36,9 @@ public:
     if (cache_.GetValue(Cache::vTestID).length() > 0)
       return cache_.GetValue(Cache::vTestID);
 
+    AnsiColor color;
     std::string id;
-    std::cout << "Enter ID: ";
+    color.Important("> Enter ID : ");
     std::cin >> id;
     return id;
   }
@@ -46,8 +48,9 @@ public:
     if (cache_.GetValue(Cache::vTestPassword).length() > 0)
       return cache_.GetValue(Cache::vTestPassword);
 
+    AnsiColor color;
     std::string password;
-    std::cout << "Enter Password: ";
+    color.Important("> Enter Password: ");
     std::cin >> password;
     return password;
   }
