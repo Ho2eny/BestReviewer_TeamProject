@@ -6,9 +6,8 @@
 class Signup : public Command
 {
 public:
-    Signup(CommandType command_key, std::string description, Receiver *receiver)
-        : Command(command_key, description, receiver) {}
-    void Execute() const override;
+  Signup(CommandType command_key, std::string description, Receiver *receiver)
+      : Command(command_key, description, receiver) {}
 };
 
 #endif
