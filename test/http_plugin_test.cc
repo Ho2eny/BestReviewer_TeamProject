@@ -1,5 +1,5 @@
 #include <iostream>
-#include <random>
+#include <cstdlib>
 #include <thread>
 #include <json/json.h>
 #include <gtest/gtest.h>
@@ -10,24 +10,9 @@
 #include "../src/http/exception/network/connection_failure_exception.h"
 #include "../src/http/exception/network/dns_resolving_failure_exception.h"
 #include "../src/http/thirdparty/curl/curl_client.h"
+#include "../src/utils.h"
 
 using namespace std;
-
-static string GetHashCode(const string &password)
-{
-    long long hash = 5381;
-    int c;
-    const char *c_str = password.c_str();
-    while (c = *c_str++)
-    {
-        hash = (((hash << 5) + hash) + c) % 1000000007;
-    }
-    long long result = hash % 1000000007;
-
-    stringstream stream;
-    stream << result;
-    return stream.str();
-}
 
 class HttpPluginTest : public ::testing::Test {
     protected:
@@ -41,6 +26,14 @@ class HttpPluginTest : public ::testing::Test {
 
     shared_ptr<HttpPlugin> client;
     shared_ptr<Request> request;
+
+    string CreateRandomId() {
+        std::srand(5323);
+        std::stringstream ss;
+        ss << "fifo_" << std::rand() % 1000;
+        cout << "Id: " << ss.str() << endl;
+        return ss.str();
+    }
 };
 
 TEST_F(HttpPluginTest, HttpGet)
@@ -63,13 +56,11 @@ TEST_F(HttpPluginTest, HttpGetWithInvalidPath)
 
 TEST_F(HttpPluginTest, HttpPost)
 {
-    random_device dev;
-    mt19937 rng(dev());
-    uniform_int_distribution<mt19937::result_type> dist1000(1, 1000);
-
+    string id = CreateRandomId();
+    AuthorizationKey key(id, "password");
     Json::Value data;
-    data["id"] = "fifo_" + to_string(dist1000(rng));
-    data["password"] = GetHashCode("password");
+    data["id"] = id;
+    data["password"] = key.QueryPassword();
 
     Json::StreamWriterBuilder jsonBuilder;
     string jsonData = Json::writeString(jsonBuilder, data);
