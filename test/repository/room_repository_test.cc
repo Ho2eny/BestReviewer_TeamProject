@@ -9,6 +9,7 @@
 #include "../../src/common/exception/room/fail_create_room_exception.h"
 #include "../../src/common/exception/room/fail_parse_retrieve_room_response_exception.h"
 #include "../../src/common/exception/room/fail_retrieve_room_exception.h"
+#include "../../src/http/exception/network/base_network_exception.h"
 #include "../../src/http/http_plugin.h"
 
 class MockHttpClient : public HttpPlugin {
@@ -58,6 +59,15 @@ TEST_F(RoomHttpRepositoryTestFixture, createRoomFail) {
   EXPECT_THROW(room_repository_->CreateRoom(temp_request), FailCreateRoomException);
 }
 
+TEST_F(RoomHttpRepositoryTestFixture, createRoomFailNetworkIssue) {
+  auto kNetworkException = BaseNetworkException("DNS resolving failed.");
+
+  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Throw(kNetworkException));
+
+  CreateRoomRequest temp_request;
+  EXPECT_THROW(room_repository_->CreateRoom(temp_request), FailCreateRoomException);
+}
+
 TEST_F(RoomHttpRepositoryTestFixture, retrieveRoomSuccess) {
   const std::string kValidResponseBody = "[{\"room\":\"room_name_1\"},{\"room\":\"room_name_2\"},{\"room\":\"room_name_3\"}]";
   Response kValidResponse(200, "", kValidResponseBody);
@@ -87,6 +97,15 @@ TEST_F(RoomHttpRepositoryTestFixture, retrieveRoomFail) {
   Response kInvalidResponse(400, "", kErrorMessage);
 
   EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kInvalidResponse));
+
+  RetrieveRoomRequest temp_request;
+  EXPECT_THROW(room_repository_->RetrieveRoom(temp_request), FailRetrieveRoomException);
+}
+
+TEST_F(RoomHttpRepositoryTestFixture, retrieveRoomFailNetworkIssue) {
+  auto kNetworkException = BaseNetworkException("DNS resolving failed.");
+
+  EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Throw(kNetworkException));
 
   RetrieveRoomRequest temp_request;
   EXPECT_THROW(room_repository_->RetrieveRoom(temp_request), FailRetrieveRoomException);

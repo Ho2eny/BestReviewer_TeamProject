@@ -4,12 +4,12 @@
 #include <memory>
 #include <string>
 
-#include "../../src/http/repository/user_http_repository.h"
-
 #include "../../src/common/exception/user/fail_login_exception.h"
 #include "../../src/common/exception/user/fail_logout_exception.h"
 #include "../../src/common/exception/user/fail_signup_exception.h"
 #include "../../src/common/exception/user/fail_parse_session_id_exception.h"
+#include "../../src/http/exception/network/base_network_exception.h"
+#include "../../src/http/repository/user_http_repository.h"
 #include "../../src/http/http_plugin.h"
 
 class MockHttpClient : public HttpPlugin {
@@ -71,6 +71,15 @@ TEST_F(UserHttpRepositoryTestFixture, loginFail) {
   EXPECT_THROW(user_repository_->Login(temp_request), FailLoginException);
 }
 
+TEST_F(UserHttpRepositoryTestFixture, loginFailNetworkIssue) {
+  auto kNetworkException = BaseNetworkException("DNS resolving failed.");
+
+  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Throw(kNetworkException));
+
+  LoginRequest temp_request;
+  EXPECT_THROW(user_repository_->Login(temp_request), FailLoginException);
+}
+
 TEST_F(UserHttpRepositoryTestFixture, logoutSuccess) {
   Response kValidResponse(200, "", "");
 
@@ -90,6 +99,15 @@ TEST_F(UserHttpRepositoryTestFixture, logoutFail) {
   EXPECT_THROW(user_repository_->Logout(temp_request), FailLogoutException);
 }
 
+TEST_F(UserHttpRepositoryTestFixture, logoutFailNetworkIssue) {
+  auto kNetworkException = BaseNetworkException("DNS resolving failed.");
+
+  EXPECT_CALL(*http_client_, Delete(testing::_)).WillOnce(testing::Throw(kNetworkException));
+
+  LogoutRequest temp_request;
+  EXPECT_THROW(user_repository_->Logout(temp_request), FailLogoutException);
+}
+
 TEST_F(UserHttpRepositoryTestFixture, signupSuccess) {
   Response kValidResponse(200, "", "");
 
@@ -104,6 +122,15 @@ TEST_F(UserHttpRepositoryTestFixture, signupFail) {
   Response kInvalidResposne(400, "", kErrorMessage);
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kInvalidResposne));
+
+  SignupRequest temp_request;
+  EXPECT_THROW(user_repository_->Signup(temp_request), FailSignupException);
+}
+
+TEST_F(UserHttpRepositoryTestFixture, signupFailNetworkIssue) {
+  auto kNetworkException = BaseNetworkException("DNS resolving failed.");
+
+  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Throw(kNetworkException));
 
   SignupRequest temp_request;
   EXPECT_THROW(user_repository_->Signup(temp_request), FailSignupException);

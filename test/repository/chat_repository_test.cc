@@ -9,6 +9,7 @@
 #include "../../src/common/exception/chat/fail_parse_receive_message_reseponse_exception.h"
 #include "../../src/common/exception/chat/fail_receive_message_exception.h"
 #include "../../src/common/exception/chat/fail_send_message_exception.h"
+#include "../../src/http/exception/network/base_network_exception.h"
 #include "../../src/http/http_plugin.h"
 
 class MockHttpClient : public HttpPlugin {
@@ -54,6 +55,15 @@ TEST_F(ChatHttpRepositoryTestFixture, sendMessageFail) {
   EXPECT_THROW(chat_repository_->SendMessage(temp_request), FailSendMessageException);
 }
 
+TEST_F(ChatHttpRepositoryTestFixture, sendMessageFailNetworkIssue) {
+  auto kNetworkException = BaseNetworkException("DNS resolving failed.");
+
+  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Throw(kNetworkException));
+
+  SendMessageRequest temp_request;
+  EXPECT_THROW(chat_repository_->SendMessage(temp_request), FailSendMessageException);
+}
+
 TEST_F(ChatHttpRepositoryTestFixture, receiveMessageSuccess) {
   const std::string kValidResponseBody = "[{\"date\":1583135236,\"message\":\"hello\",\"room\":\"2\",\"user_id\":\"samsung\"},{\"date\":1602568577,\"message\":\"test\",\"room\":\"2\",\"user_id\":\"test\"}]";
 
@@ -87,6 +97,15 @@ TEST_F(ChatHttpRepositoryTestFixture, receiveMessageFail) {
   Response kForbiddenResponse(403, "", kErrorMessage);
 
   EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kForbiddenResponse));
+
+  ReceiveMessageRequest temp_request;
+  EXPECT_THROW(chat_repository_->ReceiveMessage(temp_request), FailReceiveMessageException);
+}
+
+TEST_F(ChatHttpRepositoryTestFixture, receiveMessageFailNetworkIssue) {
+  auto kNetworkException = BaseNetworkException("DNS resolving failed.");
+
+  EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Throw(kNetworkException));
 
   ReceiveMessageRequest temp_request;
   EXPECT_THROW(chat_repository_->ReceiveMessage(temp_request), FailReceiveMessageException);

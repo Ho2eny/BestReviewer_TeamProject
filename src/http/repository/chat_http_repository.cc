@@ -50,7 +50,7 @@ SendMessageResponse ChatHttpRepository::SendMessage(const SendMessageRequest& re
     else throw FailSendMessageException(http_response.GetBody().c_str());
   }
   catch (const BaseNetworkException& e) {
-    throw FailReceiveMessageException(e.what());
+    throw FailSendMessageException(e.what());
   }
 }
 
