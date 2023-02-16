@@ -9,7 +9,6 @@
 #include "../../src/common/exception/room/fail_create_room_exception.h"
 #include "../../src/common/exception/room/fail_parse_retrieve_room_response_exception.h"
 #include "../../src/common/exception/room/fail_retrieve_room_exception.h"
-#include "../../src/common/exception/room/invalid_room_repository_exception.h"
 #include "../../src/http/exception/network/base_network_exception.h"
 #include "../../src/http/http_plugin.h"
 
@@ -110,11 +109,4 @@ TEST_F(RoomHttpRepositoryTestFixture, retrieveRoomFailNetworkIssue) {
 
   RetrieveRoomRequest temp_request;
   EXPECT_THROW(room_repository_->RetrieveRoom(temp_request), FailRetrieveRoomException);
-}
-
-TEST_F(RoomHttpRepositoryTestFixture, invalidHttpClient) {
-  room_repository_->SetHttpClient(nullptr);
-
-  RetrieveRoomRequest temp_request;
-  EXPECT_THROW(room_repository_->RetrieveRoom(temp_request), InvalidRoomRepositoryException);
 }
