@@ -10,10 +10,11 @@
 #include "../src/command/receiver/create_receiver.h"
 #include "../src/command/receiver/list_receiver.h"
 
-#include "../src/http/repository/user_http_repository.h"
-#include "../src/http/repository/room_http_repository.h"
+#include "../src/interface/repository/user_repository.h"
+#include "../src/interface/repository/room_repository.h"
 
 #include "../src/command/login.h"
+#include "../src/command/logout.h"
 #include "../src/command/signup.h"
 #include "../src/command/createchatroom.h"
 #include "../src/command/listchatrooms.h"
@@ -52,9 +53,9 @@ protected:
     invoker_ = make_unique<Invoker>(cache_);
     user_repo_ = make_shared<MockUserRepository>();
     room_repo_ = make_shared<MockRoomRepository>();
-    invoker_->SetOnInvoke(move(make_unique<Login>(CommandType::kSignup, "Sign up for the program", move(make_unique<SignupReceiver>(cache_, user_repo_)))));
+    invoker_->SetOnInvoke(move(make_unique<Signup>(CommandType::kSignup, "Sign up for the program", move(make_unique<SignupReceiver>(cache_, user_repo_)))));
     invoker_->SetOnInvoke(move(make_unique<Login>(CommandType::kLogin, "Log in to the program", move(make_unique<LoginReceiver>(cache_, user_repo_)))));
-    invoker_->SetOnInvoke(move(make_unique<Login>(CommandType::kLogout, "Log out of the program", move(make_unique<LogoutReceiver>(cache_, user_repo_)))));
+    invoker_->SetOnInvoke(move(make_unique<Logout>(CommandType::kLogout, "Log out of the program", move(make_unique<LogoutReceiver>(cache_, user_repo_)))));
     invoker_->SetOnInvoke(move(make_unique<CreateChatRoom>(CommandType::kCreateRoom, "Create Chat Room", move(make_unique<CreateReceiver>(cache_, room_repo_)))));
     invoker_->SetOnInvoke(move(make_unique<ListChatRooms>(CommandType::kListRooms, "List Chat Rooms", move(make_unique<ListReceiver>(cache_, room_repo_)))));
   }
@@ -69,26 +70,46 @@ protected:
   Cache cache_;
 };
 
+
+TEST_F(CommandTestFixture, SignupTest)
+{
+  SignupResponse kValidResponse;
+  
+  EXPECT_CALL(*user_repo_, Signup(testing::_)).WillOnce(testing::Return(kValidResponse));
+  invoker_->Invoke("50");
+}
+
 TEST_F(CommandTestFixture, LoginTest)
 {
-  cache_.SetSessionID("");
+  LoginResponse kValidResponse;
+  
+  EXPECT_CALL(*user_repo_, Login(testing::_)).WillOnce(testing::Return(kValidResponse));
   invoker_->Invoke("51");
+}
 
-  if (cache_.GetValue(Cache::vSessionID).length())
-  {
-    // TODO: Signup
-    invoker_->Invoke("50");
-  }
+TEST_F(CommandTestFixture, LogoutTest)
+{
+  LogoutResponse kValidResponse;
+  cache_.SetSessionID("testsessionid");
+  EXPECT_CALL(*user_repo_, Logout(testing::_)).WillOnce(testing::Return(kValidResponse));
+  invoker_->Invoke("52");
+}
 
-  ASSERT_GT(cache_.GetValue(Cache::vSessionID).length(), 0);
+TEST_F(CommandTestFixture, ListRoomsTest)
+{
+  RetrieveRoomResponse kValidResponse;
+  
+  EXPECT_CALL(*room_repo_, RetrieveRoom(testing::_)).WillOnce(testing::Return(kValidResponse));
+  cache_.SetSessionID("testsessionid");
+  invoker_->Invoke("60");
 }
 
 TEST_F(CommandTestFixture, CreateRoomTest)
 {
-  CreateRoomResponse kValidResponse = CreateRoomResponse();
+  CreateRoomResponse kValidResponse;
   
   EXPECT_CALL(*room_repo_, CreateRoom(testing::_)).WillOnce(testing::Return(kValidResponse));
   cache_.SetSessionID("testsessionid");
-  cache_.SetRoomName("testRoomName");
-  invoker_->Invoke("60");
+  cache_.SetTestRoomName("testRoomName");
+  invoker_->Invoke("61");
 }
