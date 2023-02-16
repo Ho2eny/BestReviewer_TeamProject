@@ -24,8 +24,8 @@
 class ReceiverCreator
 {
 public:
-    ReceiverCreator(Cache &cache) : cache_(cache) {}
-    virtual ~ReceiverCreator(){};
+    ReceiverCreator(Cache &cache);
+    virtual ~ReceiverCreator();
     virtual std::unique_ptr<Receiver> CreateAReceiver(const CommandType &type) const = 0;
 
 protected:
@@ -35,56 +35,22 @@ protected:
 class UserReceiverCreator : public ReceiverCreator
 {
 public:
-    UserReceiverCreator(Cache &cache) : ReceiverCreator(cache) {}
-    std::unique_ptr<Receiver> CreateAReceiver(const CommandType &type) const override
-    {
-        std::shared_ptr<UserHttpRepository> user_repo = make_shared<UserHttpRepository>(cache_.GetValue(Cache::vBaseUrl));
-
-        if (type == CommandType::kSignup)
-            return move(make_unique<SignupReceiver>(cache_, user_repo));
-
-        if (type == CommandType::kLogin)
-            return move(make_unique<LoginReceiver>(cache_, user_repo));
-
-        if (type == CommandType::kLogout)
-            return move(make_unique<LogoutReceiver>(cache_, user_repo));
-
-        throw InvalidCommandException("The command not supported");
-    }
+    UserReceiverCreator(Cache &cache);
+    std::unique_ptr<Receiver> CreateAReceiver(const CommandType &type) const override;
 };
-
 
 class RoomReceiverCreator : public ReceiverCreator
 {
 public:
-    RoomReceiverCreator(Cache &cache) : ReceiverCreator(cache) {}
-    std::unique_ptr<Receiver> CreateAReceiver(const CommandType &type) const override
-    {
-        std::shared_ptr<RoomHttpRepository> user_repo = make_shared<RoomHttpRepository>(cache_.GetValue(Cache::vBaseUrl));
-
-        if (type == CommandType::kListRooms)
-            return move(make_unique<ListReceiver>(cache_, user_repo));
-
-        if (type == CommandType::kCreateRoom)
-            return move(make_unique<CreateReceiver>(cache_, user_repo));
-
-        throw InvalidCommandException("The command not supported");
-    }
+    RoomReceiverCreator(Cache &cache);
+    std::unique_ptr<Receiver> CreateAReceiver(const CommandType &type) const override;
 };
 
 class ChatReceiverCreator : public ReceiverCreator
 {
 public:
-    ChatReceiverCreator(Cache &cache) : ReceiverCreator(cache) {}
-    std::unique_ptr<Receiver> CreateAReceiver(const CommandType &type) const override
-    {
-        std::shared_ptr<ChatHttpRepository> user_repo = make_shared<ChatHttpRepository>(cache_.GetValue(Cache::vBaseUrl));
-
-        if (type == CommandType::kJoinRoom)
-            return move(make_unique<JoinReceiver>(cache_, user_repo));
-
-        throw InvalidCommandException("The command not supported");
-    }
+    ChatReceiverCreator(Cache &cache);
+    std::unique_ptr<Receiver> CreateAReceiver(const CommandType &type) const override;
 };
 
 #endif

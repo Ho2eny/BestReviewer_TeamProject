@@ -1,11 +1,15 @@
 set(PROJECT ChatClientTest)
 
 set(SOURCES
+    cache_test.cc
     functionality.cc
     color_test.cc  
     parameter_test.cc
     json_serializer_test.cc
     http_plugin_test.cc
+    repository/chat_repository_test.cc
+    repository/room_repository_test.cc
+    repository/user_repository_test.cc    
 )
 
 add_executable(${PROJECT} ${SOURCES})

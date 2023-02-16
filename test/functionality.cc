@@ -53,12 +53,18 @@ protected:
             invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogin, "Log in to the program")));
             invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogout, "Log  out of the program")));
 
+            invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kWrongCommand, "Wrong Command Test")));
+
             const std::unique_ptr<CommandCreator> roomCreator = make_unique<RoomCommandCreator>(cache_);
             invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kListRooms, "List all rooms")));
             invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kCreateRoom, "Create a room")));
 
+            invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kWrongCommand, "Wrong Command Test")));
+
             const std::unique_ptr<CommandCreator> chatCreator = make_unique<ChatCommandCreator>(cache_);
             invoker_->SetOnInvoke(move(chatCreator->CreateCommand(CommandType::kJoinRoom, "Join a room")));
+
+            invoker_->SetOnInvoke(move(chatCreator->CreateCommand(CommandType::kWrongCommand, "Wrong Command Test")));
         }
         catch (const InvalidCommandException &ex)
         {
