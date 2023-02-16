@@ -7,7 +7,6 @@
 #include "../src/http/http_plugin.h"
 #include "../src/http/dto/request.h"
 #include "../src/http/dto/response.h"
-#include "../src/http/exception/network/authentication_failure_exception.h"
 #include "../src/http/exception/network/connection_failure_exception.h"
 #include "../src/http/exception/network/dns_resolving_failure_exception.h"
 #include "../src/http/thirdparty/curl/curl_client.h"
@@ -99,17 +98,6 @@ TEST_F(HttpPluginTest, HttpDnsResolvingFailure)
     EXPECT_THROW(client->Get(invalid_request), DnsResolvingFailureException);
     EXPECT_THROW(client->Get(invalid_request), DnsResolvingFailureException);
 } 
-
-#if 0
-TEST_F(HttpPluginTest, HttpAuthenticationFailure)
-{
-    HttpPlugin client;
-
-    Request invalid_request("https://jigsaw.w3.org/HTTP/Basic/");
-    
-    EXPECT_THROW(client->Get(invalid_request), AuthenticationFailureException);
-} 
-#endif
 
 TEST_F(HttpPluginTest, HttpDelete)
 {

@@ -2,7 +2,6 @@
 #include <sstream>
 #include <iostream>
 #include "curl_client.h"
-#include "../../exception/network/authentication_failure_exception.h"
 #include "../../exception/network/connection_failure_exception.h"
 #include "../../exception/network/dns_resolving_failure_exception.h"
 #include "../../exception/network/internal_exception.h"
@@ -155,9 +154,6 @@ void CurlClient::HandleResultCode(int code)
     case CURLE_COULDNT_CONNECT:
       mutex_.unlock();
       throw ConnectionFailureException("TCP connection failed.");
-    case CURLE_AUTH_ERROR:
-      mutex_.unlock();
-      throw AuthenticationFailureException("Authentication Failed.");
     default:
       mutex_.unlock();
       throw InternalException("Error occured in libcurl internally.");
