@@ -35,6 +35,8 @@ private:
   CURL *curl_;
   struct curl_slist *header_;
   string body_;
+
+  static bool isGlobalInit_;
 };
 
 #endif

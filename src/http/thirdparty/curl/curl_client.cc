@@ -1,14 +1,14 @@
-#include "curl_client.h"
-
 #include <curl/curl.h>
 #include <sstream>
-
+#include "curl_client.h"
 #include "../../exception/network/authentication_failure_exception.h"
 #include "../../exception/network/connection_failure_exception.h"
 #include "../../exception/network/dns_resolving_failure_exception.h"
 #include "../../exception/network/internal_exception.h"
 
 using namespace std;
+
+bool CurlClient::isGlobalInit_ = false;
 
 CurlClient::CurlClient() : curl_(nullptr), header_(nullptr), body_("")
 {
@@ -22,12 +22,18 @@ CurlClient::~CurlClient()
 
 void CurlClient::Initialize()
 {
+    if (isGlobalInit_) return;
+
     curl_global_init(CURL_GLOBAL_ALL);
+    isGlobalInit_ = true;
 }
 
 void CurlClient::Deinitialize()
 {
+  if (!isGlobalInit_) return;
+
   curl_global_cleanup();
+  isGlobalInit_ = false;
 }
 
 Response CurlClient::Get(Request request)
