@@ -9,7 +9,7 @@
 // TODO(in.heo): curl_client를 Setter 주입받도록 수정
 #include "../thirdparty/curl/curl_client.h"
 
-ChatHttpRepository::ChatHttpRepository(std::string base_url) {
+ChatHttpRepository::ChatHttpRepository(std::string base_url) : base_url_(base_url) {
   Initialize();
 }
 
