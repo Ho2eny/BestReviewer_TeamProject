@@ -33,7 +33,7 @@ public:
     throw InvalidCommandException("Command not found");
   }
 
-  void PrintCommands()
+  int PrintCommands()
   {
     AnsiColor color;
     color.TextWithLineFeed("\nMENU");
@@ -42,6 +42,8 @@ public:
       color.Important("> " + it->GetCommandKey() + ". ");
       color.TextWithLineFeed(it->GetDescription());
     }
+
+    return on_invoke_.size();
   }
 
   void SetBaseUrl(std::string base_url)

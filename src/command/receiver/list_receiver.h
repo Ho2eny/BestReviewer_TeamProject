@@ -13,10 +13,14 @@ public:
 
   void Action() override
   {
+    AnsiColor color;
     std::string session_id = GetSessionID();
     RetrieveRoomRequest request(session_id);
     RetrieveRoomResponse response = repository_->RetrieveRoom(request);
     cache_.SetRooms(response.GetRoomNames());
+
+    for (const auto &it : cache_.GetRooms())
+      color.TextWithLineFeed( it );
   }
 };
 #endif

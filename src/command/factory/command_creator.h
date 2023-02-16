@@ -57,6 +57,19 @@ public:
         if (type == CommandType::kCreateRoom)
             return move(make_unique<CreateChatRoom>(type, description, roomReceiverCreator->CreateAReceiver(type)));
 
+        throw InvalidCommandException("The command not supported (Command)");
+    }
+};
+
+class ChatCommandCreator : public CommandCreator
+{
+public:
+    ChatCommandCreator(Cache &cache) : CommandCreator(cache) {}
+
+    std::unique_ptr<Command> CreateCommand(const CommandType &type, const std::string description) const override
+    {
+        ReceiverCreator *roomReceiverCreator = new ChatReceiverCreator(cache_);
+
         if (type == CommandType::kJoinRoom)
             return move(make_unique<JoinChatRoom>(type, description, roomReceiverCreator->CreateAReceiver(type)));
 

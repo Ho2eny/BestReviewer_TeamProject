@@ -1,6 +1,7 @@
 set(PROJECT ChatClientTest)
 
 set(SOURCES
+    factory.cc
     color_test.cc  
     parameter_test.cc
     command_test.cc

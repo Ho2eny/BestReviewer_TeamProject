@@ -28,7 +28,7 @@ public:
     {
         std::stringstream ss;
         ss << vCyan << str << vNullColor << std::endl;
-        std::cout << ss.str();
+        std::cout << "#<< " << ss.str();
         return ss.str();
     }
 
@@ -36,7 +36,7 @@ public:
     {
         std::stringstream ss;
         ss << vGreen << str << vNullColor << std::endl;
-        std::cout << ss.str();
+        std::cout << "#>> " << ss.str();
         return ss.str();
     }
 
