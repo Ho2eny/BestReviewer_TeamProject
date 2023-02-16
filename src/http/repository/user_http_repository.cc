@@ -4,6 +4,7 @@
 #include "../../common/exception/user/fail_logout_exception.h"
 #include "../../common/exception/user/fail_parse_session_id_exception.h"
 #include "../../common/exception/user/fail_signup_exception.h"
+#include "../../common/exception/user/invalid_user_repository_exception.h"
 #include "../thirdparty/curl/curl_client.h"
 
 UserHttpRepository::UserHttpRepository(std::string base_url) : base_url_(base_url) {
@@ -11,6 +12,8 @@ UserHttpRepository::UserHttpRepository(std::string base_url) : base_url_(base_ur
 }
 
 LoginResponse UserHttpRepository::Login(const LoginRequest& request) {
+  if (!CheckPrecondition()) throw InvalidUserRepositoryException("Conveter or HttpClient is not valid");
+
   Request http_request = user_dto_converter_->ConvertToLoginHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Post(http_request);
 
@@ -30,6 +33,8 @@ LoginResponse UserHttpRepository::Login(const LoginRequest& request) {
 }
 
 LogoutResponse UserHttpRepository::Logout(const LogoutRequest& request) {
+  if (!CheckPrecondition()) throw InvalidUserRepositoryException("Conveter or HttpClient is not valid");
+
   Request http_request = user_dto_converter_->ConvertToLogoutHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Delete(http_request);
 
@@ -39,6 +44,8 @@ LogoutResponse UserHttpRepository::Logout(const LogoutRequest& request) {
 }
 
 SignupResponse UserHttpRepository::Signup(const SignupRequest& request) {
+  if (!CheckPrecondition()) throw InvalidUserRepositoryException("Conveter or HttpClient is not valid");
+
   Request http_request = user_dto_converter_->ConvertToSignupHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Post(http_request);
 
@@ -58,3 +65,7 @@ void UserHttpRepository::Initialize() {
   user_dto_converter_ = std::make_shared<UserDtoConverter>();
 }
 
+bool UserHttpRepository::CheckPrecondition() const {
+  if (http_client_ == nullptr || user_dto_converter_ == nullptr) return false;
+  return true;
+}

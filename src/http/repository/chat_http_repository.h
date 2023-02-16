@@ -17,6 +17,7 @@ public:
 
 private:
   void Initialize();
+  bool CheckPrecondition() const;
 
   std::shared_ptr<HttpPlugin> http_client_;
   std::shared_ptr<ChatDtoConverter> chat_dto_converter_;

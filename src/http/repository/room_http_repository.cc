@@ -3,6 +3,7 @@
 #include "../../common/exception/room/fail_create_room_exception.h"
 #include "../../common/exception/room/fail_parse_retrieve_room_response_exception.h"
 #include "../../common/exception/room/fail_retrieve_room_exception.h"
+#include "../../common/exception/room/invalid_room_repository_exception.h"
 #include "../thirdparty/curl/curl_client.h"
 
 RoomHttpRepository::RoomHttpRepository(std::string base_url) : base_url_(base_url) {
@@ -10,6 +11,8 @@ RoomHttpRepository::RoomHttpRepository(std::string base_url) : base_url_(base_ur
 }
 
 CreateRoomResponse RoomHttpRepository::CreateRoom(const CreateRoomRequest& request) {
+  if (!CheckPrecondition()) throw InvalidRoomRepositoryException("Conveter or HttpClient is not valid");
+
   Request http_request = room_dto_converter_->ConvertToCreateRoomHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Post(http_request);
 
@@ -19,6 +22,8 @@ CreateRoomResponse RoomHttpRepository::CreateRoom(const CreateRoomRequest& reque
 }
 
 RetrieveRoomResponse RoomHttpRepository::RetrieveRoom(const RetrieveRoomRequest& request) {
+  if (!CheckPrecondition()) throw InvalidRoomRepositoryException("Conveter or HttpClient is not valid");
+
   Request http_request = room_dto_converter_->ConvertToRetrieveRoomHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Get(http_request);
 
@@ -47,4 +52,9 @@ void RoomHttpRepository::Initialize() {
   CurlClient* curl_client = new CurlClient();
   http_client_ = std::shared_ptr<HttpPlugin>(curl_client);
   room_dto_converter_ = std::make_shared<RoomDtoConverter>();
+}
+
+bool RoomHttpRepository::CheckPrecondition() const {
+  if (http_client_ == nullptr || room_dto_converter_ == nullptr) return false;
+  return true;
 }

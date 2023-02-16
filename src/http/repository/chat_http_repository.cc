@@ -3,6 +3,7 @@
 #include "../../common/exception/chat/fail_parse_receive_message_reseponse_exception.h"
 #include "../../common/exception/chat/fail_receive_message_exception.h"
 #include "../../common/exception/chat/fail_send_message_exception.h"
+#include "../../common/exception/chat/invalid_chat_repository_exception.h"
 // TODO(in.heo): curl_client를 Setter 주입받도록 수정
 #include "../thirdparty/curl/curl_client.h"
 
@@ -11,6 +12,8 @@ ChatHttpRepository::ChatHttpRepository(std::string base_url) {
 }
 
 ReceiveMessageResponse ChatHttpRepository::ReceiveMessage(const ReceiveMessageRequest& request) {
+  if (!CheckPrecondition()) throw InvalidChatRepositoryException("Conveter or HttpClient is not valid");
+
   Request http_request = chat_dto_converter_->ConvertToReceiveMessageHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Get(http_request);
 
@@ -30,6 +33,8 @@ ReceiveMessageResponse ChatHttpRepository::ReceiveMessage(const ReceiveMessageRe
 }
 
 SendMessageResponse ChatHttpRepository::SendMessage(const SendMessageRequest& request) {
+  if (!CheckPrecondition()) throw InvalidChatRepositoryException("Conveter or HttpClient is not valid");
+
   Request http_request = chat_dto_converter_->ConvertToSendMessageHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Post(http_request);
 
@@ -48,4 +53,9 @@ void ChatHttpRepository::Initialize() {
   CurlClient* curl_client = new CurlClient();
   http_client_ = std::shared_ptr<HttpPlugin>(curl_client);
   chat_dto_converter_ = std::make_shared<ChatDtoConverter>();
+}
+
+bool ChatHttpRepository::CheckPrecondition() const {
+  return (http_client_ != nullptr && chat_dto_converter_ != nullptr);
+  return true;
 }
