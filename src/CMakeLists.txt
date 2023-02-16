@@ -23,6 +23,8 @@ set(SOURCES
     http/dto/request.cc http/dto/request.h
     http/dto/response.h
     utils.h
+    utils.cc
+    command/cache.cc
 )
 
 add_library(${PROJECT} STATIC ${SOURCES})
