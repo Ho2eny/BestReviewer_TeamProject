@@ -3,6 +3,7 @@ set(PROJECT ChatClientTest)
 set(SOURCES
     cache_test.cc
     functionality.cc
+    command_test.cc
     color_test.cc  
     parameter_test.cc
     json_serializer_test.cc
