@@ -21,11 +21,13 @@ public:
   RetrieveRoomResponse ConvertToRetrieveRoomResponseFrom(const Response& http_response) const;
 
 private:
-  // TODO(in.heo): Refactor: Endpoint 관리를 어떻게 할지 고민
   static const std::string kCreateRoomEndpoint;
   static const std::string kRetrieveRoomEndpoint;
+  static const std::string kSessionIdKey;
 
   std::string ConvertToJsonString(const CreateRoomRequest& create_room_request) const;
+
+  std::string GetRetrieveRoomEndpoint(const RetrieveRoomRequest& retrieve_room_request) const;
 
   std::shared_ptr<JsonSerializer> json_serializer_;
 };

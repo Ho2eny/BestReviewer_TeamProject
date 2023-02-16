@@ -22,11 +22,14 @@ public:
   Request ConvertToSendMessageHttpRequestFrom(const SendMessageRequest& send_message_request, const std::string& base_url) const;
 
 private:
-  // TODO(in.heo): Refactor: Endpoint 관리를 어떻게 할지 고민
   static const std::string kReceiveMessageEndpoint;
   static const std::string kSendMessageEndpoint;
+  static const std::string kSessionIdKey;
+  static const std::string kChatRoomKey;
 
   std::string ConvertToJsonString(const SendMessageRequest& send_message_request) const;
+
+  std::string GetReceiveMessageEndpoint(const ReceiveMessageRequest& receive_message_request) const;
 
   std::shared_ptr<JsonSerializer> json_serializer_;
 };
