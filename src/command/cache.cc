@@ -7,6 +7,7 @@ void Cache::SetTestPassword(const std::string &password) { SetKV(Cache::vTestPas
 void Cache::SetBaseUrl(const std::string &base_url) { SetKV(Cache::vBaseUrl, base_url); }
 void Cache::SetSessionID(const std::string &session_id) { SetKV(Cache::vSessionID, session_id); }
 void Cache::SetRoomName(const std::string &room_name) { SetKV(Cache::vChatRoomName, room_name); }
+void Cache::SetTestRoomName(const std::string &room_name) { SetKV(Cache::vTestChatRoomName, room_name); }
 void Cache::RemoveSessionID() { SetKV(Cache::vSessionID, ""); }
 std::string Cache::GetValue(const std::string &key) { return kv_[key]; }
 void Cache::SetRooms(const std::vector<std::string> &rooms) { rooms_ = rooms; }

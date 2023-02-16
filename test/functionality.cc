@@ -21,6 +21,7 @@ random_device dev;
 mt19937 rng(dev());
 uniform_int_distribution<mt19937::result_type> dist1000(1, 1000);
 static std::string id = "fifo_" + to_string(dist1000(rng));
+static std::string chatName = "fifo_chatRoom_" + to_string(dist1000(rng));
 
 class GothroughTest : public testing::Test
 {
@@ -37,6 +38,7 @@ protected:
         cache_.SetTestPassword("password");
         cache_.SetTestNonce("5");
         cache_.SetSessionID("");
+        cache_.SetTestRoomName(chatName);
     }
 
     void MakeCommands()
@@ -53,18 +55,13 @@ protected:
             invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogin, "Log in to the program")));
             invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogout, "Log  out of the program")));
 
-            invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kWrongCommand, "Wrong Command Test")));
-
             const std::unique_ptr<CommandCreator> roomCreator = make_unique<RoomCommandCreator>(cache_);
             invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kListRooms, "List all rooms")));
             invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kCreateRoom, "Create a room")));
 
-            invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kWrongCommand, "Wrong Command Test")));
-
             const std::unique_ptr<CommandCreator> chatCreator = make_unique<ChatCommandCreator>(cache_);
             invoker_->SetOnInvoke(move(chatCreator->CreateCommand(CommandType::kJoinRoom, "Join a room")));
 
-            invoker_->SetOnInvoke(move(chatCreator->CreateCommand(CommandType::kWrongCommand, "Wrong Command Test")));
         }
         catch (const InvalidCommandException &ex)
         {
@@ -125,4 +122,26 @@ TEST_F(GothroughTest, LogoutTest)
 
     invoker_->Invoke("52");
     EXPECT_TRUE(cache_.GetValue(Cache::vSessionID).empty());
+}
+
+TEST_F(GothroughTest, CreateChatRoomTest)
+{
+    MakeCommands();
+    
+    invoker_->Invoke("51");
+    EXPECT_FALSE(cache_.GetValue(Cache::vSessionID).empty());
+
+    invoker_->Invoke("61");
+    EXPECT_FALSE(cache_.GetValue(Cache::vChatRoomName).empty());
+}
+
+TEST_F(GothroughTest, ListChatRoomTest)
+{
+    MakeCommands();
+    
+    invoker_->Invoke("51");
+    EXPECT_FALSE(cache_.GetValue(Cache::vSessionID).empty());
+
+    invoker_->Invoke("60");
+    EXPECT_FALSE(cache_.GetRooms().empty());
 }
