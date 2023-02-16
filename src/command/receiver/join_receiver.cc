@@ -28,7 +28,7 @@ void* JoinReceiver::WorkerThread() {
 
       if(!CompareInfoAndStoreIfRequired(messages)) {
         cout << "[";
-        for (vector<Message>::iterator iter = messages.begin(); iter != messages.end(); iter++) { //for(auto& m : messages) {
+        for (vector<Message>::iterator iter = messages.begin(); iter != messages.end(); iter++) {
           cout << "{date : " << (*iter).GetDate() << " message :  " << getPaddingString((*iter).GetMessage(), 50) <<
             " room : " << (*iter).GetRoomName()  << " user_id : " << (*iter).GetUserId() << "}";
             if(iter == messages.end() - 1) cout << "]"<< endl;
