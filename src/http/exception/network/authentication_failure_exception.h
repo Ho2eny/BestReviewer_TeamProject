@@ -1,11 +1,11 @@
 #ifndef AUTHENTICATION_FAILURE_H_
 #define AUTHENTICATION_FAILURE_H_
 
-#include "../../../common/exception/base_exception.h"
+#include "base_network_exception.h"
 
-class AuthenticationFailureException : public BaseException {
+class AuthenticationFailureException : public BaseNetworkException {
 public:
-  AuthenticationFailureException(const char* message) : BaseException(message) {}
+  AuthenticationFailureException(const char* message) : BaseNetworkException(message) {}
 };
 
 #endif 

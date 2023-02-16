@@ -8,7 +8,6 @@
 #include "receiver/receiver.h"
 #include "command_type.h"
 #include "../common/exception/command/invalid_command_exception.h"
-#include "../http/exception/network/general_network_exception.h"
 
 class Command
 {
@@ -29,18 +28,7 @@ public:
     if (!receiver_)
       return true;
 
-    try
-    {
-      receiver_->Action();
-    }
-    catch (const GeneralNetworkException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const InvalidCommandException &ex)
-    {
-      throw InvalidCommandException(ex.what());
-    }
+    receiver_->Action();
 
     return true;
   }

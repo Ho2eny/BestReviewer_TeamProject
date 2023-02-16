@@ -12,12 +12,6 @@
 // #include "../../interface/dto/chat/send_message_request.h"
 // #include "../../interface/dto/chat/send_message_response.h"
 
-#include "../../http/exception/network/authentication_failure_exception.h"
-#include "../../http/exception/network/connection_failure_exception.h"
-#include "../../http/exception/network/dns_resolving_failure_exception.h"
-#include "../../http/exception/network/internal_exception.h"
-#include "../../http/exception/network/general_network_exception.h"
-
 class ChatReceiver : public Receiver
 {
   // public:

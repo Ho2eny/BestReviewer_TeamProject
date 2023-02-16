@@ -1,11 +1,11 @@
 #ifndef DNS_RESOLVING_FAILURE_H_
 #define DNS_RESOLVING_FAILURE_H_
 
-#include "../../../common/exception/base_exception.h"
+#include "base_network_exception.h"
 
-class DnsResolvingFailureException : public BaseException {
+class DnsResolvingFailureException : public BaseNetworkException {
 public:
-  DnsResolvingFailureException(const char* message) : BaseException(message) {}
+  DnsResolvingFailureException(const char* message) : BaseNetworkException(message) {}
 };
 
 #endif 

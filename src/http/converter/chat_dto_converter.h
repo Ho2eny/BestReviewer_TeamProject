@@ -1,7 +1,7 @@
 #ifndef CHAT_DTO_CONVERTER_H_
 #define CHAT_DTO_CONVERTER_H_
 
-#include "./json_serializer.h"
+#include "json_serializer.h"
 
 #include "../../interface/dto/chat/receive_message_request.h"
 #include "../../interface/dto/chat/receive_message_response.h"

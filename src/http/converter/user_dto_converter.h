@@ -1,7 +1,7 @@
 #ifndef USER_DTO_CONVERTER_H_
 #define USER_DTO_CONVERTER_H_
 
-#include "./json_serializer.h"
+#include "json_serializer.h"
 
 #include "../../interface/dto/user/login_response.h"
 #include "../../interface/dto/user/login_request.h"

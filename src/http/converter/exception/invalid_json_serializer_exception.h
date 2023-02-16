@@ -1,11 +1,11 @@
 #ifndef INVALID_JSON_SERIALIZER_EXCEPTION_H_
 #define INVALID_JSON_SERIALIZER_EXCEPTION_H_
 
-#include "../../../common/exception/base_exception.h"
+#include "base_json_exception.h"
 
-class InvalidJsonSerializerException : public BaseException {
+class InvalidJsonSerializerException : public BaseJsonException {
 public:
-  InvalidJsonSerializerException(const char* message) : BaseException(message) {}
+  InvalidJsonSerializerException(const char* message) : BaseJsonException(message) {}
 };
 
 #endif 
