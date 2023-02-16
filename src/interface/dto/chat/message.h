@@ -12,6 +12,11 @@ public:
   std::string GetRoomName() const;
   std::string GetUserId() const;
 
+  bool operator==(const Message &rhs) const { 
+    return ( date_ == rhs.date_) && (message_ == rhs.message_)
+    && ( room_name_ == rhs.room_name_) && (user_id_ == rhs.user_id_);
+  }
+
 private:
   int date_;
   std::string message_;
