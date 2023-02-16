@@ -16,7 +16,7 @@ public:
   {
     ReceiveMessageResponse response = repository_->ReceiveMessage(request);
     for (const auto &it : response.GetMessages())
-      color.ReceivedMessage(it.GetMessage());
+      color_.ReceivedMessage(it.GetMessage());
   }
 
   void Action() override
@@ -43,12 +43,12 @@ public:
         cin >> command;
         keep = command == "quit";
 
-        color.Message(command);
+        color_.Message(command);
       }
     }
     catch (const InvalidCommandException &ex)
     {
-      color.ImportantWithLineFeed(ex.what());
+      color_.ImportantWithLineFeed(ex.what());
     }
   }
 
@@ -57,14 +57,13 @@ public:
     if (!cache_.GetValue(Cache::vTestChatRoomName).empty())
       return cache_.GetValue(Cache::vTestChatRoomName);
 
-    AnsiColor color;
     std::string chat_room_name;
-    color.Important(" > Enter Chat Room Name: ");
+    color_.Important(" > Enter Chat Room Name: ");
     std::cin >> chat_room_name;
     return chat_room_name;
   }
 
 private:
-  AnsiColor color;
+  AnsiColor color_;
 };
 #endif
