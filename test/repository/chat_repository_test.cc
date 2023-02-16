@@ -9,6 +9,7 @@
 #include "../../src/common/exception/chat/fail_parse_receive_message_reseponse_exception.h"
 #include "../../src/common/exception/chat/fail_receive_message_exception.h"
 #include "../../src/common/exception/chat/fail_send_message_exception.h"
+#include "../../src/common/exception/chat/invalid_chat_repository_exception.h"
 #include "../../src/http/exception/network/base_network_exception.h"
 #include "../../src/http/http_plugin.h"
 
@@ -109,4 +110,11 @@ TEST_F(ChatHttpRepositoryTestFixture, receiveMessageFailNetworkIssue) {
 
   ReceiveMessageRequest temp_request;
   EXPECT_THROW(chat_repository_->ReceiveMessage(temp_request), FailReceiveMessageException);
+}
+
+TEST_F(ChatHttpRepositoryTestFixture, invalidHttpClient) {
+  chat_repository_->SetHttpClient(nullptr);
+
+  ReceiveMessageRequest temp_request;
+  EXPECT_THROW(chat_repository_->ReceiveMessage(temp_request), InvalidChatRepositoryException);
 }

@@ -8,6 +8,7 @@
 #include "../../src/common/exception/user/fail_logout_exception.h"
 #include "../../src/common/exception/user/fail_signup_exception.h"
 #include "../../src/common/exception/user/fail_parse_session_id_exception.h"
+#include "../../src/common/exception/user/invalid_user_repository_exception.h"
 #include "../../src/http/exception/network/base_network_exception.h"
 #include "../../src/http/repository/user_http_repository.h"
 #include "../../src/http/http_plugin.h"
@@ -134,6 +135,13 @@ TEST_F(UserHttpRepositoryTestFixture, signupFailNetworkIssue) {
 
   SignupRequest temp_request;
   EXPECT_THROW(user_repository_->Signup(temp_request), FailSignupException);
+}
+
+TEST_F(UserHttpRepositoryTestFixture, invalidHttpClient) {
+  user_repository_->SetHttpClient(nullptr);
+
+  SignupRequest temp_request;
+  EXPECT_THROW(user_repository_->Signup(temp_request), InvalidUserRepositoryException);
 }
 
 // TODO(in.heo): Prohibited Character 조건 테스트 추가 필요:
