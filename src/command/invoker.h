@@ -8,7 +8,6 @@
 #include "command.h"
 #include "cache.h"
 #include "../ui_helper/ansi_color.h"
-#include "../http/exception/network/general_network_exception.h"
 
 class Invoker
 {
@@ -27,17 +26,8 @@ public:
     std::transform(lower_command_key.begin(), lower_command_key.end(), lower_command_key.begin(), ::tolower);
     for (const auto &it : on_invoke_)
     {
-      if ((*it).GetCommandKey() == lower_command_key)
-      {
-        try
-        {
-          return it->Execute();
-        }
-        catch (const GeneralNetworkException &ex)
-        {
-          throw GeneralNetworkException(ex.what());
-        }
-      }
+      if ((*it).GetCommandKey() == lower_command_key) 
+        return it->Execute();
     }
 
     throw InvalidCommandException("Command not found");

@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "./message.h"
+#include "message.h"
 
 class ReceiveMessageResponse : public BaseResponse {
 public:

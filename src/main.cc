@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
         {
             color.ErrorWithLineFeed(ex.what());
         }
-        catch (const GeneralNetworkException &ex)
+        catch (const BaseException &ex)
         {
             color.ErrorWithLineFeed(ex.what());
         }
