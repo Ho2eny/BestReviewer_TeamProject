@@ -1,3 +1,6 @@
+#ifndef COMMAND_TYPE_
+#define COMMAND_TYPE_
+
 enum class CommandType
 {
   kSignup = 50,
@@ -7,3 +10,5 @@ enum class CommandType
   kCreateRoom = 61,
   kJoinRoom = 62
 };
+
+#endif
