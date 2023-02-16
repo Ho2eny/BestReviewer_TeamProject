@@ -135,6 +135,13 @@ TEST_F(GothroughTest, CreateChatRoomTest)
     EXPECT_FALSE(cache_.GetValue(Cache::vChatRoomName).empty());
 }
 
+TEST_F(GothroughTest, CreateChatRoomFailureTest)
+{
+    MakeCommands();
+
+    EXPECT_THROW(invoker_->Invoke("61"), InvalidCommandException);
+}
+
 TEST_F(GothroughTest, ListChatRoomTest)
 {
     MakeCommands();
