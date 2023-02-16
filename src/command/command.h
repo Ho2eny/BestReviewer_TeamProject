@@ -12,43 +12,16 @@
 class Command
 {
 public:
-  Command(std::string command_key, std::string description, std::unique_ptr<Receiver> receiver = nullptr)
-      : command_key_(command_key), description_(description), receiver_(move(receiver))
-  {
-    std::transform(command_key_.begin(), command_key_.end(), command_key_.begin(), ::tolower);
-  }
-
-  Command(CommandType command_key, std::string description, std::unique_ptr<Receiver> receiver = nullptr)
-      : Command(std::to_string(static_cast<int>(command_key)), description, move(receiver)) {}
+  Command(std::string command_key, std::string description, std::unique_ptr<Receiver> receiver = nullptr);
+  Command(CommandType command_key, std::string description, std::unique_ptr<Receiver> receiver = nullptr);
 
   virtual ~Command() {}
 
-  virtual bool Execute() const
-  {
-    if (!receiver_)
-      return true;
+  virtual bool Execute() const;
 
-    try
-    {
-      receiver_->Action();
-    }
-    catch (const InvalidCommandException &ex)
-    {
-      throw InvalidCommandException(ex.what());
-    }
+  std::string GetDescription() const;
 
-    return true;
-  }
-
-  std::string GetDescription() const
-  {
-    return description_;
-  }
-
-  std::string GetCommandKey()
-  {
-    return command_key_;
-  }
+  std::string GetCommandKey();
 
 protected:
   std::string command_key_;

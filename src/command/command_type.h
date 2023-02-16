@@ -8,7 +8,8 @@ enum class CommandType
   kLogout = 52,
   kListRooms = 60,
   kCreateRoom = 61,
-  kJoinRoom = 62
+  kJoinRoom = 62,
+  kWrongCommand = 1000
 };
 
 #endif

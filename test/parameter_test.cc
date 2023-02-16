@@ -67,4 +67,9 @@ TEST(ParameterTest, portException)
   argc = sizeof(argv4) / sizeof(char *);
   ParameterValidator validator4(argc, const_cast<char **>(argv4));
   ASSERT_THROW(validator4.GetBaseUrl(), InvalidParameterException);
+
+  const char *argv5[] = {"client", "10.241.114.152", "abc"};
+  argc = sizeof(argv5) / sizeof(char *);
+  ParameterValidator validator5(argc, const_cast<char **>(argv5));
+  ASSERT_THROW(validator5.GetBaseUrl(), InvalidParameterException);
 }

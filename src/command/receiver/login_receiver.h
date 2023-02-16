@@ -7,6 +7,7 @@
 #include "../../utils.h"
 #include "user_receiver.h"
 #include "../../common/exception/user/fail_login_exception.h"
+#include "../../common/exception/command/invalid_command_exception.h"
 
 class LoginReceiver : public UserReceiver
 {
