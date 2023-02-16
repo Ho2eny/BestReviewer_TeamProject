@@ -62,7 +62,32 @@ TEST_F(RoomHttpRepositoryTestFixture, retrieveRoomSuccess) {
   const std::string kValidResponseBody = "[{\"room\":\"room_name_1\"},{\"room\":\"room_name_2\"},{\"room\":\"room_name_3\"}]";
   Response kValidResponse(200, "", kValidResponseBody);
   EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kValidResponse));
-  
+
   RetrieveRoomRequest temp_request;
   RetrieveRoomResponse response = room_repository_->RetrieveRoom(temp_request);
+
+  std::vector<std::string> rooms = response.GetRoomNames();
+  EXPECT_TRUE(rooms[0] == "room_name_1");
+  EXPECT_TRUE(rooms[1] == "room_name_2");
+  EXPECT_TRUE(rooms[2] == "room_name_3");
+}
+
+TEST_F(RoomHttpRepositoryTestFixture, retrieveRoomSuccessFailedToParseResponse) {
+  const std::string kInvalidJsonResponse = "[{\"room\":\"room_name_1},\"room\":\"room_name_2\",\"room\":\"room_name_3\"}]";
+  Response kInvalidResponse(200, "", kInvalidJsonResponse);
+
+  EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kInvalidResponse));
+
+  RetrieveRoomRequest temp_request;
+  EXPECT_THROW(room_repository_->RetrieveRoom(temp_request), FailParseRetrieveRoomResponseException);
+}
+
+TEST_F(RoomHttpRepositoryTestFixture, retrieveRoomFail) {
+  const std::string kErrorMessage = "Account information absence";
+  Response kInvalidResponse(400, "", kErrorMessage);
+
+  EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kInvalidResponse));
+
+  RetrieveRoomRequest temp_request;
+  EXPECT_THROW(room_repository_->RetrieveRoom(temp_request), FailRetrieveRoomException);
 }

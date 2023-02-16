@@ -53,9 +53,9 @@ TEST_F(UserHttpRepositoryTestFixture, loginSuccessFailedToParseSessionId) {
   const std::string kTestSessionId = "MkUdmbzNVZE678CgRV16lL1z5lyGTjal";
   const std::string kInvalidJsonBodyFromServer = "{\"session_id\"" + kTestSessionId + "\"}";
 
-  Response kValidResponse(200, "", kInvalidJsonBodyFromServer);
+  Response kInvalidResponse(200, "", kInvalidJsonBodyFromServer);
 
-  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kValidResponse));
+  EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kInvalidResponse));
 
   LoginRequest temp_request;
   EXPECT_THROW(user_repository_->Login(temp_request), FailParseSessionIdException);

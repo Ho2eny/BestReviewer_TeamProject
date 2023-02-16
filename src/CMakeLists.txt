@@ -8,10 +8,14 @@ set(SOURCES
     http/http_plugin.h
     http/thirdparty/curl/curl_client.cc 
     http/thirdparty/curl/curl_client.h
+    http/repository/chat_http_repository.cc
+    http/repository/chat_http_repository.h
     http/repository/user_http_repository.cc
     http/repository/user_http_repository.h
     http/repository/room_http_repository.cc
     http/repository/room_http_repository.h
+    http/converter/chat_dto_converter.h
+    http/converter/chat_dto_converter.cc
     http/converter/user_dto_converter.h
     http/converter/user_dto_converter.cc
     http/converter/room_dto_converter.h

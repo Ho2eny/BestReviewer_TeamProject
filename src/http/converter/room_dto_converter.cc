@@ -19,7 +19,7 @@ Request RoomDtoConverter::ConvertToRetrieveRoomHttpRequestFrom(const RetrieveRoo
   Request http_request(base_url);
 
   std::string path = kRetrieveRoomEndpoint + "?" + "session_id=" + retrieve_room_request.GetSessionId();
-  http_request.SetPath(kRetrieveRoomEndpoint);
+  http_request.SetPath(path);
 
   return http_request;
 }
