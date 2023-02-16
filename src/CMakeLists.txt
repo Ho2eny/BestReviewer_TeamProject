@@ -24,7 +24,14 @@ set(SOURCES
     http/dto/response.h
     utils.h
     utils.cc
-    command/cache.cc
+    command/cache.h command/cache.cc
+    command/invoker.h command/invoker.cc
+    command/command.h command/command.cc
+    command/parameter_validator.h command/parameter_validator.cc
+    command/factory/command_creator.h
+    command/factory/command_creator.cc
+    command/factory/receiver_creator.h
+    command/factory/receiver_creator.cc
 )
 
 add_library(${PROJECT} STATIC ${SOURCES})

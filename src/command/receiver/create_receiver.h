@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <algorithm>
 #include "../cache.h"
 #include "room_receiver.h"
 
