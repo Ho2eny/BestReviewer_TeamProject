@@ -4,27 +4,9 @@
 #include "command/invoker.h"
 #include "command/cache.h"
 
-#include "command/receiver/signup_receiver.h"
-#include "command/receiver/login_receiver.h"
-#include "command/receiver/logout_receiver.h"
-
-#include "http/repository/user_http_repository.h"
-#include "http/repository/room_http_repository.h"
-
-#include "command/receiver/create_receiver.h"
-#include "command/receiver/join_receiver.h"
-#include "command/receiver/list_receiver.h"
-#include "command/receiver/create_receiver.h"
-#include "command/receiver/join_receiver.h"
-#include "command/receiver/list_receiver.h"
-
-#include "command/login.h"
-#include "command/signup.h"
-#include "command/createchatroom.h"
-#include "command/joinchatroom.h"
-#include "command/listchatrooms.h"
-#include "command/parameter_validator.h"
 #include "command/quit.h"
+#include "command/parameter_validator.h"
+#include "command/factory/command_creator.h"
 
 #define CHAT_QUIT "q"
 #define CHAT_LONG_QUIT "quit"
@@ -33,19 +15,27 @@ using namespace std;
 
 void MakeCommands(const unique_ptr<Invoker> &invoker, Cache &cache)
 {
+
+    AnsiColor color;
     string base_url = cache.GetValue(Cache::vBaseUrl);
     invoker->SetOnInvoke(move(make_unique<Quit>(CHAT_QUIT, "Quit Application")));
     invoker->SetOnInvoke(move(make_unique<Quit>(CHAT_LONG_QUIT, "Quit Application")));
 
-    shared_ptr<UserHttpRepository> user_repo = make_shared<UserHttpRepository>(base_url);
-    invoker->SetOnInvoke(move(make_unique<Login>(CommandType::kSignup, "Sign up for the program", move(make_unique<SignupReceiver>(cache, user_repo)))));
-    invoker->SetOnInvoke(move(make_unique<Login>(CommandType::kLogin, "Log in to the program", move(make_unique<LoginReceiver>(cache, user_repo)))));
-    invoker->SetOnInvoke(move(make_unique<Login>(CommandType::kLogout, "Log out of the program", move(make_unique<LogoutReceiver>(cache, user_repo)))));
+    try {
+        const std::unique_ptr<CommandCreator> userCreator = make_unique<UserCommandCreator>(cache);
+        invoker->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kSignup, "Sign up for the program")));
+        invoker->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogin, "Log in to the program")));
+        invoker->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogout, "Log  out of the program")));
 
-    shared_ptr<RoomHttpRepository> room_repo = make_shared<RoomHttpRepository>(base_url);
-    invoker->SetOnInvoke(move(make_unique<ListChatRooms>(CommandType::kListRooms, "List all rooms", move(make_unique<ListReceiver>(cache, room_repo)))));
-    invoker->SetOnInvoke(move(make_unique<CreateChatRoom>(CommandType::kCreateRoom, "Create a room", move(make_unique<CreateReceiver>(cache, room_repo)))));
-    // invoker->SetOnInvoke(move(make_unique<JoinChatRoom>(CommandType::kJoinRoom, "Join a room", move(make_unique<JoinReceiver>(cache, room_repo)))));
+        const std::unique_ptr<CommandCreator> roomCreator = make_unique<RoomCommandCreator>(cache);
+        invoker->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kListRooms, "List all rooms")));
+        invoker->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kCreateRoom, "Create a room")));
+        invoker->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kJoinRoom, "Join a room")));
+    }
+    catch (const InvalidCommandException& ex) 
+    {
+        color.ImportantWithLineFeed(ex.what());
+    }
 }
 
 int main(int argc, char *argv[])
@@ -81,7 +71,7 @@ int main(int argc, char *argv[])
         {
             color.ErrorWithLineFeed(ex.what());
         }
-        catch (const GeneralNetworkException &ex)
+        catch (const BaseException &ex)
         {
             color.ErrorWithLineFeed(ex.what());
         }

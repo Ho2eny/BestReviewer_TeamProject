@@ -13,7 +13,7 @@ LoginResponse UserDtoConverter::ConvertToLoginResponseFrom(const Response& http_
   try {
     json_object = json_serializer_->ParseJson(http_response.GetBody());
   }
-  catch (const BaseException& e) {
+  catch (const BaseJsonException& e) {
     throw e;
   }
 

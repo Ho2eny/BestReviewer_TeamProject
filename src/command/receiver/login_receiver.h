@@ -6,7 +6,6 @@
 #include "../cache.h"
 #include "../../utils.h"
 #include "user_receiver.h"
-#include "../../common/exception/user/fail_login_exception.h"
 
 class LoginReceiver : public UserReceiver
 {
@@ -19,35 +18,12 @@ public:
     std::string password = GetPassword();
     AuthorizationKey key(id, password);
 
-    try
-    {
-      LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
-      LoginResponse response = repository_->Login(request);
-      cache_.SetSessionID(response.GetSessionId());
+    LoginRequest request(id, key.QueryNonce(), key.QueryPasswordWithNonce());
+    LoginResponse response = repository_->Login(request);
+    cache_.SetSessionID(response.GetSessionId());
 
-      AnsiColor color;
-      color.TextWithLineFeed("Logged in with " + id);
-    }
-    catch (const InternalException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const AuthenticationFailureException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const ConnectionFailureException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const DnsResolvingFailureException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const FailLoginException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
+    AnsiColor color;
+    color.TextWithLineFeed("Logged in with " + id);
   }
 };
 

@@ -5,7 +5,6 @@
 #include <memory>
 #include "../cache.h"
 #include "room_receiver.h"
-#include "../../common/exception/room/fail_create_room_exception.h"
 
 class CreateReceiver : public RoomReceiver
 {
@@ -14,39 +13,12 @@ public:
 
   void Action() override
   {
-    try
-    {
-      std::string room_name = GetRoomName();
-      std::string session_id = GetSessionID();
-      CreateRoomRequest request(room_name, session_id);
-      CreateRoomResponse response = repository_->CreateRoom(request);
+    std::string room_name = GetRoomName();
+    std::string session_id = GetSessionID();
+    CreateRoomRequest request(room_name, session_id);
+    CreateRoomResponse response = repository_->CreateRoom(request);
 
-      cache_.SetRoomName(room_name);
-    }
-    catch (const InternalException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const AuthenticationFailureException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const ConnectionFailureException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const DnsResolvingFailureException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const FailCreateRoomException &ex)
-    {
-      throw GeneralNetworkException(ex.what());
-    }
-    catch (const InvalidCommandException &ex)
-    {
-      throw InvalidCommandException(ex.what());
-    }
+    cache_.SetRoomName(room_name);
   }
 
   std::string GetRoomName()

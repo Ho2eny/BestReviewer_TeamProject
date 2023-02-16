@@ -5,7 +5,6 @@
 #include <memory>
 #include "../cache.h"
 #include "room_receiver.h"
-// #include "../../common/exception/user/fail_receive_exception.h"
 
 class JoinReceiver : public RoomReceiver
 {

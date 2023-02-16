@@ -12,6 +12,13 @@ public:
     : status_code_(status_code), error_message_(error_message), body_(body) {}
   ~Response() {}
 
+  Response& operator=(const Response &response) {
+    status_code_ = response.GetStatusCode();
+    error_message_ = response.GetErrorMessage();
+    body_ = response.GetBody();
+    return *this;
+  }
+
   int GetStatusCode() const { return status_code_; } 
   string GetErrorMessage() const { return error_message_; }
   string GetBody() const { return body_; }

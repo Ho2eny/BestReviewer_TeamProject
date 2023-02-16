@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <string>
-#include "./command.h"
+#include "command.h"
 
 class Signup : public Command
 {

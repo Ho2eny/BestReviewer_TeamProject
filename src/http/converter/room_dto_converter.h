@@ -1,7 +1,7 @@
 #ifndef ROOM_DTO_CONVERTER_H_
 #define ROOM_DTO_CONVERTER_H_
 
-#include "./json_serializer.h"
+#include "json_serializer.h"
 
 #include "../../interface/dto/room/create_room_response.h"
 #include "../../interface/dto/room/create_room_request.h"

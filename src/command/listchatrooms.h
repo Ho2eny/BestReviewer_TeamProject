@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include "./command.h"
+#include "command.h"
 
 class ListChatRooms : public Command
 {

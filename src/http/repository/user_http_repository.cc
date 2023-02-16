@@ -1,5 +1,7 @@
 #include "user_http_repository.h"
 
+#include "../converter/exception/base_json_exception.h"
+#include "../exception/network/base_network_exception.h"
 #include "../../common/exception/user/fail_login_exception.h"
 #include "../../common/exception/user/fail_logout_exception.h"
 #include "../../common/exception/user/fail_parse_session_id_exception.h"
@@ -15,43 +17,55 @@ LoginResponse UserHttpRepository::Login(const LoginRequest& request) {
   if (!CheckPrecondition()) throw InvalidUserRepositoryException("Conveter or HttpClient is not valid");
 
   Request http_request = user_dto_converter_->ConvertToLoginHttpRequestFrom(request, base_url_);
-  Response http_response = http_client_->Post(http_request);
 
-  if (http_response.IsSuccess()) {
-    LoginResponse login_response;
-    try {
+  try {
+    Response http_response = http_client_->Post(http_request);
+
+    if (http_response.IsSuccess()) {
+      LoginResponse login_response;
       login_response = user_dto_converter_->ConvertToLoginResponseFrom(http_response);
+      return login_response;
     }
-    catch (const BaseException& e) {
-      throw FailParseSessionIdException(e.what());
+    else {
+      throw FailLoginException(http_response.GetBody().c_str());
     }
-
-    return login_response;
   }
-
-  throw FailLoginException(http_response.GetErrorMessage().c_str());
+  catch (const BaseNetworkException& e) {
+    throw FailLoginException(e.what());
+  }
+  catch (const BaseJsonException& e) {
+    throw FailParseSessionIdException(e.what());
+  }
 }
 
 LogoutResponse UserHttpRepository::Logout(const LogoutRequest& request) {
   if (!CheckPrecondition()) throw InvalidUserRepositoryException("Conveter or HttpClient is not valid");
 
   Request http_request = user_dto_converter_->ConvertToLogoutHttpRequestFrom(request, base_url_);
-  Response http_response = http_client_->Delete(http_request);
 
-  if (http_response.IsSuccess()) return LogoutResponse();
-
-  throw FailLogoutException(http_response.GetErrorMessage().c_str());
+  try {
+    Response http_response = http_client_->Delete(http_request);
+    if (http_response.IsSuccess()) return LogoutResponse();
+    else throw FailLogoutException(http_response.GetBody().c_str());
+  }
+  catch (const BaseNetworkException& e) {
+    throw FailLogoutException(e.what());
+  }
 }
 
 SignupResponse UserHttpRepository::Signup(const SignupRequest& request) {
   if (!CheckPrecondition()) throw InvalidUserRepositoryException("Conveter or HttpClient is not valid");
 
   Request http_request = user_dto_converter_->ConvertToSignupHttpRequestFrom(request, base_url_);
-  Response http_response = http_client_->Post(http_request);
 
-  if (http_response.IsSuccess()) return SignupResponse();
-
-  throw FailSignupException(http_response.GetErrorMessage().c_str());
+  try {
+    Response http_response = http_client_->Post(http_request);
+    if (http_response.IsSuccess()) return SignupResponse();
+    else throw FailSignupException(http_response.GetBody().c_str());
+  }
+  catch (const BaseNetworkException& e) {
+    throw FailSignupException(e.what());
+  }
 }
 
 void UserHttpRepository::SetHttpClient(const std::shared_ptr<HttpPlugin>& client) {
