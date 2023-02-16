@@ -15,7 +15,7 @@
 #include "../../interface/dto/chat/receive_message_response.h"
 #include <vector>
 
-static void* WorkerThread(void *arg);
+static void *ThreadWrapper(void *me);
 
 class JoinReceiver : public ChatReceiver
 {
@@ -24,11 +24,11 @@ public:
 
   ~JoinReceiver() {
     //TODO memory leak if fails?
-    if (pthread_attr_destroy(&attr) != 0)
+    if (pthread_attr_destroy(&attr_) != 0)
       throw FailThreadAttrDestroyException("pthread_attr_destroy is failed");
 
     void *status;
-    pthread_join(thread_id, (void **)&status);
+    pthread_join(thread_id_, (void **)&status);
     if (status != 0)
       throw FailThreadJoinException("pthread_join is failed");
   }
@@ -43,6 +43,8 @@ public:
 
   void Action() override
   {
+
+/*
     std::string sessionID = cache_.GetValue(Cache::vSessionID);
     if (sessionID.empty())
       throw InvalidCommandException("Session is not exists");
@@ -72,6 +74,9 @@ public:
     {
       color_.ImportantWithLineFeed(ex.what());
     }
+
+*/
+
   }
 
   std::string GetRoomName()
@@ -87,40 +92,54 @@ public:
   
   void GenerateThread(void);
 
+  void *WorkerThread();
+  
 private:
-  AnsiColor color;
-  pthread_t thread_id;
-  pthread_attr_t attr;
+  AnsiColor color_;
+  pthread_t thread_id_;
+  pthread_attr_t attr_;
   int tid;
 };
 
 void JoinReceiver::GenerateThread(void) {
 
-  if (pthread_attr_init(&attr) != 0)
+  if (pthread_attr_init(&attr_) != 0)
     throw FailThreadAttrInitException("pthread_attr_init is failed");
 
-  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+  pthread_attr_setdetachstate(&attr_, PTHREAD_CREATE_JOINABLE);
 
-  if (pthread_create(&thread_id, NULL, &WorkerThread, (void*)this) < 0)
+  if (pthread_create(&thread_id_, NULL, ThreadWrapper, (void*)this) < 0 ) {
       throw FailThreadCreateException("pthread_create is failed");
+  }
 
   cout << "Generate success" << endl;
 }
 
-static void* WorkerThread(void *arg) {
+// static
+static void *ThreadWrapper(void *me) {
+
+    static_cast<JoinReceiver *>(me)->WorkerThread();
+
+    return nullptr;
+}
+
+void* JoinReceiver::WorkerThread() {
   pthread_t tid;
   tid = pthread_self();
   cout << "CJ TEST WorkerThread tid is " << tid << endl;
 
-  JoinReceiver* r = static_cast<JoinReceiver*>(arg); 
-  ReceiveMessageRequest request(r->GetRoomName(), r->GetSessionID());
-   
-  ReceiveMessageResponse response = chat_repository_->ReceiveMessage(request);
+  //JoinReceiver* r = static_cast<JoinReceiver*>(arg);
+  std::string sessionID = cache_.GetValue(Cache::vSessionID);
+  std::string room_name = GetRoomName();
+  cache_.SetRoomName(room_name);
+
+  ReceiveMessageRequest request(room_name, sessionID);
+  ReceiveMessageResponse response = repository_->ReceiveMessage(request);
   std::vector<Message> messages = response.GetMessages();
   int test_index = 0; 
-  for( Message m : messages ) {
-    cout << "CJ TEST test index is " << test_index++ << << "date : " << m.GetDate() << "message : " <<  m.GetMessage() <<
-      "room : " << m.GetRoomName() << "user_id" : << m.GetUserId() << endl;
+  for(auto& m : messages ) {
+    cout << "CJ TEST test index is " << test_index++ << "date : " << m.GetDate() << "message : " <<  m.GetMessage() <<
+      "room : " << m.GetRoomName() << "user_id : " << m.GetUserId() << endl;
 
   }
 
