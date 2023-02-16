@@ -13,10 +13,7 @@ CreateRoomResponse RoomHttpRepository::CreateRoom(const CreateRoomRequest& reque
   Request http_request = room_dto_converter_->ConvertToCreateRoomHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Post(http_request);
 
-  // TODO(in.heo): Replace this statement to Response::IsSuccess()
-  if (http_response.GetStatusCode() >= 200 && http_response.GetStatusCode() < 300) {
-    return CreateRoomResponse();
-  }
+  if (http_response.IsSuccess()) return CreateRoomResponse();
 
   throw FailCreateRoomException(http_response.GetErrorMessage().c_str());
 }
@@ -25,9 +22,9 @@ RetrieveRoomResponse RoomHttpRepository::RetrieveRoom(const RetrieveRoomRequest&
   Request http_request = room_dto_converter_->ConvertToRetrieveRoomHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Get(http_request);
 
-  // TODO(in.heo): Replace this statement to Response::IsSuccess()
-  if (http_response.GetStatusCode() >= 200 && http_response.GetStatusCode() < 300) {
+  if (http_response.IsSuccess()) {
     RetrieveRoomResponse response;
+
     try {
       response = room_dto_converter_->ConvertToRetrieveRoomResponseFrom(http_response);
     }
@@ -35,7 +32,6 @@ RetrieveRoomResponse RoomHttpRepository::RetrieveRoom(const RetrieveRoomRequest&
       // TODO(in.heo): Be better exception naming
       throw FailParseRetrieveRoomResponseException(e.what());
     }
-
     return response;
   }
 

@@ -14,7 +14,7 @@ LoginResponse UserHttpRepository::Login(const LoginRequest& request) {
   Request http_request = user_dto_converter_->ConvertToLoginHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Post(http_request);
 
-  if (http_response.GetStatusCode() >= 200 && http_response.GetStatusCode() < 300) {
+  if (http_response.IsSuccess()) {
     LoginResponse login_response;
     try {
       login_response = user_dto_converter_->ConvertToLoginResponseFrom(http_response);
@@ -33,8 +33,7 @@ LogoutResponse UserHttpRepository::Logout(const LogoutRequest& request) {
   Request http_request = user_dto_converter_->ConvertToLogoutHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Delete(http_request);
 
-  if (http_response.GetStatusCode() >= 200 && http_response.GetStatusCode() < 300)
-    return LogoutResponse();
+  if (http_response.IsSuccess()) return LogoutResponse();
 
   throw FailLogoutException(http_response.GetErrorMessage().c_str());
 }
@@ -43,9 +42,7 @@ SignupResponse UserHttpRepository::Signup(const SignupRequest& request) {
   Request http_request = user_dto_converter_->ConvertToSignupHttpRequestFrom(request, base_url_);
   Response http_response = http_client_->Post(http_request);
 
-  if (http_response.GetStatusCode() >= 200 && http_response.GetStatusCode() < 300) {
-    return SignupResponse();
-  }
+  if (http_response.IsSuccess()) return SignupResponse();
 
   throw FailSignupException(http_response.GetErrorMessage().c_str());
 }
