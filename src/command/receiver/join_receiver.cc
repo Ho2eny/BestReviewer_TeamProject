@@ -28,11 +28,12 @@ void* JoinReceiver::WorkerThread() {
 
       if(!CompareInfoAndStoreIfRequired(messages)) {
         cout << "[";
-        for(auto& m : messages) {
-          cout << " {date : " << m.GetDate() << " message :  " <<  getPaddingString(m.GetMessage(), 50) <<
-            " room : " << m.GetRoomName()  << " user_id : " << m.GetUserId() << "}"<< endl;
+        for (vector<Message>::iterator iter = messages.begin(); iter != messages.end(); iter++) { //for(auto& m : messages) {
+          cout << "{date : " << (*iter).GetDate() << " message :  " << getPaddingString((*iter).GetMessage(), 50) <<
+            " room : " << (*iter).GetRoomName()  << " user_id : " << (*iter).GetUserId() << "}";
+            if(iter == messages.end() - 1) cout << "]"<< endl;
+            cout << endl;
         }
-        cout << "]"<< endl;
       }
     }
     catch (const BaseException &ex)
