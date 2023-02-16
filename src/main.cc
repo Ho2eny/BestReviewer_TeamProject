@@ -30,7 +30,9 @@ void MakeCommands(const unique_ptr<Invoker> &invoker, Cache &cache)
         const std::unique_ptr<CommandCreator> roomCreator = make_unique<RoomCommandCreator>(cache);
         invoker->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kListRooms, "List all rooms")));
         invoker->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kCreateRoom, "Create a room")));
-        invoker->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kJoinRoom, "Join a room")));
+
+        const std::unique_ptr<CommandCreator> chatCreator = make_unique<ChatCommandCreator>(cache);
+        invoker->SetOnInvoke(move(chatCreator->CreateCommand(CommandType::kJoinRoom, "Join a room")));
     }
     catch (const InvalidCommandException& ex) 
     {

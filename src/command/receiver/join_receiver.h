@@ -4,18 +4,52 @@
 #include <iostream>
 #include <memory>
 #include "../cache.h"
-#include "room_receiver.h"
+#include "chat_receiver.h"
 
-class JoinReceiver : public RoomReceiver
+class JoinReceiver : public ChatReceiver
 {
 public:
-  JoinReceiver(Cache &cache, std::shared_ptr<RoomRepository> repository) : RoomReceiver(cache, repository) {}
+  JoinReceiver(Cache &cache, std::shared_ptr<ChatRepository> repository) : ChatReceiver(cache, repository) {}
+
+  // TODO : Change to thread
+  void ReceiveMessage(const ReceiveMessageRequest& request)
+  {
+    ReceiveMessageResponse response = repository_->ReceiveMessage(request);
+    for (const auto &it : response.GetMessages())
+      color.ReceivedMessage(it.GetMessage());
+  }
 
   void Action() override
   {
-    // JoinRequest request(sessionID, roomName);
-    // Waiting for the implementatino from in.heo
-    // JoinRoomResponse response = repository.JoinRoom(request);
+    std::string sessionID = cache_.GetValue(Cache::vSessionID);
+    if (sessionID.empty())
+      throw InvalidCommandException("Session is not exists");
+
+    try
+    {
+      std::string room_name = GetRoomName();
+      cache_.SetRoomName(room_name);
+
+      ReceiveMessageRequest request(room_name, sessionID);
+
+      // TODO : Change to thread
+      bool keep = true;
+      std::string command;
+      while (keep)
+      {
+        ReceiveMessage(request);
+
+        
+        cin >> command;
+        keep = command == "quit";
+
+        color.Message(command);
+      }
+    }
+    catch (const InvalidCommandException &ex)
+    {
+      color.ImportantWithLineFeed(ex.what());
+    }
   }
 
   std::string GetRoomName()
@@ -27,12 +61,10 @@ public:
     std::string chat_room_name;
     color.Important(" > Enter Chat Room Name: ");
     std::cin >> chat_room_name;
-
-    std::vector<std::string> rooms = cache_.GetRooms();
-    if (std::find(rooms.begin(), rooms.end(), chat_room_name) == rooms.end())
-      throw InvalidCommandException(std::string("The room name " + chat_room_name + " doesn't exist").c_str());
-
     return chat_room_name;
   }
+
+private:
+  AnsiColor color;
 };
 #endif
