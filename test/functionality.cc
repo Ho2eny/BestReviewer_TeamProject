@@ -15,6 +15,7 @@ random_device dev;
 mt19937 rng(dev());
 uniform_int_distribution<mt19937::result_type> dist(1, 100000);
 static std::string id = "fifo_" + to_string(dist(rng));
+static std::string chatName = "fifo_chatRoom_" + to_string(dist(rng));
 
 class GothroughTest : public testing::Test
 {
@@ -100,4 +101,22 @@ TEST_F(GothroughTest, quit)
     EXPECT_FALSE(invoker_->Invoke("Q"));
     EXPECT_FALSE(invoker_->Invoke("quit"));
     EXPECT_FALSE(invoker_->Invoke("q"));
+}
+
+TEST_F(GothroughTest, CreateChatRoomTest)
+{   
+    invoker_->Invoke("51");
+    EXPECT_FALSE(cache_.GetValue(Cache::vSessionID).empty());
+
+    invoker_->Invoke("61");
+    EXPECT_FALSE(cache_.GetValue(Cache::vChatRoomName).empty());
+}
+
+TEST_F(GothroughTest, ListChatRoomTest)
+{     
+    invoker_->Invoke("51");
+    EXPECT_FALSE(cache_.GetValue(Cache::vSessionID).empty());
+
+    invoker_->Invoke("60");
+    EXPECT_FALSE(cache_.GetRooms().empty());
 }

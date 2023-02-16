@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 
-#include <memory>
-#include <string>
+#include "repository_test_fixture.h"
 
 #include "../../src/common/exception/user/fail_login_exception.h"
 #include "../../src/common/exception/user/fail_logout_exception.h"
@@ -10,34 +8,8 @@
 #include "../../src/common/exception/user/fail_parse_session_id_exception.h"
 #include "../../src/common/exception/user/invalid_user_repository_exception.h"
 #include "../../src/http/exception/network/base_network_exception.h"
-#include "../../src/http/repository/user_http_repository.h"
-#include "../../src/http/http_plugin.h"
 
-class MockHttpClient : public HttpPlugin {
-public:
-  MOCK_METHOD(Response, Get, (Request), (override));
-  MOCK_METHOD(Response, Post, (Request), (override));
-  MOCK_METHOD(Response, Put, (Request), (override));
-  MOCK_METHOD(Response, Delete, (Request), (override));
-};
-
-class UserHttpRepositoryTestFixture : public ::testing::Test {
-protected:
-  virtual void SetUp() override {
-    user_repository_ = std::make_shared<UserHttpRepository>("");
-    http_client_ = std::make_shared<MockHttpClient>();
-    user_repository_->SetHttpClient(http_client_);
-  }
-
-  virtual void TearDown() override {
-    user_repository_.reset();
-  }
-
-  std::shared_ptr<MockHttpClient> http_client_;
-  std::shared_ptr<UserHttpRepository> user_repository_;
-};
-
-TEST_F(UserHttpRepositoryTestFixture, loginSuccess) {
+TEST_F(RepositoryTestFixture, loginSuccess) {
   const std::string kTestSessionId = "MkUdmbzNVZE678CgRV16lL1z5lyGTjal";
   const std::string kValidResponseBody = "{\"session_id\":\"" + kTestSessionId + "\"}";
   Response kValidResponse(200, kValidResponseBody);
@@ -50,7 +22,7 @@ TEST_F(UserHttpRepositoryTestFixture, loginSuccess) {
   EXPECT_TRUE(response.GetSessionId() == kTestSessionId);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, loginSuccessFailedToParseSessionId) {
+TEST_F(RepositoryTestFixture, loginSuccessFailedToParseSessionId) {
   const std::string kTestSessionId = "MkUdmbzNVZE678CgRV16lL1z5lyGTjal";
   const std::string kInvalidJsonBodyFromServer = "{\"session_id\"" + kTestSessionId + "\"}";
 
@@ -62,7 +34,7 @@ TEST_F(UserHttpRepositoryTestFixture, loginSuccessFailedToParseSessionId) {
   EXPECT_THROW(user_repository_->Login(temp_request), FailParseSessionIdException);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, loginFail) {
+TEST_F(RepositoryTestFixture, loginFail) {
   const std::string kErrorMessage = "Account information absence";
   Response kInvalidResponse(400, kErrorMessage);
 
@@ -72,7 +44,7 @@ TEST_F(UserHttpRepositoryTestFixture, loginFail) {
   EXPECT_THROW(user_repository_->Login(temp_request), FailLoginException);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, loginFailNetworkIssue) {
+TEST_F(RepositoryTestFixture, loginFailNetworkIssue) {
   auto kNetworkException = BaseNetworkException("DNS resolving failed.");
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Throw(kNetworkException));
@@ -81,7 +53,7 @@ TEST_F(UserHttpRepositoryTestFixture, loginFailNetworkIssue) {
   EXPECT_THROW(user_repository_->Login(temp_request), FailLoginException);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, logoutSuccess) {
+TEST_F(RepositoryTestFixture, logoutSuccess) {
   Response kValidResponse(200, "");
 
   EXPECT_CALL(*http_client_, Delete(testing::_)).WillOnce(testing::Return(kValidResponse));
@@ -90,7 +62,7 @@ TEST_F(UserHttpRepositoryTestFixture, logoutSuccess) {
   LogoutResponse response = user_repository_->Logout(temp_request);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, logoutFail) {
+TEST_F(RepositoryTestFixture, logoutFail) {
   const std::string kErrorMessage = "Invalid Session Id";
   Response kFobiddenResponse(403, kErrorMessage);
 
@@ -100,7 +72,7 @@ TEST_F(UserHttpRepositoryTestFixture, logoutFail) {
   EXPECT_THROW(user_repository_->Logout(temp_request), FailLogoutException);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, logoutFailNetworkIssue) {
+TEST_F(RepositoryTestFixture, logoutFailNetworkIssue) {
   auto kNetworkException = BaseNetworkException("DNS resolving failed.");
 
   EXPECT_CALL(*http_client_, Delete(testing::_)).WillOnce(testing::Throw(kNetworkException));
@@ -109,7 +81,7 @@ TEST_F(UserHttpRepositoryTestFixture, logoutFailNetworkIssue) {
   EXPECT_THROW(user_repository_->Logout(temp_request), FailLogoutException);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, signupSuccess) {
+TEST_F(RepositoryTestFixture, signupSuccess) {
   Response kValidResponse(200, "");
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kValidResponse));
@@ -118,7 +90,7 @@ TEST_F(UserHttpRepositoryTestFixture, signupSuccess) {
   SignupResponse response = user_repository_->Signup(temp_request);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, signupFail) {
+TEST_F(RepositoryTestFixture, signupFail) {
   const std::string kErrorMessage = "Account information absence";
   Response kInvalidResposne(400, kErrorMessage);
 
@@ -128,7 +100,7 @@ TEST_F(UserHttpRepositoryTestFixture, signupFail) {
   EXPECT_THROW(user_repository_->Signup(temp_request), FailSignupException);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, signupFailNetworkIssue) {
+TEST_F(RepositoryTestFixture, signupFailNetworkIssue) {
   auto kNetworkException = BaseNetworkException("DNS resolving failed.");
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Throw(kNetworkException));
@@ -137,7 +109,7 @@ TEST_F(UserHttpRepositoryTestFixture, signupFailNetworkIssue) {
   EXPECT_THROW(user_repository_->Signup(temp_request), FailSignupException);
 }
 
-TEST_F(UserHttpRepositoryTestFixture, exceptionWhenRepositoryIsInvalid) {
+TEST_F(RepositoryTestFixture, exceptionWhenUserRepositoryIsInvalid) {
   user_repository_->SetHttpClient(nullptr);
 
   SignupRequest temp_request;
