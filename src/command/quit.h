@@ -1,5 +1,5 @@
-#ifndef LOGOUT_H_
-#define LOGOUT_H_
+#ifndef QUIT_H_
+#define QUIT_H_
 
 #include <iostream>
 #include <string>
