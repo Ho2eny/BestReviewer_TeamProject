@@ -27,7 +27,7 @@ ReceiveMessageResponse ChatHttpRepository::ReceiveMessage(const ReceiveMessageRe
       return response;
     }
     else {
-      throw FailReceiveMessageException(http_response.GetErrorMessage().c_str());
+      throw FailReceiveMessageException(http_response.GetBody().c_str());
     }
   }
   catch (const BaseNetworkException& e) {
@@ -47,7 +47,7 @@ SendMessageResponse ChatHttpRepository::SendMessage(const SendMessageRequest& re
     Response http_response = http_client_->Post(http_request);
 
     if (http_response.IsSuccess()) return SendMessageResponse();
-    else throw FailSendMessageException(http_response.GetErrorMessage().c_str());
+    else throw FailSendMessageException(http_response.GetBody().c_str());
   }
   catch (const BaseNetworkException& e) {
     throw FailReceiveMessageException(e.what());

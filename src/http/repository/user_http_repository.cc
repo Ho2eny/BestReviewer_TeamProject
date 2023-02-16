@@ -27,7 +27,7 @@ LoginResponse UserHttpRepository::Login(const LoginRequest& request) {
       return login_response;
     }
     else {
-      throw FailLoginException(http_response.GetErrorMessage().c_str());
+      throw FailLoginException(http_response.GetBody().c_str());
     }
   }
   catch (const BaseNetworkException& e) {
@@ -46,7 +46,7 @@ LogoutResponse UserHttpRepository::Logout(const LogoutRequest& request) {
   try {
     Response http_response = http_client_->Delete(http_request);
     if (http_response.IsSuccess()) return LogoutResponse();
-    else throw FailLogoutException(http_response.GetErrorMessage().c_str());
+    else throw FailLogoutException(http_response.GetBody().c_str());
   }
   catch (const BaseNetworkException& e) {
     throw FailLogoutException(e.what());
@@ -61,7 +61,7 @@ SignupResponse UserHttpRepository::Signup(const SignupRequest& request) {
   try {
     Response http_response = http_client_->Post(http_request);
     if (http_response.IsSuccess()) return SignupResponse();
-    else throw FailSignupException(http_response.GetErrorMessage().c_str());
+    else throw FailSignupException(http_response.GetBody().c_str());
   }
   catch (const BaseNetworkException& e) {
     throw FailSignupException(e.what());
