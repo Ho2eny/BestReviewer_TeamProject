@@ -27,6 +27,7 @@ set(SOURCES
     http/dto/response.cc
     utils.h
     utils.cc
+    command/receiver/join_receiver.h command/receiver/join_receiver.cc
     command/cache.h command/cache.cc
     command/invoker.h command/invoker.cc
     command/command.h command/command.cc
