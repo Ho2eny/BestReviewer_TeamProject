@@ -27,12 +27,7 @@ Request RoomDtoConverter::ConvertToRetrieveRoomHttpRequestFrom(const RetrieveRoo
 RetrieveRoomResponse RoomDtoConverter::ConvertToRetrieveRoomResponseFrom(const Response& http_response) const {
   Json::Value json_object;
 
-  try {
-    json_object = json_serializer_->ParseJson(http_response.GetBody());
-  }
-  catch (const BaseJsonException& e) {
-    throw e;
-  }
+  json_object = json_serializer_->ParseJson(http_response.GetBody());
 
   std::vector<std::string> room_names;
   for (Json::ArrayIndex i = 0; i < json_object.size(); ++i) {

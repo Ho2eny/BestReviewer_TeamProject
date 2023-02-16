@@ -10,12 +10,7 @@ UserDtoConverter::UserDtoConverter() {
 
 LoginResponse UserDtoConverter::ConvertToLoginResponseFrom(const Response& http_response) const {
   Json::Value json_object;
-  try {
-    json_object = json_serializer_->ParseJson(http_response.GetBody());
-  }
-  catch (const BaseJsonException& e) {
-    throw e;
-  }
+  json_object = json_serializer_->ParseJson(http_response.GetBody());
 
   // TODO(in.heo): json_object["session_id"]가 없을 경우 Exception 추가
   const std::string session_id = json_object["session_id"].asString();
