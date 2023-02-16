@@ -18,7 +18,6 @@ public:
   virtual Response Put(Request request) override;
   virtual Response Delete(Request request) override;
 
-
 private:
   void Initialize();
   void Deinitialize();

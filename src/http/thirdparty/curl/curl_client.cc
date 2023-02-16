@@ -97,9 +97,28 @@ Response CurlClient::Post(Request request)
   return response;
 }
 
+
 Response CurlClient::Put(Request request)
 {
-  return Response();
+  mutex_.lock();
+  SetUp(request);
+
+  AppendHeader("Content-Type", "application/json");
+
+  curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "PUT");
+  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody().c_str());
+
+  CURLcode res = curl_easy_perform(curl_);
+  HandleResultCode(res);
+  
+  int status_code = 0;
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
+  auto response = Response(status_code, body_);
+
+  CleanUp();
+  mutex_.unlock();
+
+  return response;
 }
 
 Response CurlClient::Delete(Request request)

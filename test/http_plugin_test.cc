@@ -106,6 +106,14 @@ TEST_F(HttpPluginTest, HttpDelete)
     EXPECT_EQ("Not a valid session ID", response.GetBody());
 }
 
+TEST_F(HttpPluginTest, HttpPut)
+{
+    request->SetBody("test message");
+
+    auto response = client->Put(*request);
+    EXPECT_EQ(404, response.GetStatusCode());
+}
+
 TEST_F(HttpPluginTest, HttpThreadTest)
 {
     request->SetPath("/chat/session?session_id=invalidsessionid");
