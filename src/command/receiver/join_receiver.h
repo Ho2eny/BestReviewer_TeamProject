@@ -7,7 +7,6 @@
 #include "chat_receiver.h"
 
 #include <pthread.h>
-//#include <sys/prctl.h>
 #include "../../common/exception/thread/fail_thread_attr_init.h"
 #include "../../common/exception/thread/fail_thread_create.h"
 #include "../../common/exception/thread/fail_thread_attr_destroy.h"
@@ -20,8 +19,10 @@
 #include <vector>
 #include <unistd.h>
 #include <semaphore.h> 
+#include <iomanip>
 
 static void *ThreadWrapper(void *me);
+using namespace std;
 
 class JoinReceiver : public ChatReceiver
 {
