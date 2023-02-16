@@ -30,7 +30,7 @@ private:
   static const std::string kSignupEndpoint;
 
   std::string ConvertToJsonString(const LoginRequest& login_request) const;
-  std::string ConvertToJsonString(const SignupRequest& login_request) const;
+  std::string ConvertToJsonString(const SignupRequest& signup_request) const;
 
   std::shared_ptr<JsonSerializer> json_serializer_;
 };

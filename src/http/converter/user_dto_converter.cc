@@ -59,10 +59,10 @@ std::string UserDtoConverter::ConvertToJsonString(const LoginRequest& login_requ
   return json_serializer_->ToString(json_object);
 }
 
-std::string UserDtoConverter::ConvertToJsonString(const SignupRequest& login_request) const {
+std::string UserDtoConverter::ConvertToJsonString(const SignupRequest& signup_request) const {
   Json::Value json_object;
-  json_object["id"] = login_request.GetId();
-  json_object["password"] = login_request.GetPassword();
+  json_object["id"] = signup_request.GetId();
+  json_object["password"] = signup_request.GetPassword();
 
  // TODO(in.heo): throw exception when json_serializer_ is nullptr
    return json_serializer_->ToString(json_object);
