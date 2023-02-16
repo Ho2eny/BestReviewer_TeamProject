@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "../cache.h"
 #include "room_receiver.h"
+#include "../../common/exception/room/fail_create_room_exception.h"
 
 class CreateReceiver : public RoomReceiver
 {
@@ -17,9 +18,14 @@ public:
     std::string room_name = GetRoomName();
     std::string session_id = GetSessionID();
     CreateRoomRequest request(room_name, session_id);
-    CreateRoomResponse response = repository_->CreateRoom(request);
-
-    cache_.SetRoomName(room_name);
+    try {
+      CreateRoomResponse response = repository_->CreateRoom(request);
+      cache_.SetRoomName(room_name);
+    }
+    catch (const FailCreateRoomException &ex)
+    {
+      throw InvalidCommandException(ex.what());
+    }
   }
 
   std::string GetRoomName()
