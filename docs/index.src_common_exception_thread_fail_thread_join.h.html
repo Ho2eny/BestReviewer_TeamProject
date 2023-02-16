@@ -266,7 +266,7 @@
           </tr>
           <tr>
             <td class="headerName">File:</td>
-            <td class="headerValue">src/http/exception/network/authentication_failure_exception.h</td>
+            <td class="headerValue">src/common/exception/thread/fail_thread_join.h</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">0</td>
@@ -275,7 +275,7 @@
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2023-02-16 18:58:57</td>
+            <td class="headerValue">2023-02-16 20:47:22</td>
             <td></td>
             <td class="headerName">Branches:</td>
             <td class="headerTableEntry">0</td>
@@ -303,14 +303,14 @@
     <td align="right" class="lineno"><pre>1</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>#ifndef AUTHENTICATION_FAILURE_H_</pre></td>
+    <td align="left" class="src "><pre>#ifndef FAIL_THREAD_JOIN_EXCEPTION_H_</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>2</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>#define AUTHENTICATION_FAILURE_H_</pre></td>
+    <td align="left" class="src "><pre>#define FAIL_THREAD_JOIN_EXCEPTION_H_</pre></td>
     </tr>
 
     <tr>
@@ -324,7 +324,7 @@
     <td align="right" class="lineno"><pre>4</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>#include "base_network_exception.h"</pre></td>
+    <td align="left" class="src "><pre>#include "../base_exception.h"</pre></td>
     </tr>
 
     <tr>
@@ -338,7 +338,7 @@
     <td align="right" class="lineno"><pre>6</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>class AuthenticationFailureException : public BaseNetworkException {</pre></td>
+    <td align="left" class="src "><pre>class FailThreadJoinException : public BaseException {</pre></td>
     </tr>
 
     <tr>
@@ -352,7 +352,7 @@
     <td align="right" class="lineno"><pre>8</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount uncoveredLine"><pre></pre></td>
-    <td align="left" class="src uncoveredLine"><pre>  AuthenticationFailureException(const char* message) : BaseNetworkException(message) {}</pre></td>
+    <td align="left" class="src uncoveredLine"><pre>  FailThreadJoinException(const char* message) : BaseException(message) {}</pre></td>
     </tr>
 
     <tr>
