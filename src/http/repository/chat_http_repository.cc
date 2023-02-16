@@ -6,7 +6,6 @@
 #include "../../common/exception/chat/fail_receive_message_exception.h"
 #include "../../common/exception/chat/fail_send_message_exception.h"
 #include "../../common/exception/chat/invalid_chat_repository_exception.h"
-// TODO(in.heo): curl_client를 Setter 주입받도록 수정
 #include "../thirdparty/curl/curl_client.h"
 
 ChatHttpRepository::ChatHttpRepository(std::string base_url) : base_url_(base_url) {
@@ -60,7 +59,6 @@ void ChatHttpRepository::SetHttpClient(const std::shared_ptr<HttpPlugin>& client
 }
 
 void ChatHttpRepository::Initialize() {
-  // TODO(in.heo): HARD_CODED curl_client를 Setter 주입받도록 수정
   CurlClient* curl_client = new CurlClient();
   http_client_ = std::shared_ptr<HttpPlugin>(curl_client);
   chat_dto_converter_ = std::make_shared<ChatDtoConverter>();

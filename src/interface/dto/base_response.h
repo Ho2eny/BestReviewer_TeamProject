@@ -4,8 +4,6 @@
 class BaseResponse {
 public:
   BaseResponse() {}
-
-  // TODO(in.heo): There would be a common method.
 };
 
 #endif
