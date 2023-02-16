@@ -6,6 +6,7 @@
 #include "../../utils.h"
 #include "user_receiver.h"
 #include "../../common/exception/user/fail_signup_exception.h"
+#include "../../common/exception/user/invalid_id_password_exception.h"
 
 class SignupReceiver : public UserReceiver
 {
@@ -27,6 +28,10 @@ public:
       color.TextWithLineFeed("Signed up to FIFO Chat with " + id);
     }
     catch (const FailSignupException &ex)
+    {
+      throw InvalidCommandException(ex.what());
+    }
+    catch (const InvalidIdPasswordException &ex)
     {
       throw InvalidCommandException(ex.what());
     }

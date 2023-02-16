@@ -115,6 +115,3 @@ TEST_F(RepositoryTestFixture, exceptionWhenUserRepositoryIsInvalid) {
   SignupRequest temp_request;
   EXPECT_THROW(user_repository_->Signup(temp_request), InvalidUserRepositoryException);
 }
-
-// TODO(in.heo): Prohibited Character 조건 테스트 추가 필요:
-// id: [",", "|"], password[","]
