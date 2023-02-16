@@ -13,14 +13,9 @@ using namespace std;
 
 random_device dev;
 mt19937 rng(dev());
-<<<<<<< HEAD
 uniform_int_distribution<mt19937::result_type> dist(1, 100000);
 static std::string id = "fifo_" + to_string(dist(rng));
-=======
-uniform_int_distribution<mt19937::result_type> dist1000(1, 1000);
-static std::string id = "fifo_" + to_string(dist1000(rng));
-static std::string chatName = "fifo_chatRoom_" + to_string(dist1000(rng));
->>>>>>> 616aa455e55e084ea2294e99311beca4b71a5e7b
+static std::string chatName = "fifo_chatRoom_" + to_string(dist(rng));
 
 class GothroughTest : public testing::Test
 {
@@ -37,7 +32,6 @@ protected:
         cache_.SetTestPassword("password");
         cache_.SetTestNonce("5");
         cache_.SetSessionID("");
-<<<<<<< HEAD
 
         Factory factory;
         factory.MakeCommands(invoker_, cache_);
@@ -45,40 +39,6 @@ protected:
 
     unique_ptr<Invoker>
         invoker_;
-=======
-        cache_.SetTestRoomName(chatName);
-    }
-
-    void MakeCommands()
-    {
-        AnsiColor color;
-        string base_url = cache_.GetValue(Cache::vBaseUrl);
-        invoker_->SetOnInvoke(move(make_unique<Quit>(CHAT_QUIT, "Quit Application")));
-        invoker_->SetOnInvoke(move(make_unique<Quit>(CHAT_LONG_QUIT, "Quit Application")));
-
-        try
-        {
-            const std::unique_ptr<CommandCreator> userCreator = make_unique<UserCommandCreator>(cache_);
-            invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kSignup, "Sign up for the program")));
-            invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogin, "Log in to the program")));
-            invoker_->SetOnInvoke(move(userCreator->CreateCommand(CommandType::kLogout, "Log  out of the program")));
-
-            const std::unique_ptr<CommandCreator> roomCreator = make_unique<RoomCommandCreator>(cache_);
-            invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kListRooms, "List all rooms")));
-            invoker_->SetOnInvoke(move(roomCreator->CreateCommand(CommandType::kCreateRoom, "Create a room")));
-
-            const std::unique_ptr<CommandCreator> chatCreator = make_unique<ChatCommandCreator>(cache_);
-            invoker_->SetOnInvoke(move(chatCreator->CreateCommand(CommandType::kJoinRoom, "Join a room")));
-
-        }
-        catch (const InvalidCommandException &ex)
-        {
-            color.ImportantWithLineFeed(ex.what());
-        }
-    }
-
-    unique_ptr<Invoker> invoker_;
->>>>>>> 616aa455e55e084ea2294e99311beca4b71a5e7b
     Cache cache_;
 };
 
@@ -136,18 +96,15 @@ TEST_F(GothroughTest, LogoutTest)
     EXPECT_TRUE(cache_.GetValue(Cache::vSessionID).empty());
 }
 
-<<<<<<< HEAD
 TEST_F(GothroughTest, quit)
 {
     EXPECT_FALSE(invoker_->Invoke("Q"));
     EXPECT_FALSE(invoker_->Invoke("quit"));
     EXPECT_FALSE(invoker_->Invoke("q"));
 }
-=======
+
 TEST_F(GothroughTest, CreateChatRoomTest)
-{
-    MakeCommands();
-    
+{   
     invoker_->Invoke("51");
     EXPECT_FALSE(cache_.GetValue(Cache::vSessionID).empty());
 
@@ -156,13 +113,10 @@ TEST_F(GothroughTest, CreateChatRoomTest)
 }
 
 TEST_F(GothroughTest, ListChatRoomTest)
-{
-    MakeCommands();
-    
+{     
     invoker_->Invoke("51");
     EXPECT_FALSE(cache_.GetValue(Cache::vSessionID).empty());
 
     invoker_->Invoke("60");
     EXPECT_FALSE(cache_.GetRooms().empty());
 }
->>>>>>> 616aa455e55e084ea2294e99311beca4b71a5e7b
