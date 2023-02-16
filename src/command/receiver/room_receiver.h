@@ -1,8 +1,6 @@
 #ifndef ROOM_RECEIVER_H_
 #define ROOM_RECEIVER_H_
 
-// TODO:: 모든 주석은 RoomRepository 들어오면 제거 하면 됨
-
 #include <string>
 #include "receiver.h"
 #include "../../ui_helper/ansi_color.h"
