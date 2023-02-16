@@ -4,6 +4,7 @@
 #include <iostream>
 #include "../cache.h"
 #include "user_receiver.h"
+#include "../../common/exception/user/fail_logout_exception.h"
 
 class LogoutReceiver : public UserReceiver
 {
@@ -12,16 +13,22 @@ public:
 
   void Action() override
   {
+    AnsiColor color;
     std::string sessionID = cache_.GetValue(Cache::vSessionID);
     if (sessionID.empty())
       throw InvalidCommandException("Session is not exists");
 
-    LogoutRequest request(sessionID);
-    LogoutResponse response = repository_->Logout(request);
-    cache_.RemoveSessionID();
-
-    AnsiColor color;
-    color.TextWithLineFeed("Logged out");
+    try
+    {
+      LogoutRequest request(sessionID);
+      LogoutResponse response = repository_->Logout(request);
+      cache_.RemoveSessionID();
+      color.TextWithLineFeed("Logged out");
+    }
+    catch (const FailLogoutException &ex)
+    {
+      throw InvalidCommandException(std::string(sessionID + " " + ex.what()).c_str());
+    }
   }
 };
 

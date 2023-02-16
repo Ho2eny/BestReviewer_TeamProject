@@ -18,17 +18,17 @@ public:
   static const std::string vChatRoomName;
   static const std::string vTestChatRoomName;
 
-  void SetID(const std::string &ID) { SetKV(Cache::vID, ID); }
-  void SetTestID(const std::string &ID) { SetKV(Cache::vTestID, ID); }
-  void SetTestNonce(const std::string &nonce) { SetKV(Cache::vTestNonce, nonce); }
-  void SetTestPassword(const std::string &password) { SetKV(Cache::vTestPassword, password); }
-  void SetBaseUrl(const std::string &base_url) { SetKV(Cache::vBaseUrl, base_url); }
-  void SetSessionID(const std::string &session_id) { SetKV(Cache::vSessionID, session_id); }
-  void SetRoomName(const std::string &room_name) { SetKV(Cache::vChatRoomName, room_name); }
-  void RemoveSessionID() { SetKV(Cache::vSessionID, ""); }
-  std::string GetValue(const std::string &key) { return kv_[key]; }
-  void SetRooms(const std::vector<std::string> &rooms) { rooms_ = rooms; }
-  std::vector<std::string> GetRooms() { return rooms_; }
+  void SetID(const std::string &ID);
+  void SetTestID(const std::string &ID);
+  void SetTestNonce(const std::string &nonce);
+  void SetTestPassword(const std::string &password);
+  void SetBaseUrl(const std::string &base_url);
+  void SetSessionID(const std::string &session_id);
+  void SetRoomName(const std::string &room_name);
+  void RemoveSessionID();
+  std::string GetValue(const std::string &key);
+  void SetRooms(const std::vector<std::string> &rooms);
+  std::vector<std::string> GetRooms();
 
 private:
   void SetKV(const std::string &key, const std::string &value) { kv_[key] = value; }
