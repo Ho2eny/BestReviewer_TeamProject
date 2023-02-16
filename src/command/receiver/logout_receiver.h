@@ -3,28 +3,49 @@
 
 #include <iostream>
 #include "../cache.h"
-#include "receiver.h"
-#include "../../interface/dto/user/login_request.h"
-#include "../../interface/dto/user/login_response.h"
-// #include "../../interface/repository/user_repository.h"
-#include "../../utils.h"
+#include "user_receiver.h"
+#include "../../common/exception/user/fail_logout_exception.h"
 
-class LogoutReceiver : public Receiver
+class LogoutReceiver : public UserReceiver
 {
 public:
-  LogoutReceiver(Cache &cache) : Receiver(cache) {}
+  LogoutReceiver(Cache &cache, std::shared_ptr<UserRepository> repository) : UserReceiver(cache, repository) {}
 
   void Action() override
   {
-    AuthorizationKey key;
-    key.setId(GetID());
-    key.setPassword(GetPassword());
+    std::string sessionID = cache_.GetValue(Cache::vSessionID);
+    if (sessionID.empty())
+      throw InvalidCommandException("Session is not exists");
 
-    // LogoutRequest request(id, key.queryNonce(), key.queryPasswordWithNonce());
-    // Waiting for the implementatino from in.heo
-    // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
-    // LoginResponse response = repository.Login(request);
-    // cache_.SetKV(Cache::vSessionID, response.Get...);
+    LogoutRequest request(sessionID);
+    try
+    {
+      LogoutResponse response = repository_->Logout(request);
+      cache_.RemoveSessionID();
+
+      AnsiColor color;
+      color.TextWithLineFeed("Logged out");
+    }
+    catch (const InternalException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const AuthenticationFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const ConnectionFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const DnsResolvingFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const FailLogoutException &ex)
+    {
+      throw InvalidCommandException(ex.what());
+    }
   }
 };
 

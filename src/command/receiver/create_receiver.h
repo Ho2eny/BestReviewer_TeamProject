@@ -2,44 +2,68 @@
 #define CREATE_RECEIVER_H_
 
 #include <iostream>
+#include <memory>
 #include "../cache.h"
-#include "receiver.h"
-//#include "../../interface/dto/room/create_request.h"
-//#include "../../interface/dto/room/create_response.h"
-#include "../../utils.h"
+#include "room_receiver.h"
+#include "../../common/exception/room/fail_create_room_exception.h"
 
-class CreateReceiver : public Receiver
+class CreateReceiver : public RoomReceiver
 {
 public:
-  CreateReceiver(Cache &cache) : Receiver(cache) {}
+  CreateReceiver(Cache &cache, std::shared_ptr<RoomRepository> repository) : RoomReceiver(cache, repository) {}
 
   void Action() override
   {
-    // CreateRequest request(sessionID, roomName);
-    // Waiting for the implementatino from in.heo
-    // CreateRoomResponse response = repository.CreateRoom(request);
-  }
+    try
+    {
+      std::string room_name = GetRoomName();
+      std::string session_id = GetSessionID();
+      CreateRoomRequest request(room_name, session_id);
+      CreateRoomResponse response = repository_->CreateRoom(request);
 
-  std::string GetSessionID()
-  {
-    if (cache_.GetValue(Cache::vSessionID).length() > 0)
-      return cache_.GetValue(Cache::vSessionID);
-
-    std::string sessionID;
-    std::cout << "Enter Session ID: ";
-    std::cin >> sessionID;
-    return sessionID;
+      cache_.SetRoomName(room_name);
+    }
+    catch (const InternalException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const AuthenticationFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const ConnectionFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const DnsResolvingFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const FailCreateRoomException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const InvalidCommandException &ex)
+    {
+      throw InvalidCommandException(ex.what());
+    }
   }
 
   std::string GetRoomName()
   {
-    if (cache_.GetValue(Cache::vChatRoomName).length() > 0)
-      return cache_.GetValue(Cache::vChatRoomName);
+    if (!cache_.GetValue(Cache::vTestChatRoomName).empty())
+      return cache_.GetValue(Cache::vTestChatRoomName);
 
-    std::string chatRoomName;
-    std::cout << "Enter Chat Room Name: ";
-    std::cin >> chatRoomName;
-    return chatRoomName;
+    AnsiColor color;
+    std::string chat_room_name;
+    color.Important(" > Enter Chat Room Name: ");
+    std::cin >> chat_room_name;
+
+    std::vector<std::string> rooms = cache_.GetRooms();
+    if (std::find(rooms.begin(), rooms.end(), chat_room_name) != rooms.end())
+      throw InvalidCommandException(std::string("The room name " + chat_room_name + " already exist").c_str());
+
+    return chat_room_name;
   }
 };
 #endif

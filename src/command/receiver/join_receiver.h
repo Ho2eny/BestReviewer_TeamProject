@@ -2,16 +2,15 @@
 #define JOIN_RECEIVER_H_
 
 #include <iostream>
+#include <memory>
 #include "../cache.h"
-#include "receiver.h"
-//#include "../../interface/dto/room/join_request.h"
-//#include "../../interface/dto/room/join_response.h"
-#include "../../utils.h"
+#include "room_receiver.h"
+// #include "../../common/exception/user/fail_receive_exception.h"
 
-class JoinReceiver : public Receiver
+class JoinReceiver : public RoomReceiver
 {
 public:
-  JoinReceiver(Cache &cache) : Receiver(cache) {}
+  JoinReceiver(Cache &cache, std::shared_ptr<RoomRepository> repository) : RoomReceiver(cache, repository) {}
 
   void Action() override
   {
@@ -20,26 +19,21 @@ public:
     // JoinRoomResponse response = repository.JoinRoom(request);
   }
 
-  std::string GetSessionID()
-  {
-    if (cache_.GetValue(Cache::vSessionID).length() > 0)
-      return cache_.GetValue(Cache::vSessionID);
-
-    std::string sessionID;
-    std::cout << "Enter Session ID: ";
-    std::cin >> sessionID;
-    return sessionID;
-  }
-
   std::string GetRoomName()
   {
-    if (cache_.GetValue(Cache::vChatRoomName).length() > 0)
-      return cache_.GetValue(Cache::vChatRoomName);
+    if (!cache_.GetValue(Cache::vTestChatRoomName).empty())
+      return cache_.GetValue(Cache::vTestChatRoomName);
 
-    std::string chatRoomName;
-    std::cout << "Enter Chat Room Name: ";
-    std::cin >> chatRoomName;
-    return chatRoomName;
+    AnsiColor color;
+    std::string chat_room_name;
+    color.Important(" > Enter Chat Room Name: ");
+    std::cin >> chat_room_name;
+
+    std::vector<std::string> rooms = cache_.GetRooms();
+    if (std::find(rooms.begin(), rooms.end(), chat_room_name) == rooms.end())
+      throw InvalidCommandException(std::string("The room name " + chat_room_name + " doesn't exist").c_str());
+
+    return chat_room_name;
   }
 };
 #endif

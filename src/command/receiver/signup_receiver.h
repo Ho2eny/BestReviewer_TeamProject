@@ -3,49 +3,49 @@
 
 #include <iostream>
 #include "../cache.h"
-#include "receiver.h"
-#include "../../interface/dto/user/login_request.h"
-#include "../../interface/dto/user/login_response.h"
-// #include "../../interface/repository/user_repository.h"
 #include "../../utils.h"
+#include "user_receiver.h"
+#include "../../common/exception/user/fail_signup_exception.h"
 
-class SignupReceiver : public Receiver
+class SignupReceiver : public UserReceiver
 {
 public:
-  SignupReceiver(Cache &cache) : Receiver(cache) {}
+  SignupReceiver(Cache &cache, std::shared_ptr<UserRepository> repository) : UserReceiver(cache, repository) {}
 
   void Action() override
   {
-    AuthorizationKey key;
-    key.setId(GetID());
-    key.setPassword(GetPassword());
-    // SignupRequest request(id, key.queryPassword());
-    // Waiting for the implementatino from in.heo
-    // UserHttpRepository repository(cache.GetValue(Cache::vBaseUrl));
-    // LoginResponse response = repository.Login(request);
-    // cache_.SetKV(Cache::vSessionID, response.Get...);
-  }
+    std::string id = GetId();
+    std::string password = GetPassword();
+    AuthorizationKey key(id, password);
 
-  std::string GetID()
-  {
-    if (cache_.GetValue(Cache::vTestID).length() > 0)
-      return cache_.GetValue(Cache::vTestID);
+    SignupRequest request(id, key.QueryPassword());
+    try
+    {
+      SignupResponse response = repository_->Signup(request);
 
-    std::string id;
-    std::cout << "Enter ID: ";
-    std::cin >> id;
-    return id;
-  }
-
-  std::string GetPassword()
-  {
-    if (cache_.GetValue(Cache::vTestPassword).length() > 0)
-      return cache_.GetValue(Cache::vTestPassword);
-
-    std::string password;
-    std::cout << "Enter Password: ";
-    std::cin >> password;
-    return password;
+      AnsiColor color;
+      color.TextWithLineFeed("Signed up to FIFO Chat with " + id);
+    }
+    catch (const InternalException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const AuthenticationFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const ConnectionFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const DnsResolvingFailureException &ex)
+    {
+      throw GeneralNetworkException(ex.what());
+    }
+    catch (const FailSignupException &ex)
+    {
+      throw InvalidCommandException(ex.what());
+    }
   }
 };
 
