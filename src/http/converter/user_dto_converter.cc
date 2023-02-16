@@ -50,7 +50,6 @@ std::string UserDtoConverter::ConvertToJsonString(const LoginRequest& login_requ
   json_object["nonce"] = login_request.GetNonce();
   json_object["password"] = login_request.GetPassword();
 
-  // TODO(in.heo): throw exception when json_serializer_ is nullptr
   return json_serializer_->ToString(json_object);
 }
 
@@ -59,6 +58,5 @@ std::string UserDtoConverter::ConvertToJsonString(const SignupRequest& signup_re
   json_object["id"] = signup_request.GetId();
   json_object["password"] = signup_request.GetPassword();
 
- // TODO(in.heo): throw exception when json_serializer_ is nullptr
-   return json_serializer_->ToString(json_object);
+  return json_serializer_->ToString(json_object);
 }

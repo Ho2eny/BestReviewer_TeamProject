@@ -48,6 +48,5 @@ std::string ChatDtoConverter::ConvertToJsonString(const SendMessageRequest& send
   json_object["chat_room"] = send_message_request.GetRoomName();
   json_object["session_id"] = send_message_request.GetSessionId();
 
-  // TODO(in.heo): throw exception when json_serializer_ is nullptr
   return json_serializer_->ToString(json_object);
 }

@@ -41,6 +41,5 @@ std::string RoomDtoConverter::ConvertToJsonString(const CreateRoomRequest& creat
   json_object["chat_room"] = create_room_request.GetRoomName();
   json_object["session_id"] = create_room_request.GetSessionId();
 
-  // TODO(in.heo): throw exception when json_serializer_ is nullptr
   return json_serializer_->ToString(json_object);
 }
