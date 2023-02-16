@@ -47,7 +47,7 @@ Response CurlClient::Get(Request request)
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, GetErrorMessage(res), body_);
+  auto response = Response(status_code, body_);
 
   CleanUp();
   mutex_.unlock();
@@ -89,7 +89,7 @@ Response CurlClient::Post(Request request)
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, GetErrorMessage(res), body_);
+  auto response = Response(status_code, body_);
 
   CleanUp();
   mutex_.unlock();
@@ -113,20 +113,12 @@ Response CurlClient::Delete(Request request)
   int status_code = 0;
 
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, GetErrorMessage(result), body_);
+  auto response = Response(status_code, body_);
 
   CleanUp();
   mutex_.unlock();
 
   return response;
-}
-
-string CurlClient::GetErrorMessage(int result)
-{
-  if (result == CURLE_OK)
-    return "";
-
-  return string("error response : ").append(to_string(result));
 }
 
 void CurlClient::AppendHeader(const string &key, const string &value)

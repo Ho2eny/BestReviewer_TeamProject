@@ -49,7 +49,6 @@ TEST_F(HttpPluginTest, HttpGet)
     
     auto response = client->Get(*request);
     EXPECT_EQ(200, response.GetStatusCode());
-    EXPECT_EQ("", response.GetErrorMessage());
     EXPECT_TRUE(response.IsSuccess());
 } 
 
@@ -81,7 +80,6 @@ TEST_F(HttpPluginTest, HttpPost)
     auto response = client->Post(*request);
 
     EXPECT_EQ(200, response.GetStatusCode());
-    EXPECT_EQ("", response.GetErrorMessage());
 } 
 
 TEST_F(HttpPluginTest, HttpConnectionFailure)
