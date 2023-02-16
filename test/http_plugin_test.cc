@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <thread>
 #include <json/json.h>
 #include <gtest/gtest.h>
 
@@ -96,6 +97,7 @@ TEST_F(HttpPluginTest, HttpDnsResolvingFailure)
     Request invalid_request("http://efef.efef.eff.com");
 
     EXPECT_THROW(client->Get(invalid_request), DnsResolvingFailureException);
+    EXPECT_THROW(client->Get(invalid_request), DnsResolvingFailureException);
 } 
 
 #if 0
@@ -118,3 +120,21 @@ TEST_F(HttpPluginTest, HttpDelete)
     EXPECT_EQ("Not a valid session ID", response.GetBody());
 }
 
+TEST_F(HttpPluginTest, HttpThreadTest)
+{
+    request->SetPath("/chat/session?session_id=invalidsessionid");
+    std::thread th1([&]() {
+            auto response = client->Delete(*request);
+            EXPECT_EQ(403, response.GetStatusCode());
+            EXPECT_EQ("Not a valid session ID", response.GetBody());
+        });
+
+    std::thread th2([&]() {
+            auto response = client->Delete(*request);
+            EXPECT_EQ(403, response.GetStatusCode());
+            EXPECT_EQ("Not a valid session ID", response.GetBody());
+    });
+
+    th1.join();
+    th2.join();
+}

@@ -26,8 +26,17 @@ public:
     std::transform(lower_command_key.begin(), lower_command_key.end(), lower_command_key.begin(), ::tolower);
     for (const auto &it : on_invoke_)
     {
-      if ((*it).GetCommandKey() == lower_command_key) 
-        return it->Execute();
+      if ((*it).GetCommandKey() == lower_command_key)
+      {
+        try
+        {
+          return it->Execute();
+        }
+        catch (const InvalidCommandException &ex)
+        {
+          throw ex;
+        }
+      }
     }
 
     throw InvalidCommandException("Command not found");

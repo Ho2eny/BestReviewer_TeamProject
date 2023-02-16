@@ -28,7 +28,14 @@ public:
     if (!receiver_)
       return true;
 
-    receiver_->Action();
+    try
+    {
+      receiver_->Action();
+    }
+    catch (const InvalidCommandException &ex)
+    {
+      throw InvalidCommandException(ex.what());
+    }
 
     return true;
   }
