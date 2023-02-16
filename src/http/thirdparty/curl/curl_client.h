@@ -18,7 +18,6 @@ public:
   virtual Response Put(Request request) override;
   virtual Response Delete(Request request) override;
 
-
 private:
   void Initialize();
   void Deinitialize();
@@ -30,7 +29,6 @@ private:
   void CleanUp();
 
   void AppendHeader(const string &key, const string &value);
-  string GetErrorMessage(int result);
   void HandleResultCode(int code);
   
   static size_t WriteBodyCallback(void *contents,

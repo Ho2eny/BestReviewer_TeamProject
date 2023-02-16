@@ -22,6 +22,7 @@ set(SOURCES
     http/converter/room_dto_converter.cc
     http/dto/request.cc http/dto/request.h
     http/dto/response.h
+    http/dto/response.cc
     utils.h
     utils.cc
     command/cache.h command/cache.cc

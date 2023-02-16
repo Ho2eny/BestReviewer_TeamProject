@@ -7,7 +7,6 @@
 #include "../src/http/http_plugin.h"
 #include "../src/http/dto/request.h"
 #include "../src/http/dto/response.h"
-#include "../src/http/exception/network/authentication_failure_exception.h"
 #include "../src/http/exception/network/connection_failure_exception.h"
 #include "../src/http/exception/network/dns_resolving_failure_exception.h"
 #include "../src/http/thirdparty/curl/curl_client.h"
@@ -50,7 +49,6 @@ TEST_F(HttpPluginTest, HttpGet)
     
     auto response = client->Get(*request);
     EXPECT_EQ(200, response.GetStatusCode());
-    EXPECT_EQ("", response.GetErrorMessage());
     EXPECT_TRUE(response.IsSuccess());
 } 
 
@@ -82,7 +80,6 @@ TEST_F(HttpPluginTest, HttpPost)
     auto response = client->Post(*request);
 
     EXPECT_EQ(200, response.GetStatusCode());
-    EXPECT_EQ("", response.GetErrorMessage());
 } 
 
 TEST_F(HttpPluginTest, HttpConnectionFailure)
@@ -100,17 +97,6 @@ TEST_F(HttpPluginTest, HttpDnsResolvingFailure)
     EXPECT_THROW(client->Get(invalid_request), DnsResolvingFailureException);
 } 
 
-#if 0
-TEST_F(HttpPluginTest, HttpAuthenticationFailure)
-{
-    HttpPlugin client;
-
-    Request invalid_request("https://jigsaw.w3.org/HTTP/Basic/");
-    
-    EXPECT_THROW(client->Get(invalid_request), AuthenticationFailureException);
-} 
-#endif
-
 TEST_F(HttpPluginTest, HttpDelete)
 {
     request->SetPath("/chat/session?session_id=invalidsessionid");
@@ -118,6 +104,14 @@ TEST_F(HttpPluginTest, HttpDelete)
     auto response = client->Delete(*request);
     EXPECT_EQ(403, response.GetStatusCode());
     EXPECT_EQ("Not a valid session ID", response.GetBody());
+}
+
+TEST_F(HttpPluginTest, HttpPut)
+{
+    request->SetBody("test message");
+
+    auto response = client->Put(*request);
+    EXPECT_EQ(404, response.GetStatusCode());
 }
 
 TEST_F(HttpPluginTest, HttpThreadTest)

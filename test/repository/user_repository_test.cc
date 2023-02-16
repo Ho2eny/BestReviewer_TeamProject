@@ -39,7 +39,7 @@ protected:
 TEST_F(UserHttpRepositoryTestFixture, loginSuccess) {
   const std::string kTestSessionId = "MkUdmbzNVZE678CgRV16lL1z5lyGTjal";
   const std::string kValidResponseBody = "{\"session_id\":\"" + kTestSessionId + "\"}";
-  Response kValidResponse(200, "", kValidResponseBody);
+  Response kValidResponse(200, kValidResponseBody);
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kValidResponse));
 
@@ -53,7 +53,7 @@ TEST_F(UserHttpRepositoryTestFixture, loginSuccessFailedToParseSessionId) {
   const std::string kTestSessionId = "MkUdmbzNVZE678CgRV16lL1z5lyGTjal";
   const std::string kInvalidJsonBodyFromServer = "{\"session_id\"" + kTestSessionId + "\"}";
 
-  Response kInvalidResponse(200, "", kInvalidJsonBodyFromServer);
+  Response kInvalidResponse(200, kInvalidJsonBodyFromServer);
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kInvalidResponse));
 
@@ -63,7 +63,7 @@ TEST_F(UserHttpRepositoryTestFixture, loginSuccessFailedToParseSessionId) {
 
 TEST_F(UserHttpRepositoryTestFixture, loginFail) {
   const std::string kErrorMessage = "Account information absence";
-  Response kInvalidResponse(400, "", kErrorMessage);
+  Response kInvalidResponse(400, kErrorMessage);
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kInvalidResponse));
 
@@ -81,7 +81,7 @@ TEST_F(UserHttpRepositoryTestFixture, loginFailNetworkIssue) {
 }
 
 TEST_F(UserHttpRepositoryTestFixture, logoutSuccess) {
-  Response kValidResponse(200, "", "");
+  Response kValidResponse(200, "");
 
   EXPECT_CALL(*http_client_, Delete(testing::_)).WillOnce(testing::Return(kValidResponse));
 
@@ -91,7 +91,7 @@ TEST_F(UserHttpRepositoryTestFixture, logoutSuccess) {
 
 TEST_F(UserHttpRepositoryTestFixture, logoutFail) {
   const std::string kErrorMessage = "Invalid Session Id";
-  Response kFobiddenResponse(403, "", kErrorMessage);
+  Response kFobiddenResponse(403, kErrorMessage);
 
   EXPECT_CALL(*http_client_, Delete(testing::_)).WillOnce(testing::Return(kFobiddenResponse));
 
@@ -109,7 +109,7 @@ TEST_F(UserHttpRepositoryTestFixture, logoutFailNetworkIssue) {
 }
 
 TEST_F(UserHttpRepositoryTestFixture, signupSuccess) {
-  Response kValidResponse(200, "", "");
+  Response kValidResponse(200, "");
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kValidResponse));
 
@@ -119,7 +119,7 @@ TEST_F(UserHttpRepositoryTestFixture, signupSuccess) {
 
 TEST_F(UserHttpRepositoryTestFixture, signupFail) {
   const std::string kErrorMessage = "Account information absence";
-  Response kInvalidResposne(400, "", kErrorMessage);
+  Response kInvalidResposne(400, kErrorMessage);
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kInvalidResposne));
 
