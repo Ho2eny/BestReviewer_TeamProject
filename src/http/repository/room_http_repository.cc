@@ -65,6 +65,5 @@ void RoomHttpRepository::Initialize() {
 }
 
 bool RoomHttpRepository::CheckPrecondition() const {
-  if (http_client_ == nullptr || room_dto_converter_ == nullptr) return false;
-  return true;
+  return (http_client_ != nullptr && room_dto_converter_ != nullptr);
 }

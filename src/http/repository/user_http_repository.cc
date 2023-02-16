@@ -80,6 +80,5 @@ void UserHttpRepository::Initialize() {
 }
 
 bool UserHttpRepository::CheckPrecondition() const {
-  if (http_client_ == nullptr || user_dto_converter_ == nullptr) return false;
-  return true;
+  return (http_client_ != nullptr && user_dto_converter_ != nullptr);
 }

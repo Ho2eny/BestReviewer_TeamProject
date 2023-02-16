@@ -20,6 +20,8 @@ set(SOURCES
     http/converter/user_dto_converter.cc
     http/converter/room_dto_converter.h
     http/converter/room_dto_converter.cc
+    http/converter/json_serializer.h
+    http/converter/json_serializer.cc
     http/dto/request.cc http/dto/request.h
     http/dto/response.h
     http/dto/response.cc

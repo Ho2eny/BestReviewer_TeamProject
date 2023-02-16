@@ -10,12 +10,7 @@ UserDtoConverter::UserDtoConverter() {
 
 LoginResponse UserDtoConverter::ConvertToLoginResponseFrom(const Response& http_response) const {
   Json::Value json_object;
-  try {
-    json_object = json_serializer_->ParseJson(http_response.GetBody());
-  }
-  catch (const BaseJsonException& e) {
-    throw e;
-  }
+  json_object = json_serializer_->ParseJson(http_response.GetBody());
 
   // TODO(in.heo): json_object["session_id"]가 없을 경우 Exception 추가
   const std::string session_id = json_object["session_id"].asString();
@@ -55,7 +50,6 @@ std::string UserDtoConverter::ConvertToJsonString(const LoginRequest& login_requ
   json_object["nonce"] = login_request.GetNonce();
   json_object["password"] = login_request.GetPassword();
 
-  // TODO(in.heo): throw exception when json_serializer_ is nullptr
   return json_serializer_->ToString(json_object);
 }
 
@@ -64,6 +58,5 @@ std::string UserDtoConverter::ConvertToJsonString(const SignupRequest& signup_re
   json_object["id"] = signup_request.GetId();
   json_object["password"] = signup_request.GetPassword();
 
- // TODO(in.heo): throw exception when json_serializer_ is nullptr
-   return json_serializer_->ToString(json_object);
+  return json_serializer_->ToString(json_object);
 }
