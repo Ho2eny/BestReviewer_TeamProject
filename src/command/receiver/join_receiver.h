@@ -14,6 +14,9 @@
 #include "../../common/exception/thread/fail_thread_join.h"
 #include "../../interface/dto/chat/receive_message_request.h"
 #include "../../interface/dto/chat/receive_message_response.h"
+
+#include "../../common/exception/command/invalid_command_exception.h"
+
 #include <vector>
 #include <unistd.h>
 #include <semaphore.h> 
@@ -63,8 +66,8 @@ public:
 
     //start
     thread_expired_ = false;
-    cout << "start thread here !! " << endl;
-    cout << "Enter typing message or you can exit by typing quit " << endl;
+    std::cout << "start thread here !! " << std::endl;
+    std::cout << "Enter typing message or you can exit by typing quit " << std::endl;
 
     while(std::cin >> chat_message_ && chat_message_.compare("quit") != 0) 
     {
@@ -72,7 +75,7 @@ public:
       if (session_id_.empty())
         throw InvalidCommandException("Session is not exists");
 
-        cout << "Enter typing message or you can exit by typing quit " << endl;
+        std::cout << "Enter typing message or you can exit by typing quit " << std::endl;
        
         try {
           //send message
@@ -91,7 +94,7 @@ public:
         
     }
       
-  cout << "Action is end!" << endl;
+  std::cout << "Action is end!" << std::endl;
   }
 
   std::string GetRoomName()
@@ -118,54 +121,4 @@ private:
   std::string session_id_, chat_message_;
   sem_t present_lock_;
 };
-
-void JoinReceiver::GenerateThread(void) {
-  
-  if (pthread_attr_init(&attr_) != 0)
-    throw FailThreadAttrInitException("pthread_attr_init is failed");
-
-  pthread_attr_setdetachstate(&attr_, PTHREAD_CREATE_JOINABLE);
-
-  if (pthread_create(&thread_id_, NULL, ThreadWrapper, (void*)this) < 0 ) {
-      throw FailThreadCreateException("pthread_create is failed");
-  }
-}
-
-// static
-static void *ThreadWrapper(void *me) {
-
-    static_cast<JoinReceiver *>(me)->WorkerThread();
-
-    return nullptr;
-}
-
-void* JoinReceiver::WorkerThread() {
-  pthread_t tid;
-  //prctl(PR_SET_NAME, (unsigned long)"FIFO_WorkerThread", 0, 0, 0);
-
-  tid = pthread_self();
-
-  while(!thread_expired_ && sem_wait(&present_lock_) == 0) {
-    std::string sessionID = cache_.GetValue(Cache::vSessionID);
-
-    //cout << "WorkerThread start loop " << endl;
-    try {
-      ReceiveMessageRequest request(roomName_, sessionID);
-      ReceiveMessageResponse response = repository_->ReceiveMessage(request);
-      std::vector<Message> messages = response.GetMessages();
-      int index = 0; 
-      for(auto& m : messages ) {
-        cout << "Index is " << index++ << " date : " << m.GetDate() << " message :  " <<  m.GetMessage() <<
-          " room : " << m.GetRoomName() << " user_id : " << m.GetUserId() << endl;
-      }
-    }
-    catch (const BaseException &ex)
-    {
-      color_.ImportantWithLineFeed(ex.what());
-    }
-
-    //cout << "WorkerThread end loop " << endl;
-    cout << "Type the message if you want" << endl;
-  }
-}
 #endif
