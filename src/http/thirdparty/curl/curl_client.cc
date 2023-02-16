@@ -1,5 +1,6 @@
 #include <curl/curl.h>
 #include <sstream>
+#include <iostream>
 #include "curl_client.h"
 #include "../../exception/network/authentication_failure_exception.h"
 #include "../../exception/network/connection_failure_exception.h"
@@ -38,6 +39,7 @@ void CurlClient::Deinitialize()
 
 Response CurlClient::Get(Request request)
 {
+  mutex_.lock();
   SetUp(request);
 
   curl_easy_setopt(curl_, CURLOPT_HTTPGET, 1L);
@@ -49,6 +51,7 @@ Response CurlClient::Get(Request request)
   auto response = Response(status_code, GetErrorMessage(res), body_);
 
   CleanUp();
+  mutex_.unlock();
 
   return response;
 }
@@ -64,7 +67,8 @@ void CurlClient::SetUp(const Request &request)
 void CurlClient::CleanUp()
 {
   curl_easy_cleanup(curl_);
-  curl_slist_free_all(header_);
+  if (header_)
+    curl_slist_free_all(header_);
 
   curl_ = nullptr;
   header_ = nullptr;
@@ -73,6 +77,7 @@ void CurlClient::CleanUp()
 
 Response CurlClient::Post(Request request)
 {
+  mutex_.lock();
   SetUp(request);
 
   AppendHeader("Content-Type", "application/json");
@@ -88,6 +93,7 @@ Response CurlClient::Post(Request request)
   auto response = Response(status_code, GetErrorMessage(res), body_);
 
   CleanUp();
+  mutex_.unlock();
 
   return response;
 }
@@ -98,19 +104,20 @@ Response CurlClient::Put(Request request)
 }
 
 Response CurlClient::Delete(Request request)
-{
+{  
+  mutex_.lock();
   SetUp(request);
-  
-  curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "DELETE");
 
+  curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "DELETE");
   CURLcode result = curl_easy_perform(curl_);
   HandleResultCode(result);
-  
   int status_code = 0;
+
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
   auto response = Response(status_code, GetErrorMessage(result), body_);
 
   CleanUp();
+  mutex_.unlock();
 
   return response;
 }
@@ -143,12 +150,16 @@ void CurlClient::HandleResultCode(int code)
       return;
     case CURLE_COULDNT_RESOLVE_PROXY:
     case CURLE_COULDNT_RESOLVE_HOST:
+      mutex_.unlock();
       throw DnsResolvingFailureException("DNS resolving failed.");
     case CURLE_COULDNT_CONNECT:
+      mutex_.unlock();
       throw ConnectionFailureException("TCP connection failed.");
     case CURLE_AUTH_ERROR:
+      mutex_.unlock();
       throw AuthenticationFailureException("Authentication Failed.");
     default:
+      mutex_.unlock();
       throw InternalException("Error occured in libcurl internally.");
   }
 }
