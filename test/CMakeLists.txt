@@ -21,7 +21,6 @@ target_link_libraries(${PROJECT}
         gtest
         gtest_main
         gmock
-        gmock_main
         curl
         jsoncpp
         ChatClient
