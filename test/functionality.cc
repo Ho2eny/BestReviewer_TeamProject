@@ -137,8 +137,6 @@ TEST_F(GothroughTest, CreateChatRoomTest)
 
 TEST_F(GothroughTest, CreateChatRoomFailureTest)
 {
-    MakeCommands();
-
     EXPECT_THROW(invoker_->Invoke("61"), InvalidCommandException);
 }
 
