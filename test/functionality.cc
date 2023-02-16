@@ -15,7 +15,7 @@ random_device dev;
 mt19937 rng(dev());
 uniform_int_distribution<mt19937::result_type> dist(1, 100000);
 static std::string id = "fifo_" + to_string(dist(rng));
-static std::string chatName = "fifo_chatRoom_" + to_string(dist(rng));
+static std::string chat_name = "fifo_chatRoom_" + to_string(dist(rng));
 
 class GothroughTest : public testing::Test
 {
@@ -32,6 +32,7 @@ protected:
         cache_.SetTestPassword("password");
         cache_.SetTestNonce("5");
         cache_.SetSessionID("");
+        cache_.SetTestRoomName(chat_name);
 
         Factory factory;
         factory.MakeCommands(invoker_, cache_);
