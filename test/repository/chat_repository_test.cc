@@ -9,6 +9,7 @@
 #include "../../src/common/exception/chat/fail_parse_receive_message_reseponse_exception.h"
 #include "../../src/common/exception/chat/fail_receive_message_exception.h"
 #include "../../src/common/exception/chat/fail_send_message_exception.h"
+#include "../../src/common/exception/chat/invalid_chat_repository_exception.h"
 #include "../../src/http/exception/network/base_network_exception.h"
 #include "../../src/http/http_plugin.h"
 
@@ -37,7 +38,7 @@ protected:
 };
 
 TEST_F(ChatHttpRepositoryTestFixture, sendMessageSuccess) {
-  Response kValidResponse(200, "", "");
+  Response kValidResponse(200, "");
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kValidResponse));
 
@@ -47,7 +48,7 @@ TEST_F(ChatHttpRepositoryTestFixture, sendMessageSuccess) {
 
 TEST_F(ChatHttpRepositoryTestFixture, sendMessageFail) {
   const std::string error_message = "Can't find user ID from given session ID";
-  Response kServerInternalErrorResponse(403, "", error_message);
+  Response kServerInternalErrorResponse(403, error_message);
 
   EXPECT_CALL(*http_client_, Post(testing::_)).WillOnce(testing::Return(kServerInternalErrorResponse));
 
@@ -67,7 +68,7 @@ TEST_F(ChatHttpRepositoryTestFixture, sendMessageFailNetworkIssue) {
 TEST_F(ChatHttpRepositoryTestFixture, receiveMessageSuccess) {
   const std::string kValidResponseBody = "[{\"date\":1583135236,\"message\":\"hello\",\"room\":\"2\",\"user_id\":\"samsung\"},{\"date\":1602568577,\"message\":\"test\",\"room\":\"2\",\"user_id\":\"test\"}]";
 
-  Response kValidResponse(200, "", kValidResponseBody);
+  Response kValidResponse(200, kValidResponseBody);
 
   EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kValidResponse));
 
@@ -84,7 +85,7 @@ TEST_F(ChatHttpRepositoryTestFixture, receiveMessageSuccess) {
 TEST_F(ChatHttpRepositoryTestFixture, receiveMessageSuccessFailedToParseResponse) {
   const std::string kInvalidJsonResponse = "[{\"date\":1583135236,\"message:\"hello,\"room\":\"2\",\"user_id\":\"samsung\",{\"date\":1602568577,\"message\":\"test\",\"room\":\"2\",\"user_id\":\"test\"}]";
 
-  Response kInvalidResponse(200, "", kInvalidJsonResponse);
+  Response kInvalidResponse(200, kInvalidJsonResponse);
 
   EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kInvalidResponse));
 
@@ -94,7 +95,7 @@ TEST_F(ChatHttpRepositoryTestFixture, receiveMessageSuccessFailedToParseResponse
 
 TEST_F(ChatHttpRepositoryTestFixture, receiveMessageFail) {
   const std::string kErrorMessage = "Not a valid session ID";
-  Response kForbiddenResponse(403, "", kErrorMessage);
+  Response kForbiddenResponse(403, kErrorMessage);
 
   EXPECT_CALL(*http_client_, Get(testing::_)).WillOnce(testing::Return(kForbiddenResponse));
 
@@ -109,4 +110,11 @@ TEST_F(ChatHttpRepositoryTestFixture, receiveMessageFailNetworkIssue) {
 
   ReceiveMessageRequest temp_request;
   EXPECT_THROW(chat_repository_->ReceiveMessage(temp_request), FailReceiveMessageException);
+}
+
+TEST_F(ChatHttpRepositoryTestFixture, exceptionWhenRepositoryIsInvalid) {
+  chat_repository_->SetHttpClient(nullptr);
+
+  ReceiveMessageRequest temp_request;
+  EXPECT_THROW(chat_repository_->ReceiveMessage(temp_request), InvalidChatRepositoryException);
 }

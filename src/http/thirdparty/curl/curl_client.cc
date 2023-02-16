@@ -2,7 +2,6 @@
 #include <sstream>
 #include <iostream>
 #include "curl_client.h"
-#include "../../exception/network/authentication_failure_exception.h"
 #include "../../exception/network/connection_failure_exception.h"
 #include "../../exception/network/dns_resolving_failure_exception.h"
 #include "../../exception/network/internal_exception.h"
@@ -48,7 +47,7 @@ Response CurlClient::Get(Request request)
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, GetErrorMessage(res), body_);
+  auto response = Response(status_code, body_);
 
   CleanUp();
   mutex_.unlock();
@@ -90,7 +89,7 @@ Response CurlClient::Post(Request request)
   
   int status_code = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, GetErrorMessage(res), body_);
+  auto response = Response(status_code, body_);
 
   CleanUp();
   mutex_.unlock();
@@ -98,9 +97,28 @@ Response CurlClient::Post(Request request)
   return response;
 }
 
+
 Response CurlClient::Put(Request request)
 {
-  return Response();
+  mutex_.lock();
+  SetUp(request);
+
+  AppendHeader("Content-Type", "application/json");
+
+  curl_easy_setopt(curl_, CURLOPT_CUSTOMREQUEST, "PUT");
+  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, request.GetBody().c_str());
+
+  CURLcode res = curl_easy_perform(curl_);
+  HandleResultCode(res);
+  
+  int status_code = 0;
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
+  auto response = Response(status_code, body_);
+
+  CleanUp();
+  mutex_.unlock();
+
+  return response;
 }
 
 Response CurlClient::Delete(Request request)
@@ -114,20 +132,12 @@ Response CurlClient::Delete(Request request)
   int status_code = 0;
 
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status_code);
-  auto response = Response(status_code, GetErrorMessage(result), body_);
+  auto response = Response(status_code, body_);
 
   CleanUp();
   mutex_.unlock();
 
   return response;
-}
-
-string CurlClient::GetErrorMessage(int result)
-{
-  if (result == CURLE_OK)
-    return "";
-
-  return string("error response : ").append(to_string(result));
 }
 
 void CurlClient::AppendHeader(const string &key, const string &value)
@@ -155,9 +165,6 @@ void CurlClient::HandleResultCode(int code)
     case CURLE_COULDNT_CONNECT:
       mutex_.unlock();
       throw ConnectionFailureException("TCP connection failed.");
-    case CURLE_AUTH_ERROR:
-      mutex_.unlock();
-      throw AuthenticationFailureException("Authentication Failed.");
     default:
       mutex_.unlock();
       throw InternalException("Error occured in libcurl internally.");

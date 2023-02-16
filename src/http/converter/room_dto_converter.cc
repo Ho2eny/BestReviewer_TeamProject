@@ -27,12 +27,7 @@ Request RoomDtoConverter::ConvertToRetrieveRoomHttpRequestFrom(const RetrieveRoo
 RetrieveRoomResponse RoomDtoConverter::ConvertToRetrieveRoomResponseFrom(const Response& http_response) const {
   Json::Value json_object;
 
-  try {
-    json_object = json_serializer_->ParseJson(http_response.GetBody());
-  }
-  catch (const BaseJsonException& e) {
-    throw e;
-  }
+  json_object = json_serializer_->ParseJson(http_response.GetBody());
 
   std::vector<std::string> room_names;
   for (Json::ArrayIndex i = 0; i < json_object.size(); ++i) {
@@ -46,6 +41,5 @@ std::string RoomDtoConverter::ConvertToJsonString(const CreateRoomRequest& creat
   json_object["chat_room"] = create_room_request.GetRoomName();
   json_object["session_id"] = create_room_request.GetSessionId();
 
-  // TODO(in.heo): throw exception when json_serializer_ is nullptr
   return json_serializer_->ToString(json_object);
 }
