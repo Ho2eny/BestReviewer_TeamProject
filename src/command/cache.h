@@ -25,6 +25,7 @@ public:
   void SetBaseUrl(const std::string &base_url);
   void SetSessionID(const std::string &session_id);
   void SetRoomName(const std::string &room_name);
+  void SetTestRoomName(const std::string &room_name);
   void RemoveSessionID();
   std::string GetValue(const std::string &key);
   void SetRooms(const std::vector<std::string> &rooms);

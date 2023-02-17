@@ -20,10 +20,14 @@ set(SOURCES
     http/converter/user_dto_converter.cc
     http/converter/room_dto_converter.h
     http/converter/room_dto_converter.cc
+    http/converter/json_serializer.h
+    http/converter/json_serializer.cc
     http/dto/request.cc http/dto/request.h
     http/dto/response.h
+    http/dto/response.cc
     utils.h
     utils.cc
+    command/receiver/join_receiver.h command/receiver/join_receiver.cc
     command/cache.h command/cache.cc
     command/invoker.h command/invoker.cc
     command/command.h command/command.cc

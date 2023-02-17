@@ -1,8 +1,9 @@
 #include "chat_dto_converter.h"
 
-// TODO(in.heo): Request param을 포함한 endpoint 설정후 replace 하는 식으로 수정
-const std::string ChatDtoConverter::kReceiveMessageEndpoint = "/chat/chatmessage";
 const std::string ChatDtoConverter::kSendMessageEndpoint = "/chat/chatmessage";
+const std::string ChatDtoConverter::kReceiveMessageEndpoint = "/chat/chatmessage?session_id=:session_id&chat_room=:chat_room";
+const std::string ChatDtoConverter::kSessionIdKey = ":session_id";
+const std::string ChatDtoConverter::kChatRoomKey = ":chat_room";
 
 ChatDtoConverter::ChatDtoConverter() {
   json_serializer_ = std::make_shared<JsonSerializer>();
@@ -12,7 +13,7 @@ Request ChatDtoConverter::ConvertToReceiveMessageHttpRequestFrom(
     const ReceiveMessageRequest& receive_message_request, const std::string& base_url) const {
   Request http_request(base_url);
 
-  std::string path = kReceiveMessageEndpoint + "?" + "session_id=" + receive_message_request.GetSessionId() + "&" + "chat_room=" + receive_message_request.GetRoomName();
+  std::string path = GetReceiveMessageEndpoint(receive_message_request);
   http_request.SetPath(path);
 
   return http_request;
@@ -21,12 +22,7 @@ Request ChatDtoConverter::ConvertToReceiveMessageHttpRequestFrom(
 ReceiveMessageResponse ChatDtoConverter::ConvertToReceiveMessageResponseFrom(const Response& http_response) const {
   Json::Value json_object;
 
-  try {
-    json_object = json_serializer_->ParseJson(http_response.GetBody());
-  }
-  catch (const BaseJsonException& e) {
-    throw e;
-  }
+  json_object = json_serializer_->ParseJson(http_response.GetBody());
 
   std::vector<Message> messages;
   for (Json::ArrayIndex i = 0; i < json_object.size(); ++i) {
@@ -53,6 +49,17 @@ std::string ChatDtoConverter::ConvertToJsonString(const SendMessageRequest& send
   json_object["chat_room"] = send_message_request.GetRoomName();
   json_object["session_id"] = send_message_request.GetSessionId();
 
-  // TODO(in.heo): throw exception when json_serializer_ is nullptr
   return json_serializer_->ToString(json_object);
+}
+
+std::string ChatDtoConverter::GetReceiveMessageEndpoint(const ReceiveMessageRequest& receive_message_request) const {
+  std::string receive_message_endpoint = kReceiveMessageEndpoint;
+
+  auto pos = receive_message_endpoint.find(kSessionIdKey);
+  receive_message_endpoint.replace(pos, kSessionIdKey.length(), receive_message_request.GetSessionId());
+
+  pos = receive_message_endpoint.find(kChatRoomKey);
+  receive_message_endpoint.replace(pos, kChatRoomKey.length(), receive_message_request.GetRoomName());
+
+  return receive_message_endpoint;
 }

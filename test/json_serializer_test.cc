@@ -3,6 +3,8 @@
 #include <memory>
 
 #include "../src/http/converter/json_serializer.h"
+#include "../src/http/converter/exception/invalid_json_serializer_exception.h"
+#include "../src/http/converter/exception/invalid_json_string_exception.h"
 
 class MockJsonSerializer : public JsonSerializer {
 public:
@@ -45,7 +47,10 @@ TEST_F(JsonSerializerTestFixture, parseJsonFailInvalidJsonSerializer) {
   const std::string test_welcome_json_str = "{\"message\":\"Welcome to Best Reviewer}";
 
   json_serializer_->MakeInvalid();
+  Json::Value temp_json_object;
+
   EXPECT_THROW(json_serializer_->ParseJson(test_welcome_json_str), InvalidJsonSerializerException);
+  EXPECT_THROW(json_serializer_->ToString(temp_json_object), InvalidJsonSerializerException);
 }
 
 TEST_F(JsonSerializerTestFixture, convertToStringSuccess) {
