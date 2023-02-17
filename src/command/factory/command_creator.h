@@ -1,46 +1,50 @@
 #ifndef COMMAND_CREATOR_H_
 #define COMMAND_CREATOR_H_
 
-#include <memory>
-#include "../login.h"
-#include "../logout.h"
-#include "../signup.h"
+#include "../../common/exception/command/invalid_command_exception.h"
 #include "../createchatroom.h"
 #include "../joinchatroom.h"
 #include "../listchatrooms.h"
+#include "../login.h"
+#include "../logout.h"
+#include "../signup.h"
 #include "receiver_creator.h"
-#include "../../common/exception/command/invalid_command_exception.h"
+#include <memory>
 
-class CommandCreator
-{
+class CommandCreator {
 public:
-    CommandCreator(Cache &cache);
-    virtual ~CommandCreator();
-    virtual std::unique_ptr<Command> CreateCommand(const CommandType &type, const std::string description) const = 0;
+  CommandCreator(Cache &cache);
+  virtual ~CommandCreator();
+  virtual std::unique_ptr<Command>
+  CreateCommand(const CommandType &type,
+                const std::string description) const = 0;
 
 protected:
-    Cache &cache_;
+  Cache &cache_;
 };
 
-class UserCommandCreator : public CommandCreator
-{
+class UserCommandCreator : public CommandCreator {
 public:
-    UserCommandCreator(Cache &cache);
-    std::unique_ptr<Command> CreateCommand(const CommandType &type, const std::string description) const override;
+  UserCommandCreator(Cache &cache);
+  std::unique_ptr<Command>
+  CreateCommand(const CommandType &type,
+                const std::string description) const override;
 };
 
-class RoomCommandCreator : public CommandCreator
-{
+class RoomCommandCreator : public CommandCreator {
 public:
-    RoomCommandCreator(Cache &cache);
-    std::unique_ptr<Command> CreateCommand(const CommandType &type, const std::string description) const override;
+  RoomCommandCreator(Cache &cache);
+  std::unique_ptr<Command>
+  CreateCommand(const CommandType &type,
+                const std::string description) const override;
 };
 
-class ChatCommandCreator : public CommandCreator
-{
+class ChatCommandCreator : public CommandCreator {
 public:
-    ChatCommandCreator(Cache &cache);
-    std::unique_ptr<Command> CreateCommand(const CommandType &type, const std::string description) const override;
+  ChatCommandCreator(Cache &cache);
+  std::unique_ptr<Command>
+  CreateCommand(const CommandType &type,
+                const std::string description) const override;
 };
 
 #endif
