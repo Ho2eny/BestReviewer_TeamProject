@@ -2,6 +2,7 @@
 #define BASE_EXCEPTION_H_
 
 #include <exception>
+#include <string>
 
 class BaseException : public std::exception {
 public:
