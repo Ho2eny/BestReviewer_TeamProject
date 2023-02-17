@@ -108,14 +108,6 @@ private:
       throw InvalidCommandException("Session is not exists (While Chatting)");
   }
 
-  void ThreadDestory()
-  {
-    pthread_attr_destroy(&attr_);
-    void *status;
-    pthread_join(thread_id_, (void **)&status);
-    isthread_destoyed = true;
-  }
-
   std::string GetRoomName()
   {
     if (!cache_.GetValue(Cache::vTestChatRoomName).empty())
