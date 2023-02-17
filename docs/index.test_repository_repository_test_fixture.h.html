@@ -275,7 +275,7 @@
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2023-02-16 20:47:22</td>
+            <td class="headerValue">2023-02-17 13:11:12</td>
             <td></td>
             <td class="headerName">Branches:</td>
             <td class="headerTableEntry">12</td>
@@ -406,15 +406,15 @@
 
     <tr>
     <td align="right" class="lineno"><pre>16</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 16 times">&check;</span><span class="takenBranch" title="Branch 4 taken 12 times">&check;</span><span class="takenBranch" title="Branch 5 taken 4 times">&check;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>16</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 24 times">&check;</span><span class="takenBranch" title="Branch 4 taken 18 times">&check;</span><span class="takenBranch" title="Branch 5 taken 6 times">&check;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>24</pre></td>
     <td align="left" class="src coveredLine"><pre>  MOCK_METHOD(Response, Get, (Request), (override));</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>17</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 26 times">&check;</span><span class="takenBranch" title="Branch 4 taken 18 times">&check;</span><span class="takenBranch" title="Branch 5 taken 8 times">&check;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>26</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 39 times">&check;</span><span class="takenBranch" title="Branch 4 taken 27 times">&check;</span><span class="takenBranch" title="Branch 5 taken 12 times">&check;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>39</pre></td>
     <td align="left" class="src coveredLine"><pre>  MOCK_METHOD(Response, Post, (Request), (override));</pre></td>
     </tr>
 
@@ -427,8 +427,8 @@
 
     <tr>
     <td align="right" class="lineno"><pre>19</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 4 taken 4 times">&check;</span><span class="takenBranch" title="Branch 5 taken 2 times">&check;</span><span class="takenBranch" title="Branch 3 taken 6 times">&check;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 4 taken 6 times">&check;</span><span class="takenBranch" title="Branch 5 taken 3 times">&check;</span><span class="takenBranch" title="Branch 3 taken 9 times">&check;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>18</pre></td>
     <td align="left" class="src coveredLine"><pre>  MOCK_METHOD(Response, Delete, (Request), (override));</pre></td>
     </tr>
 
@@ -463,63 +463,63 @@
     <tr>
     <td align="right" class="lineno"><pre>24</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>  virtual void SetUp() override {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>25</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    http_client_ = std::make_shared&lt;MockHttpClient>();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>26</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    chat_repository_ = std::make_shared&lt;ChatHttpRepository>("");</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>27</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    room_repository_ = std::make_shared&lt;RoomHttpRepository>("");</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>28</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    user_repository_ = std::make_shared&lt;UserHttpRepository>("");</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>29</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 54 times">&check;</span><span class="notTakenBranch" title="Branch 4 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 81 times">&check;</span><span class="notTakenBranch" title="Branch 4 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    chat_repository_->SetHttpClient(http_client_);</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>30</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 54 times">&check;</span><span class="notTakenBranch" title="Branch 4 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 81 times">&check;</span><span class="notTakenBranch" title="Branch 4 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    room_repository_->SetHttpClient(http_client_);</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>31</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 54 times">&check;</span><span class="notTakenBranch" title="Branch 4 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 3 taken 81 times">&check;</span><span class="notTakenBranch" title="Branch 4 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    user_repository_->SetHttpClient(http_client_);</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>32</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>  }</pre></td>
     </tr>
 
@@ -533,35 +533,35 @@
     <tr>
     <td align="right" class="lineno"><pre>34</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>  virtual void TearDown() override {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>35</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    chat_repository_.reset();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>36</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    room_repository_.reset();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>37</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>    user_repository_.reset();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>38</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>54</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>81</pre></td>
     <td align="left" class="src coveredLine"><pre>  }</pre></td>
     </tr>
 

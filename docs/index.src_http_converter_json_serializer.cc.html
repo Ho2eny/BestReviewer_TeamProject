@@ -275,7 +275,7 @@
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2023-02-16 20:47:22</td>
+            <td class="headerValue">2023-02-17 13:11:12</td>
             <td></td>
             <td class="headerName">Branches:</td>
             <td class="headerTableEntry">15</td>
@@ -337,28 +337,28 @@
     <tr>
     <td align="right" class="lineno"><pre>6</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>1156</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>632</pre></td>
     <td align="left" class="src coveredLine"><pre>JsonSerializer::JsonSerializer() {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>7</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 1156 times">&check;</span><span class="notTakenBranch" title="Branch 2 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>1156</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 632 times">&check;</span><span class="notTakenBranch" title="Branch 2 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>632</pre></td>
     <td align="left" class="src coveredLine"><pre>  reader_builder_ = std::make_shared&lt;Json::CharReaderBuilder>();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>8</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 1156 times">&check;</span><span class="notTakenBranch" title="Branch 2 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>1156</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 632 times">&check;</span><span class="notTakenBranch" title="Branch 2 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>632</pre></td>
     <td align="left" class="src coveredLine"><pre>  writer_builder_ = std::make_shared&lt;Json::StreamWriterBuilder>();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>9</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>1156</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>632</pre></td>
     <td align="left" class="src coveredLine"><pre>}</pre></td>
     </tr>
 
@@ -372,28 +372,28 @@
     <tr>
     <td align="right" class="lineno"><pre>11</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>688</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>344</pre></td>
     <td align="left" class="src coveredLine"><pre>JsonSerializer::~JsonSerializer() {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>12</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>688</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>344</pre></td>
     <td align="left" class="src coveredLine"><pre>  reader_builder_.reset();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>13</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>688</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>344</pre></td>
     <td align="left" class="src coveredLine"><pre>  writer_builder_.reset();</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>14</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>688</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>344</pre></td>
     <td align="left" class="src coveredLine"><pre>}</pre></td>
     </tr>
 
@@ -407,21 +407,21 @@
     <tr>
     <td align="right" class="lineno"><pre>16</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>102</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>60</pre></td>
     <td align="left" class="src coveredLine"><pre>Json::Value JsonSerializer::ParseJson(const std::string&amp; json) const {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>17</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 16 times">&check;</span><span class="takenBranch" title="Branch 2 taken 86 times">&check;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>102</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 8 times">&check;</span><span class="takenBranch" title="Branch 2 taken 52 times">&check;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>60</pre></td>
     <td align="left" class="src coveredLine"><pre>  if (reader_builder_ == nullptr) {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>18</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 16 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>16</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 8 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>8</pre></td>
     <td align="left" class="src coveredLine"><pre>    throw InvalidJsonSerializerException("ReaderBuilder is invalid");</pre></td>
     </tr>
 
@@ -441,8 +441,8 @@
 
     <tr>
     <td align="right" class="lineno"><pre>21</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 86 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>86</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 52 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>52</pre></td>
     <td align="left" class="src coveredLine"><pre>  Json::CharReader* reader = reader_builder_->newCharReader();</pre></td>
     </tr>
 
@@ -455,8 +455,8 @@
 
     <tr>
     <td align="right" class="lineno"><pre>23</pre></td>
-    <td align="right" class="linebranch"><span class="notTakenBranch" title="Branch 0 not taken">&cross;</span><span class="takenBranch" title="Branch 1 taken 86 times">&check;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>86</pre></td>
+    <td align="right" class="linebranch"><span class="notTakenBranch" title="Branch 0 not taken">&cross;</span><span class="takenBranch" title="Branch 1 taken 52 times">&check;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>52</pre></td>
     <td align="left" class="src coveredLine"><pre>  if (reader == nullptr) {</pre></td>
     </tr>
 
@@ -483,15 +483,15 @@
 
     <tr>
     <td align="right" class="lineno"><pre>27</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 86 times">&check;</span><span class="notTakenBranch" title="Branch 2 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>86</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 52 times">&check;</span><span class="notTakenBranch" title="Branch 2 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>52</pre></td>
     <td align="left" class="src coveredLine"><pre>  Json::Value json_object;</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>28</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>86</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>52</pre></td>
     <td align="left" class="src coveredLine"><pre>  std::string errors;</pre></td>
     </tr>
 
@@ -504,15 +504,15 @@
 
     <tr>
     <td align="right" class="lineno"><pre>30</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 4 taken 86 times">&check;</span><span class="notTakenBranch" title="Branch 5 not taken">&cross;</span><span class="takenBranch" title="Branch 6 taken 32 times">&check;</span><span class="takenBranch" title="Branch 7 taken 54 times">&check;</span><br/></td>
-    <td align="right" class="linecount coveredLine"><pre>86</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 4 taken 52 times">&check;</span><span class="notTakenBranch" title="Branch 5 not taken">&cross;</span><span class="takenBranch" title="Branch 6 taken 16 times">&check;</span><span class="takenBranch" title="Branch 7 taken 36 times">&check;</span><br/></td>
+    <td align="right" class="linecount coveredLine"><pre>52</pre></td>
     <td align="left" class="src coveredLine"><pre>  if (!reader->parse(json.c_str(), json.c_str() + json.size(), &amp;json_object, &amp;errors)) {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>31</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 32 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>32</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 16 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>16</pre></td>
     <td align="left" class="src coveredLine"><pre>    throw InvalidJsonStringException("Failed to parse json");</pre></td>
     </tr>
 
@@ -533,14 +533,14 @@
     <tr>
     <td align="right" class="lineno"><pre>34</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>108</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>72</pre></td>
     <td align="left" class="src coveredLine"><pre>  return json_object;</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>35</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>118</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>68</pre></td>
     <td align="left" class="src coveredLine"><pre>}</pre></td>
     </tr>
 
@@ -554,21 +554,21 @@
     <tr>
     <td align="right" class="lineno"><pre>37</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>166</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>92</pre></td>
     <td align="left" class="src coveredLine"><pre>std::string JsonSerializer::ToString(const Json::Value&amp; json) const {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>38</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 8 times">&check;</span><span class="takenBranch" title="Branch 2 taken 158 times">&check;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>166</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 1 taken 4 times">&check;</span><span class="takenBranch" title="Branch 2 taken 88 times">&check;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>92</pre></td>
     <td align="left" class="src coveredLine"><pre>  if (writer_builder_ == nullptr) {</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>39</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 8 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
-    <td align="right" class="linecount coveredLine"><pre>8</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 4 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span></td>
+    <td align="right" class="linecount coveredLine"><pre>4</pre></td>
     <td align="left" class="src coveredLine"><pre>    throw InvalidJsonSerializerException("WriterBuilder is invalid");</pre></td>
     </tr>
 
@@ -589,7 +589,7 @@
     <tr>
     <td align="right" class="lineno"><pre>42</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>158</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>88</pre></td>
     <td align="left" class="src coveredLine"><pre>  std::string json_str = Json::writeString(*writer_builder_.get(), json);</pre></td>
     </tr>
 
@@ -603,7 +603,7 @@
     <tr>
     <td align="right" class="lineno"><pre>44</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>158</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>88</pre></td>
     <td align="left" class="src coveredLine"><pre>  return json_str;</pre></td>
     </tr>
 
