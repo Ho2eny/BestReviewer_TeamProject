@@ -42,8 +42,6 @@ void* JoinReceiver::WorkerThread() {
     }
   
     usleep( 3000 * 1000 );
-
-    cout << "Type the message if you want" << endl;
   }
 
   ThreadDestory();
