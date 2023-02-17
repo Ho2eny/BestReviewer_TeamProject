@@ -126,3 +126,13 @@ TEST_F(GothroughTest, ListChatRoomTest)
     invoker_->Invoke("60");
     EXPECT_FALSE(cache_.GetRooms().empty());
 }
+
+TEST_F(GothroughTest, JoinReceiverTest)
+{   
+    invoker_->Invoke("51");
+    EXPECT_FALSE(cache_.GetValue(Cache::vSessionID).empty());
+
+    invoker_->Invoke("62");
+    cache_.SetTestChatMessageQuit(Cache::vTestChatMessageQuit);
+    EXPECT_FALSE(cache_.GetValue(Cache::vChatRoomName).empty());
+}
