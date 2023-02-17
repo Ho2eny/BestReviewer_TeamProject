@@ -62,13 +62,11 @@ public:
     thread_expired_ = false;
     cout << "Enter typing message or you can exit by typing quit " << endl;
 
-    while(std::cin >> chat_message_ && chat_message_.compare("quit") != 0) 
+    while(std::getline(std::cin, chat_message_) && chat_message_.compare("quit") != 0) 
     {
       session_id_.assign(cache_.GetValue(Cache::vSessionID));
       if (session_id_.empty())
         throw InvalidCommandException("Session is not exists");
-
-        std::cout << "Enter typing message or you can exit by typing quit " << std::endl;
        
         try {
           SendMessageRequest request(room_name_, session_id_, chat_message_);
