@@ -40,9 +40,9 @@ MENU
 Signed up to FIFO Chat with fifo_test
 ```
 - 결과
-TODO: 캡쳐 붙이기..!
+https://github.ecodesamsung.com/Best-Reviewer-23-2/TeamProject_FIFO/wiki/Demo-Page
 
-## 테스트 및 결과
+## 테스트
 ```
 $ test/ChatClientTest.exe 
 Running main() from /WorkSpace/googletest-main/googletest/src/gtest_main.cc
