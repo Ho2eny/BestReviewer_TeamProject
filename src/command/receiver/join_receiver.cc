@@ -1,48 +1,64 @@
+#include <sstream>
 #include "join_receiver.h"
 
 using namespace std;
+static const int sleep_second = 3000 * 1000;
 
-void JoinReceiver::GenerateThread(void) {
+void JoinReceiver::GenerateThread(void)
+{
   pthread_attr_init(&attr_);
   pthread_attr_setdetachstate(&attr_, PTHREAD_CREATE_JOINABLE);
-  pthread_create(&thread_id_, NULL, ThreadWrapper, (void*)this);
+  pthread_create(&thread_id_, NULL, ThreadWrapper, (void *)this);
 }
 
-// static
-static void *ThreadWrapper(void *me) {
-
-    static_cast<JoinReceiver *>(me)->WorkerThread();
-
-    return nullptr;
+static void *ThreadWrapper(void *me)
+{
+  static_cast<JoinReceiver *>(me)->WorkerThread();
+  return nullptr;
 }
- 
-void* JoinReceiver::WorkerThread() {
+
+void *JoinReceiver::WorkerThread()
+{
   pthread_t tid;
   tid = pthread_self();
-  while(!thread_expired_ ) {
-    std::string sessionID = cache_.GetValue(Cache::vSessionID);
-    try {
-      ReceiveMessageRequest request(room_name_, sessionID);
+
+  std::string sessionID = cache_.GetValue(Cache::vSessionID);
+  ReceiveMessageRequest request(room_name_, sessionID);
+
+  while (!thread_expired_)
+  {
+    try
+    {
       ReceiveMessageResponse response = repository_->ReceiveMessage(request);
       std::vector<Message> messages = response.GetMessages();
 
-      if(!CompareInfoAndStoreIfRequired(messages)) {
-        cout << "[";
-        for (vector<Message>::iterator iter = messages.begin(); iter != messages.end(); iter++) {
-          cout << "{date : " << (*iter).GetDate() << " message :  " << getPaddingString((*iter).GetMessage(), 50) <<
-            " room : " << (*iter).GetRoomName()  << " user_id : " << (*iter).GetUserId() << "}";
-            if(iter == messages.end() - 1) cout << "]"<< endl;
-            cout << endl;
+      bool print_messages = false;
+      for (const auto &iter : messages)
+      {
+        std::stringstream ss;
+        ss << "(" << iter.GetDate() << ":" << iter.GetUserId() << ") " << iter.GetMessage();
+        std::string message = ss.str();
+
+        if (print_messages)
+        {
+          PrintMessage(iter.GetUserId(), message);
+          last_message_ = message;
+        }
+
+        if (!print_messages && message == last_message_)
+        {
+          print_messages = true;
         }
       }
     }
     catch (const BaseException &ex)
     {
-      color_.ImportantWithLineFeed(ex.what());
+      throw InvalidCommandException(ex.what());
     }
-  
-    usleep( 3000 * 1000 );
+
+    usleep(sleep_second);
   }
 
   ThreadDestory();
+  return nullptr;
 }

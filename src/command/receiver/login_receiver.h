@@ -21,6 +21,7 @@ public:
     std::string id = GetId();
     std::string password = GetPassword();
     AuthorizationKey key(id, password);
+    cache_.SetID(id);
 
     try
     {
