@@ -1,6 +1,9 @@
 
 # Team Project_FIFO
 
+## Coverage
+https://pages.github.ecodesamsung.com/Best-Reviewer-23-2/TeamProject_FIFO
+
 ## Members
 - 김동혁
 - 김철희
@@ -58,5 +61,4 @@ Running main() from /WorkSpace/googletest-main/googletest/src/gtest_main.cc
 [  PASSED  ] 64 tests.
 ```
 
-## Coverage
-https://pages.github.ecodesamsung.com/Best-Reviewer-23-2/TeamProject_FIFO
+
