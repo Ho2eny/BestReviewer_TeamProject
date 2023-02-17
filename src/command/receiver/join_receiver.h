@@ -29,11 +29,17 @@ class JoinReceiver : public ChatReceiver
 public:
   JoinReceiver(Cache &cache, std::shared_ptr<ChatRepository> repository) : ChatReceiver(cache, repository) {}
   ~JoinReceiver() 
-  {  
-    thread_expired_ = true;
+  { 
+    if(!isthread_destoyed)
+      ThreadDestory();
+  }
+
+  void ThreadDestory() 
+  {
     pthread_attr_destroy(&attr_);
     void *status;
     pthread_join(thread_id_, (void **)&status);
+    isthread_destoyed = true;
   }
   
   void ReceiveMessage(const ReceiveMessageRequest& request)
@@ -75,8 +81,7 @@ public:
 
         chat_message_.clear();
     }
-      
-  std::cout << "Action is end!" << std::endl;
+    thread_expired_ = true;
   }
 
   std::string GetRoomName()
@@ -122,7 +127,7 @@ private:
   AnsiColor color_;
   pthread_t thread_id_;
   pthread_attr_t attr_;
-  volatile bool thread_expired_ = true;
+  volatile bool thread_expired_ = true, isthread_destoyed = false;
   std::string room_name_;
   std::string session_id_, chat_message_;
   std::vector<Message> internal_info_;

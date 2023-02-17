@@ -45,4 +45,6 @@ void* JoinReceiver::WorkerThread() {
 
     cout << "Type the message if you want" << endl;
   }
+
+  ThreadDestory();
 }
