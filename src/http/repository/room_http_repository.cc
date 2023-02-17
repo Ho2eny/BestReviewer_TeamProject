@@ -20,8 +20,7 @@ CreateRoomResponse RoomHttpRepository::CreateRoom(const CreateRoomRequest& reque
   try {
     Response http_response = http_client_->Post(http_request);
     if (http_response.IsSuccess()) return CreateRoomResponse();
-    else throw FailCreateRoomException(http_response.GetBody().c_str());
-
+    throw FailCreateRoomException(http_response.GetBody().c_str());
   }
   catch (const BaseNetworkException& e) {
     throw FailCreateRoomException(e.what());
@@ -36,19 +35,13 @@ RetrieveRoomResponse RoomHttpRepository::RetrieveRoom(const RetrieveRoomRequest&
 
   try {
     Response http_response = http_client_->Get(http_request);
-    if (http_response.IsSuccess()) {
-      RetrieveRoomResponse response;
-      response = room_dto_converter_->ConvertToRetrieveRoomResponseFrom(http_response);
-      return response;
-    }
-    else {
+    if (!http_response.IsSuccess())
       throw FailRetrieveRoomException(http_response.GetBody().c_str());
-    }
-  }
-  catch (const BaseNetworkException& e) {
+    return room_dto_converter_->ConvertToRetrieveRoomResponseFrom(
+        http_response);
+  } catch (const BaseNetworkException &e) {
     throw FailRetrieveRoomException(e.what());
-  }
-  catch (const BaseJsonException& e) {
+  } catch (const BaseJsonException &e) {
     throw FailParseRetrieveRoomResponseException(e.what());
   }
 }
