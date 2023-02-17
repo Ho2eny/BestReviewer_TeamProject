@@ -17,6 +17,7 @@ public:
   static const std::string vTestSessionID;
   static const std::string vChatRoomName;
   static const std::string vTestChatRoomName;
+  static const std::string vTestChatMessageQuit;
 
   void SetID(const std::string &ID);
   void SetTestID(const std::string &ID);
@@ -30,6 +31,7 @@ public:
   std::string GetValue(const std::string &key);
   void SetRooms(const std::vector<std::string> &rooms);
   std::vector<std::string> GetRooms();
+  void SetTestChatMessageQuit(const std::string &message);
 
 private:
   void SetKV(const std::string &key, const std::string &value) { kv_[key] = value; }

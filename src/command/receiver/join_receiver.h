@@ -36,6 +36,7 @@ public:
 
   void ThreadDestory() 
   {
+    if(isthread_destoyed) return;
     pthread_attr_destroy(&attr_);
     void *status;
     pthread_join(thread_id_, (void **)&status);
@@ -57,6 +58,8 @@ public:
       throw InvalidCommandException("Session is not exists");
 
     cache_.SetRoomName(room_name_);
+    if(cache_.GetValue(Cache::vTestChatMessageQuit).empty()) return;
+
     GenerateThread();
 
     thread_expired_ = false;
