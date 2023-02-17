@@ -269,13 +269,13 @@
             <td class="headerValue">src/command/cache.cc</td>
             <td></td>
             <td class="headerName">Lines:</td>
-            <td class="headerTableEntry">12</td>
-            <td class="headerTableEntry">12</td>
+            <td class="headerTableEntry">13</td>
+            <td class="headerTableEntry">13</td>
             <td class="headerTableEntry" style="background-color:LightGreen">100.0 %</td>
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">2023-02-17 13:11:12</td>
+            <td class="headerValue">2023-02-17 13:45:18</td>
             <td></td>
             <td class="headerName">Branches:</td>
             <td class="headerTableEntry">2</td>
@@ -316,155 +316,169 @@
     <tr>
     <td align="right" class="lineno"><pre>3</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>4</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetID(const std::string &amp;ID) { SetKV(Cache::vID, ID); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>4</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>76</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>40</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetTestID(const std::string &amp;ID) { SetKV(Cache::vTestID, ID); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>5</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>72</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>38</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetTestNonce(const std::string &amp;nonce) { SetKV(Cache::vTestNonce, nonce); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>6</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>76</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>40</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetTestPassword(const std::string &amp;password) { SetKV(Cache::vTestPassword, password); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>7</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>72</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>38</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetBaseUrl(const std::string &amp;base_url) { SetKV(Cache::vBaseUrl, base_url); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>8</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>84</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>46</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetSessionID(const std::string &amp;session_id) { SetKV(Cache::vSessionID, session_id); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>9</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>8</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetRoomName(const std::string &amp;room_name) { SetKV(Cache::vChatRoomName, room_name); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>10</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>52</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>28</pre></td>
     <td align="left" class="src coveredLine"><pre>void Cache::SetTestRoomName(const std::string &amp;room_name) { SetKV(Cache::vTestChatRoomName, room_name); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>11</pre></td>
-    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 12 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span><span class="takenBranch" title="Branch 5 taken 12 times">&check;</span><span class="notTakenBranch" title="Branch 6 not taken">&cross;</span><br/></td>
-    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
-    <td align="left" class="src coveredLine"><pre>void Cache::RemoveSessionID() { SetKV(Cache::vSessionID, ""); }</pre></td>
+    <td align="right" class="linebranch"></td>
+    <td align="right" class="linecount coveredLine"><pre>2</pre></td>
+    <td align="left" class="src coveredLine"><pre>void Cache::SetTestChatMessageQuit(const std::string &amp;message) { SetKV(Cache::vTestChatMessageQuit, message); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>12</pre></td>
-    <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>656</pre></td>
-    <td align="left" class="src coveredLine"><pre>std::string Cache::GetValue(const std::string &amp;key) { return kv_[key]; }</pre></td>
+    <td align="right" class="linebranch"><span class="takenBranch" title="Branch 2 taken 6 times">&check;</span><span class="notTakenBranch" title="Branch 3 not taken">&cross;</span><span class="takenBranch" title="Branch 5 taken 6 times">&check;</span><span class="notTakenBranch" title="Branch 6 not taken">&cross;</span><br/></td>
+    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
+    <td align="left" class="src coveredLine"><pre>void Cache::RemoveSessionID() { SetKV(Cache::vSessionID, ""); }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>13</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>12</pre></td>
-    <td align="left" class="src coveredLine"><pre>void Cache::SetRooms(const std::vector&lt;std::string> &amp;rooms) { rooms_ = rooms; }</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>364</pre></td>
+    <td align="left" class="src coveredLine"><pre>std::string Cache::GetValue(const std::string &amp;key) { return kv_[key]; }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>14</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount coveredLine"><pre>16</pre></td>
-    <td align="left" class="src coveredLine"><pre>std::vector&lt;std::string> Cache::GetRooms() { return rooms_; }</pre></td>
+    <td align="right" class="linecount coveredLine"><pre>6</pre></td>
+    <td align="left" class="src coveredLine"><pre>void Cache::SetRooms(const std::vector&lt;std::string> &amp;rooms) { rooms_ = rooms; }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>15</pre></td>
     <td align="right" class="linebranch"></td>
-    <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre></pre></td>
+    <td align="right" class="linecount coveredLine"><pre>8</pre></td>
+    <td align="left" class="src coveredLine"><pre>std::vector&lt;std::string> Cache::GetRooms() { return rooms_; }</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>16</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vID = "id";</pre></td>
+    <td align="left" class="src "><pre></pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>17</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vTestID = "test_id";</pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vID = "id";</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>18</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vTestNonce = "test_nonce";</pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vTestID = "test_id";</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>19</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vTestPassword = "test_password";</pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vTestNonce = "test_nonce";</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>20</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vBaseUrl = "base_url";</pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vTestPassword = "test_password";</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>21</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vSessionID = "session_id";</pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vBaseUrl = "base_url";</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>22</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vTestSessionID = "test_session_id";</pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vSessionID = "session_id";</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>23</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
-    <td align="left" class="src "><pre>const std::string Cache::vChatRoomName = "chat_room_name";</pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vTestSessionID = "test_session_id";</pre></td>
     </tr>
 
     <tr>
     <td align="right" class="lineno"><pre>24</pre></td>
     <td align="right" class="linebranch"></td>
     <td align="right" class="linecount "><pre></pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vChatRoomName = "chat_room_name";</pre></td>
+    </tr>
+
+    <tr>
+    <td align="right" class="lineno"><pre>25</pre></td>
+    <td align="right" class="linebranch"></td>
+    <td align="right" class="linecount "><pre></pre></td>
     <td align="left" class="src "><pre>const std::string Cache::vTestChatRoomName = "test_chat_room_name";</pre></td>
+    </tr>
+
+    <tr>
+    <td align="right" class="lineno"><pre>26</pre></td>
+    <td align="right" class="linebranch"></td>
+    <td align="right" class="linecount "><pre></pre></td>
+    <td align="left" class="src "><pre>const std::string Cache::vTestChatMessageQuit = "test_chat_quit";</pre></td>
     </tr>
 
   </table>
